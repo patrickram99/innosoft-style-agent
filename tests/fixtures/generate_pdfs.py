@@ -80,7 +80,7 @@ def _figure(
     if caption:
         cap = f"Figura {number}. Diagrama de ejemplo numero {number}"
         page.insert_textbox(
-            fitz.Rect(MARGIN_L, rect.y1 + 8, PAGE_W - MARGIN_R, rect.y1 + 24),
+            fitz.Rect(MARGIN_L, rect.y1 + 6, PAGE_W - MARGIN_R, rect.y1 + 30),
             cap,
             fontsize=10,
             fontname="tiro",
@@ -101,7 +101,7 @@ def _vector_figure(page: fitz.Page, y: float, number: int) -> float:
     shape.finish(color=(0, 0, 0), fill=(0.6, 0.6, 0.9), width=1)
     shape.commit()
     page.insert_textbox(
-        fitz.Rect(MARGIN_L, y + h + 8, PAGE_W - MARGIN_R, y + h + 24),
+        fitz.Rect(MARGIN_L, y + h + 6, PAGE_W - MARGIN_R, y + h + 30),
         f"Figura {number}. Grafico vectorial de barras",
         fontsize=10,
         fontname="tiro",
