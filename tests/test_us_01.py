@@ -12,6 +12,16 @@ from sqlalchemy import func, select
 from app.models import Manuscript, ManuscriptStatus
 
 
+@pytest.fixture(autouse=True)
+def no_pipeline(monkeypatch):
+    """US-01 ends at `received`; the analysis stages belong to US-04+ and are tested there."""
+    from app.api import manuscripts as mod
+
+    launched: list[str] = []
+    monkeypatch.setattr(mod, "run_analysis", launched.append)
+    return launched
+
+
 def _upload(client, headers, content: bytes, metadata: dict | None, filename: str = "manuscrito.pdf"):
     files = {"file": (filename, content, "application/pdf")}
     data = {"metadata": json.dumps(metadata)} if metadata is not None else {}
@@ -27,12 +37,13 @@ def valid_pdf(pdf_dir: Path) -> bytes:
     return (pdf_dir / "sin_figuras.pdf").read_bytes()
 
 
-def test_t01_valid_pdf_returns_202_and_received(client, auth_headers, db_session, valid_pdf):
+def test_t01_valid_pdf_returns_202_and_received(client, auth_headers, db_session, valid_pdf, no_pipeline):
     r = _upload(client, auth_headers, valid_pdf, {"submission_id": 1001, "section_id": 2, "title": "Prueba", "locale": "es_ES"})
     assert r.status_code == 202, r.text
     body = r.json()
     uuid.UUID(body["manuscript_id"])  # must be a UUID
     assert body["status"] == "received"
+    assert no_pipeline == [body["manuscript_id"]], "el análisis debe encolarse una vez"
 
     row = db_session.get(Manuscript, body["manuscript_id"])
     assert row is not None
@@ -52,7 +63,7 @@ def test_ac04_file_stored_with_matching_sha256(client, auth_headers, db_session,
     assert hashlib.sha256(stored.read_bytes()).hexdigest() == db_session.get(Manuscript, mid).sha256
 
 
-def test_t02_identical_resubmission_returns_200_duplicate(client, auth_headers, db_session, valid_pdf):
+def test_t02_identical_resubmission_returns_200_duplicate(client, auth_headers, db_session, valid_pdf, no_pipeline):
     first = _upload(client, auth_headers, valid_pdf, {"submission_id": 1003})
     second = _upload(client, auth_headers, valid_pdf, {"submission_id": 1003})
     assert first.status_code == 202
@@ -60,6 +71,7 @@ def test_t02_identical_resubmission_returns_200_duplicate(client, auth_headers, 
     assert second.json()["manuscript_id"] == first.json()["manuscript_id"]
     assert second.json()["duplicate"] is True
     assert _count(db_session, 1003) == 1
+    assert len(no_pipeline) == 1, "un reenvío idéntico no se re-analiza (D-01)"
 
 
 def test_t03_docx_renamed_as_pdf_returns_400(client, auth_headers, db_session, storage_dir):

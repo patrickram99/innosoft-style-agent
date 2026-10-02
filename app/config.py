@@ -17,6 +17,9 @@ class Settings(BaseSettings):
     rules_schema: Path = ROOT_DIR / "rules" / "schema" / "rule.schema.json"
     gemini_api_key: str = ""
 
+    # Umbral técnico de US-04 §6.3 (no es una regla editorial): promedio mínimo de caracteres por página.
+    min_chars_per_page: int = 50
+
 
 @lru_cache
 def get_settings() -> Settings:
