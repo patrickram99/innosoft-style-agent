@@ -48,7 +48,7 @@ def _parse_metadata(raw: str | None) -> ManuscriptMetadata:
             detail=[{"loc": ["body", "metadata"], "msg": "Falta el campo metadata", "type": "missing"}],
         )
     try:
-        data = json.loads(raw)
+        data = json.loads(raw.lstrip("﻿"))  # tolerate a UTF-8 BOM from Windows clients
     except json.JSONDecodeError as exc:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,

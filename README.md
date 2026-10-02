@@ -64,6 +64,15 @@ Regenerar el corpus sintético:
 python tests/fixtures/generate_pdfs.py
 ```
 
+## Demo (Sprint Review)
+
+```powershell
+.\scripts\demo.ps1
+```
+
+Levanta la API con SQLite local, sube `tests/fixtures/pdfs/figuras_baja_dpi.pdf`, espera el análisis e imprime
+los hallazgos RE-20 y RE-21. Acepta `-Pdf <ruta>`, `-Port <n>` y `-NoStart` (contra una API ya levantada).
+
 ## Migraciones
 
 ```powershell
