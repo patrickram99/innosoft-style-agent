@@ -1,0 +1,136 @@
+schema_version: 1
+categoria: figuras
+actualizado: "2026-10-02"
+reglas:
+  - id: RE-20
+    categoria: figuras
+    descripcion: "Imagen de al menos 531 × 1328 px (alto × ancho), o proporción 200 × 500 si es panorámica"
+    condicion:
+      evaluador: figure_min_pixels
+      parametros:
+        min_height_px: 531
+        min_width_px: 1328
+        aplica_a_vectoriales: false
+    severidad: alta
+    detectable: D
+    mensaje: "La {figura} (página {pagina}) mide {encontrado}. Para asegurar su legibilidad, la revista solicita un tamaño mínimo de {esperado}."
+    seccion_aplicable: [corto, original, revision]
+    fuente:
+      documentos: [a]
+      url: "https://revistas.ulasalle.edu.pe/innosoft/about/submissions"
+      referencia: "Directrices para autores — Figuras"
+    notas: "Supuesto aprobado (D-03): mínimo 531 × 1328 px para toda figura raster; la variante panorámica 200 × 500 se añadirá aquí si la revista la precisa."
+
+  - id: RE-21
+    categoria: figuras
+    descripcion: "Resolución efectiva de la imagen ≥ 300 dpi"
+    condicion:
+      evaluador: figure_min_dpi
+      parametros: {min_dpi: 300}
+    severidad: alta
+    detectable: D
+    mensaje: "La {figura} (página {pagina}) tiene una resolución aproximada de {encontrado}; se requiere al menos {esperado}."
+    seccion_aplicable: [corto, original, revision]
+    fuente:
+      documentos: [a]
+      url: "https://revistas.ulasalle.edu.pe/innosoft/about/submissions"
+      referencia: "Directrices para autores — Figuras"
+
+  - id: RE-22
+    categoria: figuras
+    descripcion: "Figura contenida en los márgenes de página (no recortada, no desbordada); en LaTeX ancho de referencia 0,9\\textwidth"
+    condicion:
+      evaluador: figure_within_margins
+      parametros:
+        margenes_cm: {superior: 3.81, inferior: 3.81, izquierdo: 2.0, derecho: 1.2}
+        tolerancia_pt: 2
+    severidad: alta
+    detectable: D
+    mensaje: "La {figura} (página {pagina}) sobrepasa los márgenes de la página. Le sugerimos ajustarla para que quede completamente dentro del área de texto."
+    seccion_aplicable: [corto, original, revision]
+    fuente:
+      documentos: [a, c]
+      url: "https://revistas.ulasalle.edu.pe/innosoft/about/submissions"
+      referencia: "Directrices para autores — Figuras; innosoft_template.tex"
+    notas: "D-02: se evalúa en US-35, no en US-10."
+
+  - id: RE-23
+    categoria: figuras
+    descripcion: "Pie de figura debajo, centrado, Times New Roman 10 pt, con el formato \"Figura n. Título\""
+    condicion:
+      evaluador: figure_caption_format
+      parametros:
+        posicion: below
+        tamano_pt: 10
+        patron: "Figura n. Título"
+    severidad: media
+    detectable: D
+    mensaje: "El pie de la {figura} (página {pagina}) debe ir debajo de la imagen, centrado, en Times New Roman 10 pt y con el formato \"Figura n. Título\"."
+    seccion_aplicable: [corto, original, revision]
+    fuente:
+      documentos: [a, b, c]
+      url: "https://revistas.ulasalle.edu.pe/innosoft/about/submissions"
+      referencia: "Directrices para autores — Figuras; plantillas Word y LaTeX"
+
+  - id: RE-24
+    categoria: figuras
+    descripcion: "Numeración secuencial de figuras por orden de aparición"
+    condicion:
+      evaluador: figure_numbering_sequence
+    severidad: media
+    detectable: D
+    mensaje: "La numeración de las figuras no es consecutiva: en la página {pagina} aparece la {figura} cuando se esperaba {esperado}. Le sugerimos renumerarlas por orden de aparición."
+    seccion_aplicable: [corto, original, revision]
+    fuente:
+      documentos: [a, b, c]
+      url: "https://revistas.ulasalle.edu.pe/innosoft/about/submissions"
+      referencia: "Directrices para autores — Figuras; plantillas Word y LaTeX"
+
+  - id: RE-25
+    categoria: figuras
+    descripcion: "Toda figura referenciada en el texto como \"Figura n\" (no \"figura de abajo\" ni \"la siguiente imagen\")"
+    condicion:
+      evaluador: figure_referenced_in_text
+      parametros:
+        frases_vagas: ["figura de abajo", "figura de arriba", "la siguiente imagen", "la siguiente figura", "la imagen anterior", "como se muestra a continuación"]
+    severidad: media
+    detectable: D
+    mensaje: "La {figura} no se menciona en el texto con su número. Le sugerimos referirse a ella como \"Figura n\" en lugar de expresiones como \"{fragmento}\"."
+    seccion_aplicable: [corto, original, revision]
+    fuente:
+      documentos: [b, c]
+      url: "https://revistas.ulasalle.edu.pe/innosoft/about/submissions"
+      referencia: "Plantillas Word y LaTeX — Figuras"
+
+  - id: RE-26
+    categoria: figuras
+    descripcion: "Texto interno de la figura legible y en el idioma del artículo; fuentes Times, Arial, Courier o Symbol"
+    condicion:
+      evaluador: llm_figure_text_legibility
+      parametros:
+        fuentes: [Times, Arial, Courier, Symbol]
+    severidad: baja
+    detectable: L/I
+    mensaje: "Le sugerimos verificar que el texto interno de la {figura} (página {pagina}) sea legible, esté en español y use las fuentes Times, Arial, Courier o Symbol."
+    seccion_aplicable: [corto, original, revision]
+    fuente:
+      documentos: [a]
+      url: "https://revistas.ulasalle.edu.pe/innosoft/about/submissions"
+      referencia: "Directrices para autores — Figuras"
+
+  - id: RE-27
+    categoria: figuras
+    descripcion: "Formato preferido vectorial (SVG o EPS); aceptables TIFF y PNG"
+    condicion:
+      evaluador: figure_format_notice
+      parametros:
+        preferidos: [SVG, EPS]
+        aceptables: [TIFF, PNG]
+    severidad: baja
+    detectable: I
+    mensaje: "La revista prefiere figuras en formato vectorial (SVG o EPS); también acepta TIFF y PNG. Le sugerimos revisar el formato de las figuras antes del envío definitivo."
+    seccion_aplicable: [corto, original, revision]
+    fuente:
+      documentos: [a]
+      url: "https://revistas.ulasalle.edu.pe/innosoft/about/submissions"
+      referencia: "Directrices para autores — Figuras"
