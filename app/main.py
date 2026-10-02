@@ -1,7 +1,7 @@
 """FastAPI application factory."""
 from fastapi import FastAPI
 
-from app.api import health
+from app.api import health, manuscripts
 
 
 def create_app() -> FastAPI:
@@ -11,6 +11,7 @@ def create_app() -> FastAPI:
         description="Analiza manuscritos PDF enviados a la revista Innovación y Software.",
     )
     app.include_router(health.router)
+    app.include_router(manuscripts.router)
     return app
 
 
