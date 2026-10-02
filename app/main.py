@@ -6,17 +6,16 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from app.api import health, manuscripts, rules
-from app.config import get_settings
-from app.rules import load_rules
+from app.api import findings, health, manuscripts, rules
+from app.rules import get_rule_set, reset_rule_set_cache
 
 logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    settings = get_settings()
-    rule_set = load_rules(settings.rules_dir, settings.rules_schema)  # raises RuleLoadError → no startup
+    reset_rule_set_cache()
+    rule_set = get_rule_set()  # raises RuleLoadError → the API does not start
     app.state.rules = rule_set
     logger.info("API lista con %d reglas (hash %s)", len(rule_set.rules), rule_set.rules_hash[:12])
     yield
@@ -31,6 +30,7 @@ def create_app() -> FastAPI:
     )
     app.include_router(health.router)
     app.include_router(manuscripts.router)
+    app.include_router(findings.router)
     app.include_router(rules.router)
     return app
 

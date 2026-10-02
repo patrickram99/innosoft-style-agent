@@ -24,4 +24,7 @@ class Document(Base):
     citations: Mapped[list] = mapped_column(JSONVariant, nullable=False, default=list)
     references: Mapped[list] = mapped_column(JSONVariant, nullable=False, default=list)
     extractor_version: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    # US-10: errores por regla del último análisis (pasarán a la tabla runs en US-28) y hash de reglas usado.
+    rule_errors: Mapped[list | None] = mapped_column(JSONVariant, nullable=True)
+    rules_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=utcnow)

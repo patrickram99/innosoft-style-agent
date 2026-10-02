@@ -8,13 +8,15 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
+from sqlalchemy import delete
 from sqlalchemy.orm import Session
 
 from app.config import get_settings
 from app.db import get_session_factory
-from app.extraction.figures import extract_figures
+from app.extraction.figures import Figure, extract_figures
 from app.extraction.text import EXTRACTOR_VERSION, DocumentData, extract_text
-from app.models import Document, Manuscript, ManuscriptStatus
+from app.models import Document, Finding, Manuscript, ManuscriptStatus
+from app.rules import EvaluationContext, get_rule_set, run_rules
 
 logger = logging.getLogger(__name__)
 
@@ -62,6 +64,45 @@ def stage_figures(db: Session, manuscript: Manuscript, document: Document) -> Do
     return document
 
 
+def stage_validate(db: Session, manuscript: Manuscript, document: Document) -> list[Finding]:
+    """US-10: run the active rules for the article type and persist the findings."""
+    _set_status(db, manuscript, ManuscriptStatus.VALIDATING)
+    rule_set = get_rule_set()
+    context = EvaluationContext(
+        document=DocumentData.model_validate({"pages": document.pages}),
+        figures=[Figure.model_validate(f) for f in document.figures or []],
+        article_type=manuscript.article_type,
+        manuscript_id=manuscript.id,
+    )
+    result = run_rules(context, rule_set.runnable(manuscript.article_type))
+
+    db.execute(delete(Finding).where(Finding.manuscript_id == manuscript.id))  # re-analysis replaces findings
+    rows = [
+        Finding(
+            manuscript_id=manuscript.id,
+            rule_id=f.rule_id,
+            severidad=f.severidad,
+            pagina=f.pagina,
+            ubicacion=f.ubicacion,
+            evidencia=f.evidencia,
+            valor_encontrado=f.valor_encontrado,
+            valor_esperado=f.valor_esperado,
+            requires_llm=f.requires_llm,
+        )
+        for f in result.findings
+    ]
+    db.add_all(rows)
+    document.rule_errors = [e.model_dump() for e in result.errors]
+    document.rules_hash = rule_set.rules_hash
+    db.add(document)
+    _set_status(db, manuscript, ManuscriptStatus.VALIDATED)
+    logger.info(
+        "Manuscrito %s: %d hallazgos, %d rule_error (%s)",
+        manuscript.id, len(rows), len(result.errors), ", ".join(result.evaluated),
+    )
+    return rows
+
+
 def run_analysis(manuscript_id: str) -> None:
     """Entry point for the asynchronous analysis of a received manuscript."""
     with get_session_factory()() as db:
@@ -76,6 +117,8 @@ def run_analysis(manuscript_id: str) -> None:
                 return
             stage = "figures"
             stage_figures(db, manuscript, document)
+            stage = "validation"
+            stage_validate(db, manuscript, document)
         except Exception:
             logger.exception("Fallo no recuperable (%s) al analizar el manuscrito %s", stage, manuscript_id)
             db.rollback()
