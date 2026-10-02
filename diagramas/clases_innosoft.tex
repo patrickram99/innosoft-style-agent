@@ -1,0 +1,346 @@
+% ============================================================================
+% Diagrama de clases - Agente de sugerencias estilisticas para Innosoft
+% Compilar:  pdflatex clases_innosoft.tex
+% ============================================================================
+\documentclass[border=10pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{helvet}
+\usepackage{courier}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds,shapes.multipart}
+
+\definecolor{ink}{HTML}{1B2733}
+\definecolor{hair}{HTML}{8A97A5}
+\definecolor{slate}{HTML}{55606D}
+\definecolor{pkgA}{HTML}{DDE9F0}   % extraccion
+\definecolor{pkgB}{HTML}{E7E9EC}   % modelo
+\definecolor{pkgC}{HTML}{DCEDE6}   % reglas
+\definecolor{pkgD}{HTML}{F7E9D7}   % sugerencias
+\definecolor{pkgE}{HTML}{E8E2F0}   % revision y publicacion
+\definecolor{pkgbg}{HTML}{FBFCFD}
+
+\newcommand{\st}[1]{{\fontsize{6.4}{7.4}\selectfont\itshape\color{slate}\guillemotleft #1\guillemotright}}
+\newcommand{\cn}[1]{{\fontsize{8.2}{9.6}\selectfont\bfseries\color{ink}#1}}
+\newcommand{\mb}[1]{{\fontsize{6.4}{7.8}\selectfont\color{ink}#1}}
+\newcommand{\ml}[1]{{\fontsize{6.2}{7.4}\selectfont\color{slate}#1}}
+\newcommand{\pk}[1]{{\fontsize{7.6}{9}\selectfont\bfseries\color{ink}#1}}
+
+\begin{document}
+\begin{tikzpicture}[
+  every node/.style={inner sep=0pt},
+  cls/.style={draw=ink, line width=.55pt, rectangle split, rectangle split parts=3,
+              rectangle split part align=left, rectangle split empty part height=0pt,
+              text width=4.5cm, align=left, inner xsep=4pt, inner ysep=3.2pt,
+              anchor=north west, rectangle split part fill={#1,white,white}},
+  pkg/.style={draw=hair, line width=.6pt, fill=pkgbg},
+  tab/.style={draw=hair, line width=.6pt, fill=#1, inner xsep=5pt, inner ysep=2.6pt, anchor=south west},
+  inh/.style={draw=ink, line width=.55pt, -{Triangle[open, length=5pt, width=5pt]}},
+  real/.style={inh, dashed, dash pattern=on 2.6pt off 2pt},
+  dep/.style={draw=slate, line width=.55pt, -{Stealth[length=4.5pt,width=3.2pt]},
+              dash pattern=on 2.6pt off 2pt},
+  assoc/.style={draw=ink, line width=.55pt},
+  comp/.style={draw=ink, line width=.55pt, {Diamond[length=4.5pt,width=3pt,fill=ink]}-},
+  lb/.style={fill=pkgbg, inner sep=1.2pt, font=\fontsize{6.2}{7.2}\selectfont, text=slate},
+  mult/.style={inner sep=1.2pt, font=\fontsize{6}{7}\selectfont, text=slate},
+]
+
+%% ===================== Columna A: api + extraccion =====================
+\node[cls=pkgA] (ctrl) at (0,0)
+ {\st{REST}\\\cn{ManuscriptController}
+  \nodepart{two}\ml{- extractor, engine, generator}
+  \nodepart{three}\mb{+ recibir(pdf, meta) : ManuscriptId}\\
+                  \mb{+ cola() : List$\langle$Manuscript$\rangle$}\\
+                  \mb{+ decidir(sugId, accion, texto)}};
+
+\node[cls=pkgA, below=9mm of ctrl.south west, anchor=north west] (iext)
+ {\st{interface}\\\cn{PdfExtractor}
+  \nodepart{two}
+  \nodepart{three}\mb{+ extraer(ruta) : Document}};
+
+\node[cls=pkgA, below=10mm of iext.south west, anchor=north west] (pymu)
+ {\cn{PyMuPdfExtractor}
+  \nodepart{two}\ml{- paginas : List$\langle$Page$\rangle$}
+  \nodepart{three}\mb{+ extraer(ruta) : Document}\\
+                  \mb{- bloques(pagina) : List$\langle$Block$\rangle$}};
+
+\node[cls=pkgA, below=4mm of pymu.south west, anchor=north west] (secd)
+ {\cn{SectionDetector}
+  \nodepart{two}\ml{- patrones : List$\langle$Regex$\rangle$}
+  \nodepart{three}\mb{+ detectar(paginas) : List$\langle$Section$\rangle$}};
+
+\node[cls=pkgA, below=4mm of secd.south west, anchor=north west] (figx)
+ {\cn{FigureExtractor}
+  \nodepart{two}
+  \nodepart{three}\mb{+ figuras(pdf) : List$\langle$Figure$\rangle$}\\
+                  \mb{- dpiEfectivo(bbox, px) : float}\\
+                  \mb{- asociarPie(figura, bloques)}};
+
+\node[cls=pkgA, below=4mm of figx.south west, anchor=north west] (refp)
+ {\cn{ReferenceParser}
+  \nodepart{two}
+  \nodepart{three}\mb{+ citas(texto) : List$\langle$Citation$\rangle$}\\
+                  \mb{+ referencias(sec) : List$\langle$Reference$\rangle$}};
+
+%% ===================== Columna B: modelo del documento =====================
+\node[cls=pkgB] (man) at (6.5,0)
+ {\cn{Manuscript}
+  \nodepart{two}\ml{- id, submissionId, version}\\
+                \ml{- seccion, idioma, estado}
+  \nodepart{three}\mb{+ esRevision() : bool}\\
+                  \mb{+ marcarFueraDeAlcance()}};
+
+\node[cls=pkgB, below=9mm of man.south west, anchor=north west] (doc)
+ {\cn{Document}
+  \nodepart{two}\ml{- paginas : int}
+  \nodepart{three}\mb{+ seccion(tipo) : Section}\\
+                  \mb{+ figura(n) : Figure}};
+
+\node[cls=pkgB, below=9mm of doc.south west, anchor=north west] (sec)
+ {\cn{Section}
+  \nodepart{two}\ml{- tipo : TipoSeccion}\\
+                \ml{- titulo, paginaInicio}
+  \nodepart{three}\mb{+ palabras() : int}};
+
+\node[cls=pkgB, below=4mm of sec.south west, anchor=north west] (fig)
+ {\cn{Figure}
+  \nodepart{two}\ml{- numero, pagina, bbox}\\
+                \ml{- anchoPx, altoPx, dpi}\\
+                \ml{- pie : string}
+  \nodepart{three}\mb{+ proporcion() : float}\\
+                  \mb{+ estaReferenciada() : bool}};
+
+\node[cls=pkgB, below=4mm of fig.south west, anchor=north west] (cit)
+ {\cn{Citation}
+  \nodepart{two}\ml{- numero, pagina, offset}\\
+                \ml{- estilo : IEEE $|$ APA}
+  \nodepart{three}};
+
+\node[cls=pkgB, below=4mm of cit.south west, anchor=north west] (ref)
+ {\cn{Reference}
+  \nodepart{two}\ml{- indice, autores, titulo}\\
+                \ml{- fuente, anio, doi, crudo}
+  \nodepart{three}\mb{+ cumpleIEEE() : bool}};
+
+%% ===================== Columna C: motor de reglas =====================
+\node[cls=pkgC] (rrep) at (13.0,0)
+ {\cn{RuleRepository}
+  \nodepart{two}\ml{- ruta : \ttfamily rules/innosoft/*.yaml}
+  \nodepart{three}\mb{+ cargar() : List$\langle$Rule$\rangle$}\\
+                  \mb{+ porSeccion(sec) : List$\langle$Rule$\rangle$}\\
+                  \mb{+ validarEsquema() : bool}};
+
+\node[cls=pkgC, below=4mm of rrep.south west, anchor=north west] (rule)
+ {\cn{Rule}
+  \nodepart{two}\ml{- id : RE-nn}\\
+                \ml{- categoria, severidad}\\
+                \ml{- condicion, mensaje, fuente}
+  \nodepart{three}\mb{+ aplicaA(seccion) : bool}};
+
+\node[cls=pkgC, below=9mm of rule.south west, anchor=north west] (eng)
+ {\cn{RuleEngine}
+  \nodepart{two}\ml{- validadores : List$\langle$Validator$\rangle$}
+  \nodepart{three}\mb{+ validar(doc, reglas)}\\
+                  \mb{\ \ \ : List$\langle$Finding$\rangle$}};
+
+\node[cls=pkgC, below=9mm of eng.south west, anchor=north west] (val)
+ {\st{abstract}\\\cn{Validator}
+  \nodepart{two}
+  \nodepart{three}\mb{+ aplicaA(regla) : bool}\\
+                  \mb{+ evaluar(doc, regla)}\\
+                  \mb{\ \ \ : List$\langle$Finding$\rangle$}};
+
+\node[cls=pkgC, below=10mm of val.south west, anchor=north west] (v1)
+ {\cn{FigureValidator}
+  \nodepart{two}\ml{RE-20 … RE-25}
+  \nodepart{three}\mb{+ evaluar(doc, regla)}};
+
+\node[cls=pkgC, below=3mm of v1.south west, anchor=north west] (v2)
+ {\cn{CitationValidator}
+  \nodepart{two}\ml{RE-40 … RE-43}
+  \nodepart{three}\mb{+ evaluar(doc, regla)}};
+
+\node[cls=pkgC, below=3mm of v2.south west, anchor=north west] (v3)
+ {\cn{ReferenceValidator}
+  \nodepart{two}\ml{RE-44 … RE-49}
+  \nodepart{three}\mb{+ evaluar(doc, regla)}};
+
+\node[cls=pkgC, below=3mm of v3.south west, anchor=north west] (v4)
+ {\cn{StructureValidator}
+  \nodepart{two}\ml{RE-01 … RE-15, RE-66}
+  \nodepart{three}\mb{+ evaluar(doc, regla)}};
+
+%% ===================== Columna D: generacion de sugerencias =====================
+\node[cls=pkgD] (find) at (19.5,0)
+ {\cn{Finding}
+  \nodepart{two}\ml{- ruleId, severidad, pagina}\\
+                \ml{- evidencia, ubicacion}\\
+                \ml{- encontrado, esperado}
+  \nodepart{three}};
+
+\node[cls=pkgD, below=9mm of find.south west, anchor=north west] (gen)
+ {\cn{SuggestionGenerator}
+  \nodepart{two}\ml{- maxTokens : int}
+  \nodepart{three}\mb{+ generar(hallazgos)}\\
+                  \mb{\ \ \ : List$\langle$Suggestion$\rangle$}\\
+                  \mb{- reintentar(prompt) : Json}};
+
+\node[cls=pkgD, below=4mm of gen.south west, anchor=north west] (anon)
+ {\cn{Anonymizer}
+  \nodepart{two}\ml{- patrones: nombre, correo, ORCID}
+  \nodepart{three}\mb{+ enmascarar(frag) : string}};
+
+\node[cls=pkgD, below=3mm of anon.south west, anchor=north west] (pb)
+ {\cn{PromptBuilder}
+  \nodepart{two}\ml{- plantilla : \ttfamily prompts/sugerencia/v1.md}
+  \nodepart{three}\mb{+ construir(hallazgo) : string}};
+
+\node[cls=pkgD, below=3mm of pb.south west, anchor=north west] (sch)
+ {\cn{SchemaValidator}
+  \nodepart{two}
+  \nodepart{three}\mb{+ validar(json) : bool}\\
+                  \mb{+ fallback(hallazgo) : Suggestion}};
+
+\node[cls=pkgD, below=9mm of sch.south west, anchor=north west] (illm)
+ {\st{interface}\\\cn{LlmClient}
+  \nodepart{two}
+  \nodepart{three}\mb{+ completar(prompt) : Json}};
+
+\node[cls=pkgD, below=10mm of illm.south west, anchor=north west] (gem)
+ {\cn{GeminiClient}
+  \nodepart{two}\ml{- apiKey, modelo}\\
+                \ml{- temperatura $\leq$ 0,3}
+  \nodepart{three}\mb{+ completar(prompt) : Json}\\
+                  \mb{+ consumo() : TokenUsage}};
+
+%% ===================== Columna E: revision y publicacion =====================
+\node[cls=pkgE] (sug) at (26.0,0)
+ {\cn{Suggestion}
+  \nodepart{two}\ml{- id, ruleId, texto}\\
+                \ml{- ejemploCorregido}\\
+                \ml{- estado : propuesta $|$ aceptada}\\
+                \ml{\ \ \ \ \ \ \ \ \ \ $|$ editada $|$ rechazada}
+  \nodepart{three}\mb{+ aceptar() \ \ + rechazar()}\\
+                  \mb{+ editar(texto)}};
+
+\node[cls=pkgE, below=4mm of sug.south west, anchor=north west] (dec)
+ {\cn{EditorialDecision}
+  \nodepart{two}\ml{- editor, accion, fecha}\\
+                \ml{- textoOriginal, textoFinal}
+  \nodepart{three}};
+
+\node[cls=pkgE, below=9mm of dec.south west, anchor=north west] (rev)
+ {\cn{ReviewService}
+  \nodepart{two}
+  \nodepart{three}\mb{+ pendientes() : List$\langle$Manuscript$\rangle$}\\
+                  \mb{+ decidir(sugId, accion, texto)}\\
+                  \mb{+ sinObservaciones(manId)}};
+
+\node[cls=pkgE, below=4mm of rev.south west, anchor=north west] (comp)
+ {\cn{CommentComposer}
+  \nodepart{two}
+  \nodepart{three}\mb{+ componer(aceptadas) : string}};
+
+\node[cls=pkgE, below=9mm of comp.south west, anchor=north west] (iojs)
+ {\st{interface}\\\cn{OjsGateway}
+  \nodepart{two}
+  \nodepart{three}\mb{+ publicar(subId, comentario)}};
+
+\node[cls=pkgE, below=10mm of iojs.south west, anchor=north west] (ojsc)
+ {\cn{OjsRestClient}
+  \nodepart{two}\ml{- baseUrl, token}\\
+                \ml{- reintentos : int}
+  \nodepart{three}\mb{+ publicar(subId, comentario)}};
+
+\node[cls=pkgE, below=4mm of ojsc.south west, anchor=north west] (run)
+ {\cn{Run}
+  \nodepart{two}\ml{- manuscriptId, etapas, tiempos}\\
+                \ml{- tokens, errores}
+  \nodepart{three}\mb{+ registrar(etapa, ms)}};
+
+%% ===================== Paquetes =====================
+\begin{scope}[on background layer]
+  \node[pkg, fit=(ctrl), inner sep=12pt] (PA0) {};
+  \node[pkg, fit=(iext)(pymu)(secd)(figx)(refp), inner sep=12pt] (PA) {};
+  \node[pkg, fit=(man)(doc)(sec)(fig)(cit)(ref), inner sep=18pt] (PB) {};
+  \node[pkg, fit=(rrep)(rule)(eng)(val)(v1)(v2)(v3)(v4), inner sep=12pt] (PC) {};
+  \node[pkg, fit=(find)(gen)(anon)(pb)(sch)(illm)(gem), inner sep=12pt] (PD) {};
+  \node[pkg, fit=(sug)(dec)(rev)(comp)(iojs)(ojsc)(run), inner sep=12pt] (PE) {};
+\end{scope}
+\node[tab=pkgA] at (PA0.north west) {\pk{api}};
+\node[tab=pkgA] at (PA.north west) {\pk{extraction}};
+\node[tab=pkgB] at (PB.north west) {\pk{model.document}};
+\node[tab=pkgC] at (PC.north west) {\pk{rules}};
+\node[tab=pkgD] at (PD.north west) {\pk{suggestion}};
+\node[tab=pkgE] at (PE.north west) {\pk{review \& publishing}};
+
+%% ===================== Relaciones =====================
+% api -> extraction
+\draw[dep] (ctrl.south) -- (iext.north) node[lb, midway]{\guillemotleft usa\guillemotright};
+% realizacion del extractor
+\draw[real] (pymu.north) -- (iext.south);
+\draw[assoc] (secd.west) -- ($(secd.west)+(-0.22,0)$);
+\draw[assoc] (figx.west) -- ($(figx.west)+(-0.22,0)$);
+\draw[assoc] (refp.west) -- ($(refp.west)+(-0.22,0)$);
+\draw[assoc] ($(secd.west)+(-0.22,0)$) -- ($(refp.west)+(-0.22,0)$);
+\draw[assoc, -{Stealth[length=4.5pt,width=3.2pt]}]
+  ($(secd.west)+(-0.22,0)$) -- ($(pymu.west)+(-0.22,0)$) -- (pymu.west);
+% extraction -> modelo (dependencia entre paquetes)
+\draw[dep] (PA.east) -- (PA.east -| PB.west)
+  node[lb, midway, above=1pt]{\guillemotleft crea\guillemotright};
+
+% modelo del documento
+\draw[assoc] (man.south) -- (doc.north)
+  node[mult, pos=0.3, right=1pt]{1} node[mult, pos=0.78, right=1pt]{1};
+\draw[comp] (doc.west) -- ($(doc.west)+(-0.55,0)$) -- ($(ref.west)+(-0.55,0)$);
+\draw[assoc] ($(sec.west)+(-0.55,0)$) -- (sec.west) node[mult, pos=1, anchor=south east]{1..\,*};
+\draw[assoc] ($(fig.west)+(-0.55,0)$) -- (fig.west) node[mult, pos=1, anchor=south east]{*};
+\draw[assoc] ($(cit.west)+(-0.55,0)$) -- (cit.west) node[mult, pos=1, anchor=south east]{*};
+\draw[assoc] ($(ref.west)+(-0.55,0)$) -- (ref.west) node[mult, pos=1, anchor=south east]{*};
+
+% modelo -> reglas
+\draw[dep] (doc.east) -- ++(0.35,0) |- (eng.west)
+  node[lb, pos=0.62, above=1pt]{\guillemotleft lee\guillemotright};
+% reglas
+\draw[assoc] (rrep.south) -- (rule.north) node[mult, pos=0.72, right=1pt]{1..\,*};
+\draw[assoc, -{Stealth[length=4.5pt,width=3.2pt]}] (eng.north) -- (rule.south)
+  node[mult, pos=0.45, right=1pt]{*};
+\draw[assoc, -{Stealth[length=4.5pt,width=3.2pt]}] (eng.south) -- (val.north)
+  node[mult, pos=0.5, right=1pt]{1..\,*};
+% arbol de herencia de Validator
+\draw[assoc] (v1.west) -- ($(val.south)+(-2.47,0)$);
+\draw[assoc] (v2.west) -- (v2.west -| {$(val.south)+(-2.47,0)$});
+\draw[assoc] (v3.west) -- (v3.west -| {$(val.south)+(-2.47,0)$});
+\draw[assoc] (v4.west) -- (v4.west -| {$(val.south)+(-2.47,0)$});
+\draw[assoc] (v1.west -| {$(val.south)+(-2.47,0)$}) -- (v4.west -| {$(val.south)+(-2.47,0)$});
+\draw[inh] (v1.west -| {$(val.south)+(-2.47,0)$}) -- ($(val.south)+(-2.47,-0.45)$)
+  -- ($(val.south)+(0,-0.45)$) -- (val.south);
+
+% reglas -> hallazgos
+\draw[dep] (eng.east) -- ++(0.35,0) |- (find.west)
+  node[lb, pos=0.68, above=1pt]{\guillemotleft crea\guillemotright};
+% generacion de sugerencias
+\draw[dep] (find.south) -- (gen.north) node[lb, midway]{\guillemotleft usa\guillemotright};
+\draw[assoc, -{Stealth[length=4.5pt,width=3.2pt]}] (gen.south) -- (anon.north);
+\draw[assoc, -{Stealth[length=4.5pt,width=3.2pt]}]
+  (gen.west) -- ($(gen.west)+(-0.22,0)$) -- ($(pb.west)+(-0.22,0)$) -- (pb.west);
+\draw[assoc, -{Stealth[length=4.5pt,width=3.2pt]}]
+  ($(pb.west)+(-0.22,0)$) -- ($(sch.west)+(-0.22,0)$) -- (sch.west);
+\draw[assoc, -{Stealth[length=4.5pt,width=3.2pt]}]
+  ($(sch.west)+(-0.22,0)$) -- ($(illm.west)+(-0.22,0)$) -- (illm.west);
+\draw[real] (gem.north) -- (illm.south);
+
+% hallazgo -> sugerencia  (paquete review & publishing)
+\draw[assoc] (find.east) -- (sug.west)
+  node[mult, pos=0.12, above=1pt]{1} node[mult, pos=0.9, above=1pt]{1};
+\draw[assoc] (sug.south) -- (dec.north)
+  node[mult, pos=0.3, right=1pt]{1} node[mult, pos=0.8, right=1pt]{0..1};
+\draw[assoc, -{Stealth[length=4.5pt,width=3.2pt]}] (rev.north) -- (dec.south)
+  node[mult, pos=0.5, right=1pt]{*};
+\draw[assoc, -{Stealth[length=4.5pt,width=3.2pt]}] (rev.south) -- (comp.north);
+\draw[dep] (comp.south) -- (iojs.north) node[lb, midway]{\guillemotleft usa\guillemotright};
+\draw[real] (ojsc.north) -- (iojs.south);
+
+\end{tikzpicture}
+\end{document}

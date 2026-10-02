@@ -1,0 +1,30 @@
+# Datos reales con posibles datos personales (Ley N.º 29733)
+muestras/
+
+# Archivos recibidos por la API
+storage/
+
+# Credenciales
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.sqlite
+*.db
+
+# Editores y sistema
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
+
+# Artefactos locales (no son parte del repo según 00-producto.md §13)
+aqpimg.webp
+~$*

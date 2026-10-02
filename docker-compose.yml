@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:16
+    container_name: innosoft-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-innosoft}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-innosoft}
+      POSTGRES_DB: ${POSTGRES_DB:-agent_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - agent_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-innosoft} -d ${POSTGRES_DB:-agent_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: .
+    container_name: innosoft-api
+    environment:
+      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-innosoft}:${POSTGRES_PASSWORD:-innosoft}@db:5432/${POSTGRES_DB:-agent_db}
+      AGENT_SERVICE_TOKEN: ${AGENT_SERVICE_TOKEN:-cambia-este-token}
+      STORAGE_DIR: /srv/innosoft/storage
+      RULES_DIR: /srv/innosoft/rules/innosoft
+      RULES_SCHEMA: /srv/innosoft/rules/schema/rule.schema.json
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./storage:/srv/innosoft/storage
+      - ./rules:/srv/innosoft/rules
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  agent_db_data:

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/innosoft-style-agent/rules/schema/rule.schema.json",
+  "title": "Archivo de reglas editoriales de Innosoft",
+  "type": "object",
+  "required": ["schema_version", "categoria", "reglas"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": 1},
+    "categoria": {"$ref": "#/$defs/categoria"},
+    "actualizado": {"type": "string", "format": "date"},
+    "reglas": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/regla"}}
+  },
+  "$defs": {
+    "categoria": {
+      "enum": ["estructura", "figuras", "tablas", "ecuaciones", "citas", "referencias", "formato"]
+    },
+    "tipoArticulo": {"enum": ["corto", "original", "revision"]},
+    "regla": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "categoria", "descripcion", "condicion", "severidad",
+                   "detectable", "mensaje", "seccion_aplicable", "fuente"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^RE-[0-9]{2}$"},
+        "categoria": {"$ref": "#/$defs/categoria"},
+        "descripcion": {"type": "string", "minLength": 10},
+        "condicion": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["evaluador"],
+          "properties": {
+            "evaluador": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+            "parametros": {"type": "object"},
+            "parametros_por_tipo": {
+              "type": "object",
+              "propertyNames": {"$ref": "#/$defs/tipoArticulo"},
+              "additionalProperties": {"type": "object"}
+            }
+          }
+        },
+        "severidad": {"enum": ["alta", "media", "baja"]},
+        "detectable": {"enum": ["D", "L", "D/L", "I", "L/I"]},
+        "mensaje": {"type": "string", "minLength": 10, "maxLength": 300},
+        "seccion_aplicable": {
+          "type": "array", "minItems": 1, "uniqueItems": true,
+          "items": {"$ref": "#/$defs/tipoArticulo"}
+        },
+        "fuente": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["documentos", "url"],
+          "properties": {
+            "documentos": {
+              "type": "array", "minItems": 1,
+              "items": {"enum": ["a", "b", "c", "politica"]}
+            },
+            "url": {"type": "string", "format": "uri"},
+            "referencia": {"type": "string"}
+          }
+        },
+        "activa": {"type": "boolean", "default": true},
+        "notas": {"type": "string"}
+      }
+    }
+  }
+}

@@ -1,0 +1,128 @@
+% ============================================================================
+% Diagrama de despliegue - Agente de sugerencias estilisticas para Innosoft
+% Compilar:  pdflatex despliegue_innosoft.tex
+% ============================================================================
+\documentclass[border=10pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{helvet}
+\usepackage{courier}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds}
+
+\definecolor{ink}{HTML}{1B2733}
+\definecolor{hair}{HTML}{8A97A5}
+\definecolor{devfill}{HTML}{F3F5F7}
+\definecolor{teal}{HTML}{0E6E8C}
+\definecolor{tealsoft}{HTML}{E6F1F5}
+\definecolor{amber}{HTML}{9A5B08}
+\definecolor{ambersoft}{HTML}{FAF0E1}
+\definecolor{slate}{HTML}{55606D}
+
+\newcommand{\st}[1]{{\fontsize{6.8}{8}\selectfont\itshape\color{slate}\guillemotleft #1\guillemotright}}
+\newcommand{\sub}[1]{{\fontsize{7}{8.6}\selectfont\color{slate}#1}}
+\newcommand{\nm}[1]{{\fontsize{9}{10.8}\selectfont\bfseries\color{ink}#1}}
+\newcommand{\cd}[1]{{\fontsize{6.8}{8}\selectfont\ttfamily\color{slate}#1}}
+
+\begin{document}
+\begin{tikzpicture}[
+  every node/.style={inner sep=0pt},
+  ttl/.style={anchor=north west, align=left},
+  art/.style={anchor=north west, draw=hair, line width=.5pt, fill=white,
+              align=left, inner xsep=5pt, inner ysep=4.5pt, rounded corners=1pt},
+  cont/.style={art, fill=tealsoft, draw=teal!55},
+  ee/.style={anchor=north west, draw=hair, line width=.5pt, dash pattern=on 2pt off 1.6pt,
+             fill=white, align=left, inner xsep=5pt, inner ysep=4pt},
+  devbox/.style={draw=ink, line width=.9pt, fill=devfill},
+  flow/.style={draw=ink, line width=.75pt, -{Stealth[length=5pt,width=3.6pt]}, rounded corners=2pt},
+  inner/.style={draw=slate, line width=.55pt, -{Stealth[length=4pt,width=3pt]},
+                dash pattern=on 2.4pt off 1.8pt},
+  lbl/.style={fill=white, inner sep=1.6pt, align=center,
+              font=\fontsize{7}{8.4}\selectfont, text=ink},
+]
+
+%% ============ Nodo 1: estacion de trabajo (arriba izquierda) ============
+\node[ttl] (t1) at (0,0) {\st{device}\\[1pt]\nm{Estación de trabajo}\\\sub{Editor · Autor}};
+\node[art, text width=4.0cm, below=3.5mm of t1.south west, anchor=north west] (c1a)
+  {\st{artifact}\\ \nm{Interfaz web de OJS}\\ \sub{envío y discusiones}};
+\node[art, text width=4.0cm, below=3mm of c1a.south west, anchor=north west] (c1b)
+  {\st{artifact}\\ \nm{Cola de revisión}\\ \sub{sesión OJS o token de editor}};
+
+%% ============ Nodo 2: servidor de la revista (abajo izquierda) ============
+\node[ttl] (t2) at (0,-6.3) {\st{device}\\[1pt]\nm{Servidor de la revista}\\\sub{Universidad La Salle · Linux}};
+\node[ee, text width=6.2cm, below=3.5mm of t2.south west, anchor=north west] (e2a)
+  {\st{execution environment}\ \ \nm{Apache 2.4 · PHP}};
+\node[art, text width=5.5cm, below=2.8mm of e2a.south west, anchor=north west, xshift=3.5mm] (a2a)
+  {\st{artifact}\\ \nm{OJS 3.1.2.1}\\ \sub{API REST · discusiones del envío}};
+\node[art, text width=5.5cm, below=2.8mm of a2a.south west, anchor=north west] (a2b)
+  {\st{artifact}\\ \nm{Plugin innosoft-style-agent}\\ \sub{hook: envío completado (US-02)}};
+\node[ee, text width=6.2cm, below=6mm of a2b.south west, anchor=north west, xshift=-3.5mm] (e2b)
+  {\st{execution environment}\ \ \nm{MySQL 5.7}};
+\node[art, text width=5.5cm, below=2.8mm of e2b.south west, anchor=north west, xshift=3.5mm] (a2c)
+  {\st{database}\ \ \nm{ojs\_db}\\ \sub{envíos, usuarios, discusiones}};
+
+%% ============ Nodo 3: servidor del agente (derecha) ============
+\node[ttl] (t3) at (12.6,0) {\st{device}\\[1pt]\nm{Servidor del agente}\\\sub{Linux · Docker Engine}};
+\node[cont, text width=6.8cm, below=3.5mm of t3.south west, anchor=north west] (k1)
+  {\st{container}\ \ \nm{agent-api}\\ \sub{FastAPI + Uvicorn : 8000}\\
+   \cd{POST /manuscripts · GET /queue · POST /decisions}};
+\node[cont, text width=6.8cm, below=3.2mm of k1.south west, anchor=north west] (k2)
+  {\st{container}\ \ \nm{agent-worker}\\ \sub{Celery · extracción PyMuPDF · motor de reglas}\\
+   \sub{generador de sugerencias · publicador en OJS}};
+\node[cont, text width=3.25cm, below=3.2mm of k2.south west, anchor=north west] (k3)
+  {\st{container}\\ \nm{redis 7}\\ \sub{cola de trabajos}};
+\node[cont, text width=3.25cm, below=3.2mm of k2.south west, anchor=north west, xshift=3.55cm] (k4)
+  {\st{container}\\ \nm{postgres 16}\\ \sub{\cd{agent\_db}: runs, findings,}\\\sub{suggestions, decisions}};
+\node[art, text width=6.8cm, below=3.2mm of k3.south west, anchor=north west] (v1)
+  {\st{artifact}\ \ \nm{volumen /srv/innosoft}\\ \sub{reglas \cd{*.yaml} (RE-01…RE-66) · PDF recibidos · prompts versionados}};
+
+%% ============ Nodo 4: servicio externo ============
+\node[ttl] (t4) at (24.2,-6.0) {\st{device}\\[1pt]\nm{Google Cloud}};
+\node[art, text width=3.6cm, fill=ambersoft, draw=amber!55,
+      below=3.5mm of t4.south west, anchor=north west] (g1)
+  {\st{service}\\ \nm{Gemini API}\\ \sub{JSON estructurado}\\ \sub{\textit{temperature} $\leq$ 0,3}};
+
+%% ============ Cajas de nodo ============
+\begin{scope}[on background layer]
+  \node[devbox, fit=(t1)(c1a)(c1b), inner sep=7pt] (D1) {};
+  \node[devbox, fit=(t2)(e2a)(a2a)(a2b)(e2b)(a2c), inner sep=7pt] (D2) {};
+  \node[devbox, fit=(t3)(k1)(k2)(k3)(k4)(v1), inner sep=7pt] (D3) {};
+  \node[devbox, fit=(t4)(g1), inner sep=7pt] (D4) {};
+\end{scope}
+\foreach \b in {D1,D2,D3,D4}{
+  \draw[draw=ink, line width=.9pt, fill=devfill]
+    (\b.north west) -- ++(3mm,3mm) -- ($(\b.north east)+(3mm,3mm)$) -- (\b.north east) -- cycle;
+  \draw[draw=ink, line width=.9pt, fill=devfill!65!hair]
+    (\b.north east) -- ++(3mm,3mm) -- ($(\b.south east)+(3mm,3mm)$) -- (\b.south east) -- cycle;
+}
+
+%% ============ Comunicaciones entre nodos ============
+% 1. editor/autor -> OJS
+\draw[flow] ($(D1.south)+(-1.2,0)$) -- ($(D2.north)+(-1.2,0)$)
+  node[lbl, midway]{HTTPS};
+% 2. cola de revision (navegador) -> agent-api   (por encima del nodo 3)
+\draw[flow] (c1b.east) -- ++(1.35,0) |- ($(D3.north)+(-2.4,1.15)$)
+  -- ($(D3.north)+(-2.4,0)$)
+  node[lbl, pos=0.52, above=1pt]{HTTPS / JSON · cola de revisión editorial (US-19…US-21)};
+% 3. plugin OJS -> agent-api
+\draw[flow] (a2b.east) -- ++(1.9,0) |- ($(k1.west)+(0,0.30)$)
+  node[lbl, pos=0.62, above=1pt, xshift=-3pt]{HTTPS · \cd{POST /manuscripts}\\ PDF $\leq$ 25 MB + metadatos};
+% 4. agent-api -> API REST de OJS (comentario aprobado)
+\draw[flow] ($(k1.west)+(0,-0.42)$) -- ++(-1.1,0) |- (a2a.east)
+  node[lbl, pos=0.58, above=1pt, xshift=8pt]{HTTPS · API REST de OJS\\ comentario aprobado (US-24)};
+% 5. worker -> Gemini
+\draw[flow] (k2.east) -- ++(1.2,0) |- (g1.west)
+  node[lbl, pos=0.45, right=2.5pt, align=left]{HTTPS\\ fragmento anonimizado\\ $\leq$ 600 caracteres (US-17)};
+% 6. OJS -> MySQL (interno del servidor de la revista)
+\draw[inner] ($(a2b.south)+(1.6,0)$) -- ($(e2b.north)+(1.6,0)$)
+  node[lbl, midway]{TCP 3306};
+
+%% ============ Enlaces internos del servidor del agente ============
+\draw[inner] ($(k1.south)+(-2.2,0)$) -- ($(k2.north)+(-2.2,0)$) node[lbl, midway]{encola tarea};
+\draw[inner] ($(k2.south)+(-1.8,0)$) -- ($(k3.north)+(0.35,0)$) node[lbl, midway]{consume};
+\draw[inner] ($(k2.south)+(1.9,0)$) -- ($(k4.north)+(0.15,0)$) node[lbl, midway]{TCP 5432};
+\draw[inner] (k3.south) -- (k3.south |- v1.north) node[lbl, midway]{lee reglas y PDF};
+
+\end{tikzpicture}
+\end{document}

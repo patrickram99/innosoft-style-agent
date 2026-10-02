@@ -1,0 +1,14 @@
+[project]
+name = "innosoft-style-agent"
+version = "0.1.0"
+description = "Agente de sugerencias estilísticas para la revista Innovación y Software (Innosoft)"
+requires-python = ">=3.11"
+readme = "README.md"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.setuptools]
+packages = ["app"]
