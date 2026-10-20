@@ -1,0 +1,15 @@
+%% Paquetes y macros propios del documento (la clase tesisulasalle ya carga
+%% graphicx, xcolor, booktabs, longtable, float, enumitem, caption e hyperref).
+\usepackage{pgfgantt}      % diagrama de Gantt del plan de sprints
+\usepackage{url}
+\usepackage{pdflscape}   % Anexo B en horizontal
+\urlstyle{same}
+\graphicspath{{figuras/}}
+
+% Marca visible de contenido pendiente. Se cuenta en AVANCE.md (scripts/avance.py).
+%   \pendiente{qué falta}
+\newcommand{\pendiente}[1]{\textcolor{red}{\textbf{[PENDIENTE\if\relax\detokenize{#1}\relax\else: #1\fi]}}}
+
+% Tablas largas: las filas no se parten entre páginas con demasiada facilidad
+\setlength{\LTpre}{6pt}
+\setlength{\LTpost}{6pt}

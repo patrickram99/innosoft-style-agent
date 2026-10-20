@@ -1,0 +1,45 @@
+% titulo: Anexo A – Ficha de búsqueda
+% estado: borrador
+% actualizado: 2026-10-19
+% Procede de la sección "Revisión y fundamentación teórica" del borrador original (Tesis2026.pdf).
+
+\anexo{Ficha de búsqueda}\label{anexo:A}
+
+La búsqueda de antecedentes se realizó entre septiembre y octubre de 2026 en bases de datos de editoriales (ACM, IEEE, ScienceDirect, SpringerLink), motores de indexación (Google Scholar, Web of Science, Scopus) y el repositorio nacional de tesis ALICIA. La Tabla~\ref{tab:busqueda} registra la cadena usada en cada fuente y el número de documentos que superó cada filtro: T = resultados totales, 1f = filtro por título, 2f = filtro por resumen, 3f = filtro por contenido.
+
+{\scriptsize
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.073\textwidth}>{\raggedright\arraybackslash}p{0.117\textwidth}>{\raggedright\arraybackslash}p{0.073\textwidth}>{\raggedright\arraybackslash}p{0.073\textwidth}>{\raggedright\arraybackslash}p{0.073\textwidth}>{\raggedright\arraybackslash}p{0.073\textwidth}>{\raggedright\arraybackslash}p{0.333\textwidth}@{}}
+\caption{Ficha de búsqueda: bases de datos, cadenas y resultados por filtro}\label{tab:busqueda}\\
+\toprule
+\textbf{Cód.} & \textbf{Base de datos} & \textbf{T} & \textbf{1f} & \textbf{2f} & \textbf{3f} & \textbf{Cadena de búsqueda} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Cód.} & \textbf{Base de datos} & \textbf{T} & \textbf{1f} & \textbf{2f} & \textbf{3f} & \textbf{Cadena de búsqueda} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+ACM & ACM Digital Library & 9 & 1 & 1 & 1 & (``artificial intelligence'' OR AI OR ``machine learning'' OR NLP) AND (format OR formatting OR ``style compliance'' OR ``layout error'') AND (detection OR automatic OR validation OR checking) AND (``academic article'' OR ``journal article'' OR ``research paper'') AND (``Open Journal Systems'' OR OJS) \\
+IEEE & IEEE Xplore Digital Library & 89 & 86 & 29 & 9 & (``document layout analysis'' OR ``document structure analysis'' OR ``document processing'') AND (``natural language processing'' OR NLP OR ``deep learning'') AND (automatic OR automated) \\
+SD & ScienceDirect & 9 & 9 & 6 & 6 & (``document layout analysis'' OR ``document structure extraction'') AND (``scientific articles'' OR ``academic papers'') AND (``deep learning'' OR ``NLP'') AND (``information extraction'' OR ``document understanding'') \\
+SPL & SpringerLink & 11 & 5 & 5 & 4 & (``document structure extraction'' OR ``document layout analysis'' OR ``text structure'') AND (``scientific articles'' OR ``research papers'') AND (``NLP'' OR ``deep learning'') AND (``information extraction'' OR ``document understanding'') \\
+GS & Google Scholar & 14 & 8 & 6 & 4 & (``automatic formatting'' OR ``document structure analysis'') AND (``scientific articles'' OR ``academic journals'') AND (``natural language processing'' OR ``machine learning'') AND (OJS OR ``Open Journal Systems'' OR Spanish OR ``Latin America'') \\
+WS & Web of Science & --- & --- & --- & --- & \pendiente{ejecutar la búsqueda o retirar la fila} \\
+SC & Scopus & --- & --- & --- & --- & \pendiente{ejecutar la búsqueda o retirar la fila} \\
+ALICIA & Repositorio ALICIA (tesis) & 0 & 0 & 0 & 0 & (``scientific article format'' OR ``academic writing'') AND (``scientific journals'' OR ``thesis'') \\
+ & \textbf{Total} & \textbf{132} & \textbf{109} & \textbf{47} & \textbf{24} &  \\
+\end{longtable}
+}
+
+\subsubsection*{Criterios de selección}
+
+Para filtrar los 132 resultados se aplicaron cuatro criterios de forma secuencial, tanto a artículos como a tesis:
+
+\begin{itemize}
+  \item \textbf{Prefiltrado (T = 132):} se descartan los documentos que no son artículos científicos ni tesis (editoriales, reseñas, llamados a publicación).
+  \item \textbf{Filtro por título (1f = 109):} se conservan los documentos cuyo título tiene relación directa con la investigación.
+  \item \textbf{Filtro por resumen (2f = 47):} se seleccionan los documentos cuyo resumen confirma que el trabajo es relevante.
+  \item \textbf{Filtro por contenido (3f = 24):} se revisa el cuerpo del documento y se conservan los que aportan métodos, evidencia o referentes aplicables al agente propuesto. De los 24, GS-13 es un registro institucional duplicado de GS-10, por lo que se analizan \textbf{23 estudios independientes}.
+\end{itemize}

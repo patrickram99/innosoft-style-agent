@@ -1,0 +1,40 @@
+%% ============================================================================
+%% Tesis: Agente de IA de sugerencias estilísticas integrado con OJS
+%% Clase: tesisulasalle (esquema de informe de investigación tecnológica).
+%%
+%% Se compila en local con pdfLaTeX: .\compilar.ps1 (MiKTeX) deja build\main.pdf.
+%% Cada capítulo vive en capitulos/*.tex y se incluye con \input, de modo que
+%% se edita un archivo a la vez. Ver README.md para las reglas de edición.
+%% ============================================================================
+\documentclass{tesisulasalle}
+\input{preambulo}
+
+% ---------------------------------------------------------------------------
+% Portada
+% ---------------------------------------------------------------------------
+\logo{ulasalle.png}
+\escuela{ESCUELA PROFESIONAL DE INGENIERÍA DE SOFTWARE}
+\titulo{AGENTE DE IA DE SUGERENCIAS ESTILÍSTICAS INTEGRADO CON OPEN JOURNAL SYSTEMS PARA EL FORMATEO DE ARTÍCULOS CIENTÍFICOS DIRIGIDO A JOURNALS LATINOAMERICANOS}
+\autor{Patrick Andrés Ramirez Santos \\ María Fernanda Adira Pinazo Vera}
+\grado{[Grado o Título a obtener]}
+\asesor{[Nombre del asesor]}
+\ciudad{AREQUIPA -- PERÚ}
+\anio{2026}
+
+\begin{document}
+\portada
+
+\input{capitulos/00-preliminares}     % dedicatoria, índices, siglas, resumen, abstract
+\input{capitulos/01-problematica}     % Capítulo I
+\input{capitulos/02-planteamiento}    % Capítulo II
+\input{capitulos/03-metodologia}      % Capítulo III
+% \input{capitulos/04-conclusiones}   % Conclusiones: se incluyen al cierre del Sprint 6
+\input{capitulos/referencias}         % Referencias (thebibliography, IEEE)
+
+\anexos
+\input{anexos/A-ficha-busqueda}
+% Disponibles pero fuera del documento (decisión del 19-oct-2026):
+% \input{anexos/fichas-lectura}        % fichas de lectura crítica de los 24 documentos
+\input{anexos/matriz-trazabilidad}     % Anexo B: matriz historia -> componente -> clase -> código
+
+\end{document}

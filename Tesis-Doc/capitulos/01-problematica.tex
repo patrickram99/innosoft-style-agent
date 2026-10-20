@@ -1,0 +1,128 @@
+% titulo: Capítulo I – Problemática del proyecto
+% estado: borrador
+% actualizado: 2026-10-19
+% Sincronizado con specs/00-producto.md v1.0 el 19-oct-2026 (ver Tesis-Doc/README.md, registro S-nn).
+
+\chapter{Problemática del Proyecto}\label{cap:problematica}
+
+\section{Contexto del problema}
+
+La publicación de un nuevo número en una revista científica incluye una serie de procesos y personas involucradas. Una de las etapas más importantes es la revisión estilística de las galeradas, ya que estas deben cumplir los estándares establecidos por la revista en sus plantillas y directrices (\emph{guidelines}). Una vez enviado un artículo, es muy común recibir comentarios editoriales sobre errores de estilo, presentación de datos y figuras (etiquetas, contraste, legibilidad), formato de referencias, cumplimiento de las directrices de la revista y claridad de presentación. Aunque son revisiones menores, consumen un tiempo valioso de los editores y revisores que podría dedicarse a evaluar con más detalle el contenido de los artículos.
+
+En las revistas latinoamericanas el problema se agrava, porque suelen ser revistas independientes gestionadas por una universidad o por una de sus facultades y, por ende, cuentan con recursos limitados \cite{ref1}. Su principal objetivo es aumentar la cantidad de artículos procesados para ingresar a listas de indexación y obtener mayor prestigio. Muchas de estas revistas utilizan Open Journal Systems (OJS) \cite{ref2} para gestionar sus publicaciones, principalmente por ser de código abierto y gratuito, contar con una interfaz gráfica y ofrecer las funcionalidades necesarias para gestionar una revista.
+
+Sin embargo, OJS no incluye integraciones con inteligencia artificial ni conectores para automatización; en consecuencia, los editores revisan cada artículo de forma manual, con una gran inversión de tiempo en la detección de pequeños errores que resta tiempo a la revisión por pares.
+
+\textbf{Caso de estudio.} El proyecto toma como caso la revista \emph{Innovación y Software} (Innosoft) de la Universidad La Salle (Arequipa), gestionada con OJS 3.1.2.1. En su evaluación editorial inicial, los problemas de estilo más frecuentes son figuras con etiquetas incorrectas, demasiado pequeñas o recortadas, y referencias que no siguen el formato IEEE (\texttt{specs/\allowbreak{}00-producto.\allowbreak{}md} §1).
+
+\section{Antecedentes y estado del arte}
+
+\subsection{Proceso de búsqueda y selección}
+
+Para recolectar los antecedentes se diseñó una cadena de búsqueda por base de datos bibliográfica (ACM Digital Library, IEEE Xplore, ScienceDirect, SpringerLink, Google Scholar y el repositorio ALICIA) y se filtraron los resultados con cuatro criterios aplicados de forma secuencial: prefiltrado por tipo de documento, filtro por título, filtro por resumen y filtro por contenido. De los 132 resultados iniciales se conservaron 24 documentos; como GS-13 es un registro institucional duplicado de GS-10, se analizan \textbf{23 estudios independientes}. Las cadenas de búsqueda, los resultados por base de datos y la definición de cada criterio están en la ficha de búsqueda del Anexo~A.
+
+\subsection{Antecedentes}
+
+\subsubsection*{ACM-03 --- Multi-level mining and visualization of scientific text collections \cite{ref4}}
+
+\textbf{Problemática.} El volumen de publicaciones científicas crece demasiado rápido y se pierde información estructural al procesar PDFs, además de tener baja cobertura sobre afiliaciones de autores. \textbf{Solución.} Se desarrolló un sistema web que extrae contenido de PDFs preservando su estructura, identifica autores y afiliaciones geográficas, clasifica oraciones por función retórica y modela tópicos con LDA, aplicado al corpus bilingüe SEPLN de 505 artículos publicados entre 2008 y 2016. \textbf{Resultados.} El extractor de PDF alcanzó un F1 de 0.917, la identificación de afiliaciones obtuvo precisión de 0.83 para URI y 0.91 para país, y se generó una plataforma web funcional. \textbf{Conclusiones.} Las herramientas de deep learning combinadas con visualizaciones flexibles permiten explotar mejor el conocimiento de colecciones científicas, con un aporte clave en el enfoque multilingüe inglés-español.
+
+\subsubsection*{GS-01 --- Using artificial intelligence for formatting academic journal papers \cite{ref5}}
+
+\textbf{Problemática.} Los investigadores enfrentan dificultades y pérdida de tiempo en el formateo manual de artículos para revistas académicas, lo que reduce su productividad y la consistencia de las publicaciones. \textbf{Solución.} Se propone un sistema de formateo automático basado en IA para mejorar productividad, consistencia y credibilidad en la preparación de papers académicos. \textbf{Resultados.} El sistema demostró ser viable para automatizar el formateo de papers académicos. \textbf{Conclusiones.} El estudio confirma que un sistema de formateo automático es factible y representa el antecedente más directo a la propuesta del agente, aunque no aborda integración con OJS ni journals en español y es completamente cualitativo.
+
+\subsubsection*{GS-10 --- Extracting Structured Information From Academic Documents \cite{ref6}}
+
+\textbf{Problemática.} Los documentos académicos contienen información estructurada que no es trivial de extraer automáticamente, lo que dificulta su procesamiento y análisis a gran escala. \textbf{Solución.} Se aplican métodos de NLP y análisis de estructura para extraer información estructurada y relaciones de documentos académicos, utilizando el dataset DAD como base experimental. \textbf{Resultados.} Se logró una extracción efectiva de información estructurada de artículos académicos mediante NLP y análisis de estructura. \textbf{Conclusiones.} La metodología propuesta es directamente aplicable al agente para extraer información estructurada de papers científicos, aunque no aborda el formateo automático ni la integración con OJS.
+
+\subsubsection*{GS-11 --- Document analysis and recognition: a survey \cite{ref7}}
+
+\textbf{Problemática.} Existen muchos métodos de análisis y reconocimiento de documentos y se requiere una revisión sistemática para seleccionar el adecuado. \textbf{Solución.} Se realiza una encuesta de métodos de análisis y reconocimiento de documentos, incluyendo OCR, machine learning y deep learning. \textbf{Resultados.} La revisión muestra que el OCR combinado con ML y deep learning mejora significativamente el análisis de estructura de documentos. \textbf{Conclusiones.} El trabajo aporta una base técnica amplia sobre análisis de documentos que permite fundamentar la elección de tecnologías para el agente, aunque no es específico a artículos científicos en español.
+
+\subsubsection*{IEEE-01 --- Document Layout Analysis with an Enhanced Object Detector \cite{ref8}}
+
+\textbf{Problemática.} La extracción automática de contenido en imágenes de documentos requiere delimitar correctamente regiones como párrafos, figuras y tablas, lo cual es un reto técnico. \textbf{Solución.} Se propone una CNN inspirada en detectores de escenas naturales, entrenada en un dataset público para realizar análisis de layout en documentos. \textbf{Resultados.} El método demuestra el potencial de los detectores de objetos para el análisis de layout de documentos. \textbf{Conclusiones.} El estudio aporta una base técnica para el análisis de layout de artículos científicos, aunque no se evaluó en documentos multilingües ni en español.
+
+\subsubsection*{IEEE-13 --- A Stage-Aware Framework for Automated IEEE Research Paper Compliance Checking \cite{ref9}}
+
+\textbf{Problemática.} Las verificaciones manuales de cumplimiento de formato IEEE son lentas, subjetivas y propensas a omisiones, lo que afecta la calidad y eficiencia del proceso editorial. \textbf{Solución.} Se desarrolla un framework híbrido que combina análisis de layout con PubLayNet, un motor de reglas en YAML y evaluación semántica con SciBERT para validar el cumplimiento de formato IEEE. \textbf{Resultados.} El sistema obtuvo un rendimiento fuerte en detección de secciones, validación de layout y verificación de reglas, alcanzando más del 85\% de acuerdo con la evaluación humana sobre 15 papers. \textbf{Conclusiones.} Este es el caso más cercano al sistema propuesto y constituye el referente directo para la validación automática de formato en artículos científicos, aunque solo se evaluó con papers IEEE y no con journals latinoamericanos.
+
+\subsubsection*{IEEE-16 --- An Approach of Rhetorical Status Recognition for Judgments in Court Documents using Deep Learning Models \cite{ref10}}
+
+\textbf{Problemática.} Existe una falta de análisis automático de la estructura en documentos legales que limita el desarrollo de sistemas de recuperación de información legal. \textbf{Solución.} Se aplican modelos de deep learning, principalmente LSTM, para clasificar el estado retórico de cada oración en documentos judiciales. \textbf{Resultados.} Son prometedores y sugieren la aplicabilidad de módulos de redes neuronales que incorporan información retórica. \textbf{Conclusiones.} Aunque el dominio es legal, el enfoque ofrece una analogía útil para la clasificación de secciones en artículos científicos.
+
+\subsubsection*{IEEE-37 --- Performance Analysis of Text Chunking Methods for LLM-Based Document Summarization \cite{ref11}}
+
+\textbf{Problemática.} La ventana de contexto limitada de los LLMs dificulta el procesamiento de documentos extensos, lo que afecta tareas como la summarización automática. \textbf{Solución.} Se comparan cuatro estrategias de chunking (Fixed-Length, Recursive, Sliding Window y Semantic) sobre dos LLMs (Llama 3.1 y Phi-4) y dos datasets, evaluando con métricas ROUGE y BLEU. \textbf{Resultados.} Las estrategias Sliding Window y Semantic Chunking superaron a Recursive, aunque los resultados dependen del modelo y del dataset utilizado. \textbf{Conclusiones.} Las estrategias evaluadas son aplicables al procesamiento de manuscritos científicos extensos en el agente.
+
+\subsubsection*{IEEE-38 --- UDMtext: a Unified Deep Mutual Learning-Based Framework for Text Detection in Complex Documents \cite{ref12}}
+
+\textbf{Problemática.} Los metodos OCR existentes presentan fallas frente a documentos con layouts complejos, lo que limita la extracción correcta de texto. \textbf{Solución.} Se propone el framework UDMtext, que combina un modelo maestro y dos modelos estudiante con aprendizaje mutuo y una función de pérdida híbrida para mejorar la detección de texto. \textbf{Resultados.} El sistema obtuvo 72.91\% de accuracy y 62.31\% de recall en ICDAR 2023, mostrando mayor robustez en layouts complejos. \textbf{Conclusiones.} La técnica es aplicable para mejorar la extracción de texto en manuscritos con layouts complejos, aunque no se evaluó en artículos científicos en español.
+
+\subsubsection*{IEEE-51 --- AI-Based Algorithm for Significant Information Extraction from Unstructured Textual Data \cite{ref13}}
+
+\textbf{Problemática.} El volumen de información no estructurada exige métodos eficientes de extracción que no dependan de plantillas rígidas. \textbf{Solución.} Se desarrolla un algoritmo basado en redes neuronales artificiales y bibliotecas de visión computacional que devuelve los resultados en JSON sin requerir plantillas fijas. \textbf{Resultados.} El método logra una reducción significativa del tiempo de procesamiento manual de documentos de texto. \textbf{Conclusiones.} El enfoque de extracción sin plantillas es relevante para la adaptabilidad del agente a distintos estilos de revista, aunque no se evaluó en artículos científicos en español.
+
+\subsubsection*{IEEE-54 --- Effective Analysis of Data Processing on Cloud using Serverless Computing \cite{ref14}}
+
+\textbf{Problemática.} Existe la necesidad de gestionar y analizar eficientemente documentos en distintos formatos (PDF, CSV, Excel) de forma digital. \textbf{Solución.} Se propone una arquitectura serverless basada en AWS Lambda y Google Gemini AI para realizar extracción y análisis de contenido multiformato con respuestas en tiempo real. \textbf{Resultados.} La arquitectura optimiza los flujos de gestión documental, mejorando la accesibilidad y comprensión de texto no estructurado. \textbf{Conclusiones.} El estudio aporta una arquitectura de referencia para el despliegue del agente de formateo en entornos cloud, aunque no está orientado a artículos científicos ni a estándares editoriales latinoamericanos.
+
+\subsubsection*{IEEE-55 --- Automatic classification and recognition of complex documents based on Faster RCNN \cite{ref15}}
+
+\textbf{Problemática.} Los sistemas OCR convencionales fallan al procesar documentos complejos que contienen información no textual, como sellos, números de página o regiones gráficas. \textbf{Solución.} Se desarrolla un pipeline basado en Faster RCNN con red de propuestas de regiones (RPN) y clasificación para segmentar y reconocer automáticamente regiones en documentos complejos. \textbf{Resultados.} El sistema logra separar con precisión áreas de sello, texto y número de página, mejorando el pipeline OCR posterior. \textbf{Conclusiones.} La técnica de segmentación regional es aplicable al preprocesamiento de manuscritos científicos, aunque no se probó en artículos multicolumna en español.
+
+\subsubsection*{IEEE-62 --- X-SCITLDR: Cross-Lingual Extreme Summarization of Scholarly Documents \cite{ref16}}
+
+\textbf{Problemática.} La investigación previa en summarización de papers se ha concentrado solo en inglés y no existe soporte multilingüe sólido para documentos académicos. \textbf{Solución.} Se construye el dataset XSCITLDR para summarización multilingüe y se desarrollan modelos basados en mBART, incluyendo un enfoque de ``summarize and translate'' y un modelo cross-lingual directo. \textbf{Resultados.} Los modelos cross-lingual directos resultaron competitivos frente al proceso de resumir y luego traducir. \textbf{Conclusiones.} El trabajo es un referente clave para adaptar modelos de procesamiento de papers científicos al español.
+
+\subsubsection*{SD-04 --- Mamba-YOLO: Multi-level adaptive rectangular convolution for Document Layout Analysis \cite{ref17}}
+
+\textbf{Problemática.} Existe escasez de datasets de DLA y los modelos actuales tienen limitaciones para manejar elementos con relación de aspecto variable. \textbf{Solución.} Se propone el framework DocMY que integra Mamba con YOLOv9 y convolución rectangular adaptativa multinivel, junto con el dataset PeKi con anotaciones detalladas. \textbf{Resultados.} El modelo alcanzó 96.5\% de mAP en PeKi, con resultados competitivos en benchmarks open-source y reducción del tamaño del modelo. \textbf{Conclusiones.} La arquitectura propuesta puede adaptarse para procesar layouts de journals latinoamericanos.
+
+\subsubsection*{SD-05 --- Automatic generation of scientific papers for data augmentation in document layout analysis \cite{ref18}}
+
+\textbf{Problemática.} Los métodos de deep learning requieren grandes datasets anotados y existe escasez de datos para DLA específicamente en literatura científica. \textbf{Solución.} Se diseña un pipeline que combina anotación semi-automática con LayoutTransformer para generar layouts sintéticos y poblar documentos con contenido. \textbf{Resultados.} El método mejora la detección de objetos tanto en papers de doble columna como de columna simple. \textbf{Conclusiones.} La técnica de augmentation es aplicable para entrenar modelos en contextos de datos escasos como los journals latinoamericanos, aunque no aborda estilos en español.
+
+\subsubsection*{SD-06 --- Cross-domain document layout analysis using document style guide \cite{ref19}}
+
+\textbf{Problemática.} Los datos de entrenamiento generados suelen diferir en estilo de los documentos objetivo, lo que crea brechas que afectan el rendimiento del DLA. \textbf{Solución.} Se propone el framework DL-DSG, que incluye un generador de layout, un decorador de elementos y un discriminador de estilo para generar documentos controlados y reducir las brechas de estilo. \textbf{Resultados.} El framework obtiene resultados sólidos en múltiples datasets públicos de DLA y demuestra que el aprendizaje no supervisado es efectivo. \textbf{Conclusiones.} La metodología es directamente aplicable para adaptar el agente a distintos estilos de journals latinoamericanos sin necesidad de datos anotados.
+
+\subsubsection*{SD-07 --- Continuous document layout analysis: Human-in-the-loop AI-based data curation \cite{ref20}}
+
+\textbf{Problemática.} El volumen de documentos digitales supera la capacidad de procesamiento manual y existe la necesidad de un DLA continuo capaz de detectar cambios. \textbf{Solución.} Se desarrolla un procedimiento human-in-the-loop semi-automático para anotar documentos con etiquetas de layout y texto, junto con la base de datos PALdb que contiene 37.9K documentos y más de 8 millones de etiquetas. \textbf{Resultados.} PALdb alcanza más de 441K páginas y 8M de etiquetas, con un pipeline funcional de DLA continuo y detección de cambios. \textbf{Conclusiones.} El pipeline human-in-the-loop es relevante para la validación editorial asistida por IA en el flujo de OJS.
+
+\subsubsection*{SD-08 --- Domain adaptive learning for document layout analysis and object detection \cite{ref21}}
+
+\textbf{Problemática.} Los cambios de dominio y la disponibilidad limitada de datasets anotados dificultan el rendimiento de la detección de objetos en documentos. \textbf{Solución.} Se desarrolla el modelo XDOD, que incorpora un módulo de Document Object Attention y un mecanismo de Classifier Alignment para realizar aprendizaje adaptativo cross-domain. \textbf{Resultados.} El modelo alcanza tasas de detección superiores al 97\% y supera a métodos basales en escenarios cross-domain. \textbf{Conclusiones.} La técnica de adaptación de dominio es clave para extender el agente a múltiples estilos editoriales latinoamericanos.
+
+\subsubsection*{SD-09 --- Synthetic document generator for annotation-free layout recognition \cite{ref22}}
+
+\textbf{Problemática.} Los modelos de deep learning requieren grandes datasets anotados y la anotación manual implica una alta carga de trabajo. \textbf{Solución.} Se propone un generador sintético basado en una red bayesiana y plantillas estocásticas que produce documentos con etiquetas de layout de forma automática. \textbf{Resultados.} Un detector de layout entrenado únicamente con documentos sintéticos iguala el rendimiento de modelos entrenados con documentos reales. \textbf{Conclusiones.} La generación sin anotaciones es clave para contextos con pocos datos etiquetados, como los journals latinoamericanos.
+
+\subsubsection*{SPL-01 --- Visual Document Understanding: A Comparative Review of Modern Methods \cite{ref23}}
+
+\textbf{Problemática.} La heterogeneidad y multiplicidad de métodos de comprensión visual de documentos dificulta la selección del enfoque adecuado para cada aplicación. \textbf{Solución.} Se realiza una revisión comparativa de los métodos modernos para la comprensión visual de documentos. \textbf{Resultados.} La revisión compila y compara los principales métodos modernos del estado del arte. \textbf{Conclusiones.} El trabajo es directamente relevante para fundamentar la elección de tecnologías del agente, aunque el detalle de la evaluación no está disponible públicamente.
+
+\subsubsection*{SPL-02 --- HiM: hierarchical multimodal network for document layout analysis \cite{ref24}}
+
+\textbf{Problemática.} Los métodos existentes de DLA no explotan adecuadamente la información jerárquica ni la multimodalidad presente en los documentos. \textbf{Solución.} Se propone HiM, una red neuronal multimodal jerárquica que combina información visual y textual en múltiples niveles para realizar análisis de layout. \textbf{Resultados.} HiM logra integrar información visual y textual de manera jerárquica para mejorar el análisis del layout documental. \textbf{Conclusiones.} El enfoque multimodal es relevante para capturar la estructura jerárquica de artículos científicos.
+
+\subsubsection*{SPL-07 --- Extracting Variable-Depth Logical Document Hierarchy from Long Documents \cite{ref25}}
+
+\textbf{Problemática.} Los documentos largos presentan una estructura lógica jerárquica de profundidad variable que es difícil de extraer automáticamente. \textbf{Solución.} Se propone el método HELD para extraer jerarquías lógicas en documentos largos, junto con su evaluación y aplicación. \textbf{Resultados.} HELD obtiene buenos resultados en la extracción de jerarquías lógicas tanto en documentos financieros como en publicaciones científicas. \textbf{Conclusiones.} El método es directamente aplicable para extraer la estructura lógica de artículos científicos dentro del agente.
+
+\subsubsection*{SPL-09 --- From Publications to Knowledge Graphs \cite{ref26}}
+
+\textbf{Problemática.} La información contenida en publicaciones científicas no está conectada de forma semántica ni es explotable automáticamente por sistemas externos. \textbf{Solución.} Se desarrolla un pipeline que transforma publicaciones científicas en grafos de conocimiento mediante la extracción de entidades y relaciones. \textbf{Resultados.} El pipeline logra convertir publicaciones científicas en grafos de conocimiento integrando entidades, relaciones y metadatos. \textbf{Conclusiones.} El enfoque es relevante para enriquecer los metadatos de artículos en el contexto del agente, incluyendo entidades, relaciones y citas, aunque no aborda el formateo ni la integración con OJS.
+
+\subsection{Síntesis del estado del arte}
+
+Los antecedentes se agrupan en tres líneas: (a) análisis de \emph{layout} y estructura documental con aprendizaje profundo (IEEE-01, IEEE-55, SD-04 a SD-09, SPL-02, SPL-07), (b) extracción de información y comprensión de documentos académicos (ACM-03, GS-10, GS-11, IEEE-51, SPL-01, SPL-09) y (c) uso de LLM y automatización del formateo (GS-01, IEEE-13, IEEE-37, IEEE-54, IEEE-62). El referente más cercano es IEEE-13 \cite{ref9}, que combina análisis de \emph{layout}, un motor de reglas en YAML y evaluación semántica para verificar el cumplimiento del formato IEEE, con más de 85 \% de acuerdo con la evaluación humana.
+
+La brecha que motiva este proyecto es que ninguno de los trabajos revisados (i) se integra con OJS, (ii) trabaja con manuscritos en español de revistas latinoamericanas, ni (iii) mantiene al editor como responsable de cada sugerencia antes de que llegue al autor. La propuesta adopta del estado del arte la separación entre un motor de reglas determinístico y un modelo de lenguaje, y la aplica a las normas de Innosoft con revisión humana obligatoria.
+
+\section{Definición del problema}
+
+La revisión estilística manual de los manuscritos que llegan a revistas latinoamericanas gestionadas con OJS consume tiempo editorial en observaciones menores y repetitivas, y OJS no ofrece herramientas de inteligencia artificial que asistan esa tarea. En Innosoft, esto se traduce en editores que verifican a mano el tamaño, la resolución y la rotulación de las figuras, y el formato IEEE de citas y referencias, antes de enviar el artículo a revisión por pares.
+
+\textbf{Pregunta de investigación:} ¿De qué forma un agente de IA integrado con OJS puede optimizar el proceso de revisión estilística de artículos en \emph{journals} latinoamericanos?

@@ -1,0 +1,511 @@
+% titulo: Anexo A – Fichas de lectura crítica
+% estado: no incluido
+% actualizado: 2026-10-19
+
+\anexo{Fichas de lectura crítica}
+
+Cada ficha registra, para un documento seleccionado en el filtro por contenido (3f), el problema, la solución, los resultados, las limitaciones y las conclusiones, con su aporte a la tesis. GS-13 es un duplicado institucional de GS-10 y no se cuenta como estudio independiente.
+
+\subsubsection*{ACM-03. Multi-level mining and visualization of scientific text collections}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.173\textwidth}>{\raggedright\arraybackslash}p{0.774\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & El volumen de publicaciones científicas crece demasiado rápido para que los investigadores se mantengan al día. Las herramientas existentes pierden información estructural al procesar PDFs y los servicios bibliográficos tienen baja cobertura sobre afiliaciones de autores. \\
+Solución & Sistema web que extrae contenido de PDFs preservando su estructura, identifica autores y afiliaciones geográficas, clasifica oraciones por función retórica, modela tópicos con LDA y ofrece visualizaciones interactivas (mapas, grafos, histogramas). Aplicado al corpus bilingüe SEPLN (505 artículos, 2008--2016). \\
+Resultados & Extractor de PDF con F1 = 0.917. Identificación de afiliaciones con precisión de 0.83 (URI) y 0.91 (país). Plataforma web funcional con búsqueda facetada y 7 visualizaciones. El caso de estudio detectó un cambio terminológico de ``sentiment analysis'' a ``opinion mining'' en 2014. \\
+Limitaciones & El extractor falla con formatos atípicos. Los tópicos LDA solo se generaron en inglés (posible sesgo). El clasificador retórico no funciona en español. No se hizo validación con usuarios ni pruebas de escalabilidad. \\
+Conclusiones & Las herramientas de análisis profundo más visualizaciones flexibles permiten explotar mejor el conocimiento de colecciones científicas. El sistema enriquece artículos con metadatos, semántica e información retórica, y se publicará como librería abierta. Aporte clave: enfoque multilingüe (inglés-español). \\
+\end{longtable}
+
+\subsubsection*{GS-01. Using artificial intelligence for formatting academic journal papers}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.202\textwidth}>{\raggedright\arraybackslash}p{0.745\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Los investigadores enfrentan dificultades y pérdida de tiempo en el formateo manual de artículos para revistas académicas. \\
+Solución & Sistema de formateo automático basado en IA para papers académicos orientado a mejorar productividad, consistencia y credibilidad. Herramientas: IA, formateo automático, journals académicos, machine learning. \\
+Resultados & Sistema de formateo automático viable para papers académicos con mejoras en productividad y consistencia. \\
+Limitaciones & No especifica implementación en OJS ni foco en español o journals latinoamericanos. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1, RQ2, RQ3) es ser el antecedente más directo de la propuesta de tesis; referente fundamental para justificar la necesidad del agente. \\
+\end{longtable}
+
+\subsubsection*{GS-10. Extracting Structured Information From Academic Documents}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.206\textwidth}>{\raggedright\arraybackslash}p{0.741\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Los documentos académicos contienen información estructurada no trivial de extraer automáticamente. \\
+Solución & Métodos de extracción de información estructurada y relaciones aplicados a documentos académicos; uso del dataset DAD. Herramientas: NLP, extracción de información, análisis de estructura, documentos académicos. \\
+Resultados & Extracción efectiva de información estructurada de artículos académicos mediante NLP y análisis de estructura. \\
+Limitaciones & No aborda formateo automático ni integración con OJS ni español. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1) es una metodología de extracción de información estructurada de papers académicos directamente aplicable al agente. \\
+\end{longtable}
+
+\subsubsection*{GS-11. Document analysis and recognition: a survey}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.211\textwidth}>{\raggedright\arraybackslash}p{0.736\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & La multiplicidad de métodos en análisis y reconocimiento de documentos requiere una revisión sistemática. \\
+Solución & Encuesta de métodos de análisis y reconocimiento de documentos incluyendo OCR, ML y deep learning. Herramientas: OCR, machine learning, deep learning, análisis de documentos, reconocimiento. \\
+Resultados & El OCR combinado con ML y deep learning mejora el análisis de estructura de documentos. \\
+Limitaciones & Preprint; no específico a artículos científicos en español. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1) es una base técnica amplia sobre análisis de documentos para fundamentar las tecnologías del agente. \\
+\end{longtable}
+
+\subsubsection*{GS-13. Extracting Structured Information From Academic Documents (institutional record)}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.257\textwidth}>{\raggedright\arraybackslash}p{0.690\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Duplicado institucional de GS-10. \\
+Solución & Ver GS-10. Herramientas: NLP, extracción de información estructurada, documentos académicos. \\
+Resultados & Ver GS-10. \\
+Limitaciones & Es duplicado institucional de GS-10; no debe contarse como estudio independiente. \\
+Conclusiones & La fuente confirma la disponibilidad institucional de GS-10, pero no aporta un estudio nuevo. Para evitar duplicidad, debe citarse solo como respaldo o acceso alternativo. \\
+\end{longtable}
+
+\subsubsection*{IEEE-01. Document Layout Analysis with an Enhanced Object Detector}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.208\textwidth}>{\raggedright\arraybackslash}p{0.739\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Extracción automática de contenido en imágenes de documentos; delimitación de regiones como párrafos, figuras y tablas. \\
+Solución & Red neuronal convolucional (inspirada en detectores de escenas naturales) entrenada en dataset público para análisis de layout. Herramientas: CNN, deep learning, OCR, detección de objetos. \\
+Resultados & El método demuestra el potencial de detectores de objetos para análisis de layout de documentos. \\
+Limitaciones & Evaluado solo en dataset público; no aborda documentos científicos multilingües ni en español. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1) es una base técnica para análisis de layout de artículos científicos. \\
+\end{longtable}
+
+\subsubsection*{IEEE-13. A Stage-Aware Framework for Automated IEEE Research Paper Compliance Checking Using Layout Analysis, Rule-Based Validation, and Semantic Evaluation}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.196\textwidth}>{\raggedright\arraybackslash}p{0.751\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Las verificaciones manuales de cumplimiento de formato IEEE son lentas, subjetivas y propensas a omisiones. \\
+Solución & Framework híbrido con análisis de layout (PubLayNet), motor de reglas YAML y evaluación semántica (SciBERT) para validar cumplimiento de formato IEEE. Herramientas: PubLayNet, SciBERT, YAML, análisis de layout, validación de reglas. \\
+Resultados & Rendimiento fuerte en detección de secciones, validación de layout y verificación de reglas; >85\% de acuerdo con evaluación humana en 15 papers. \\
+Limitaciones & Evaluado solo en papers IEEE; no adaptado a otros estilos ni a journals latinoamericanos o en español. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1, RQ2, RQ3) es ser el caso más cercano al sistema propuesto; referente directo para validación automática de formato en artículos científicos. \\
+\end{longtable}
+
+\subsubsection*{SPL-09. From Publications to Knowledge Graphs}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.202\textwidth}>{\raggedright\arraybackslash}p{0.745\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & La información en publicaciones científicas no está conectada de forma semántica ni es explotable automáticamente. \\
+Solución & Pipeline para transformar publicaciones científicas en grafos de conocimiento mediante extracción de entidades y relaciones. Herramientas: Grafos de conocimiento, extracción de información, NLP, publicaciones científicas. \\
+Resultados & Propone convertir publicaciones científicas en grafos de conocimiento mediante extracción de entidades, relaciones y metadatos. \\
+Limitaciones & Abstract no disponible; no orientado a formateo ni a OJS. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1) es ser relevante para enriquecer metadatos de artículos en el contexto del agente (entidades, relaciones, citas). \\
+\end{longtable}
+
+\subsubsection*{IEEE-16. An Approach of Rhetorical Status Recognition for Judgments in Court Documents using Deep Learning Models}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.210\textwidth}>{\raggedright\arraybackslash}p{0.737\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Falta de análisis automático de estructura retórica en documentos legales para apoyar sistemas de recuperación. \\
+Solución & Modelos de deep learning para clasificar el estado retórico de cada oración en documentos judiciales. Herramientas: Deep learning, LSTM, redes neuronales, NLP. \\
+Resultados & Resultados prometedores sugieren la aplicabilidad de módulos de redes neuronales con información retórica. \\
+Limitaciones & Dominio legal específico; no generalizable directamente a artículos científicos. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1) es una analogía útil para clasificación de secciones retóricas en artículos científicos. \\
+\end{longtable}
+
+\subsubsection*{IEEE-37. Performance Analysis of Text Chunking Methods for LLM-Based Document Summarization}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.210\textwidth}>{\raggedright\arraybackslash}p{0.737\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Ventana de contexto limitada de los LLMs para documentos extensos. \\
+Solución & Comparación de cuatro estrategias de chunking (Fixed-Length, Recursive, Sliding Window, Semantic) sobre dos LLMs y dos datasets. Herramientas: LLMs, Llama 3.1, Phi-4, chunking, ROUGE, BLEU. \\
+Resultados & Sliding Window y Semantic Chunking superan a Recursive; resultados dependen del modelo y del dataset. \\
+Limitaciones & Evaluado en dominios gubernamentales y legales; no en artículos científicos en español. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1, RQ3) son estrategias aplicables al procesamiento de manuscritos científicos extensos en el agente propuesto. \\
+\end{longtable}
+
+\subsubsection*{IEEE-38. UDMtext: a Unified Deep Mutual Learning-Based Framework for Text Detection in Complex Documents}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.211\textwidth}>{\raggedright\arraybackslash}p{0.736\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Los métodos OCR existentes tienen baja robustez ante documentos con layouts complejos. \\
+Solución & Framework UDMtext con modelo maestro y dos modelos estudiante con aprendizaje mutuo y función de pérdida híbrida. Herramientas: Deep learning, OCR, mutual learning, knowledge distillation, ICDAR. \\
+Resultados & 72.91\% de accuracy y 62.31\% de recall en ICDAR 2023; mayor robustez en layouts complejos. \\
+Limitaciones & Evaluado en ICDAR 2023; no específico a artículos científicos ni a español. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1) es una técnica aplicable para mejorar extracción de texto en manuscritos con layouts complejos. \\
+\end{longtable}
+
+\subsubsection*{IEEE-51. AI-Based Algorithm for Significant Information Extraction from Unstructured Textual Data}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.207\textwidth}>{\raggedright\arraybackslash}p{0.740\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Volumen creciente de información no estructurada que requiere métodos eficientes de extracción. \\
+Solución & Algoritmo con redes neuronales artificiales y bibliotecas de visión computacional que devuelve resultados en JSON sin depender de plantillas fijas. Herramientas: Redes neuronales, visión computacional, JSON, NLP. \\
+Resultados & Reducción significativa del tiempo de procesamiento manual de documentos de texto. \\
+Limitaciones & No evaluado en artículos científicos en español ni integrado con flujos editoriales. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1, RQ3) es un enfoque de extracción sin plantillas relevante para la adaptabilidad del agente a distintos estilos de revista. \\
+\end{longtable}
+
+\subsubsection*{IEEE-54. Effective Analysis of Data Processing on Cloud using Serverless Computing}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.203\textwidth}>{\raggedright\arraybackslash}p{0.744\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Necesidad de gestionar y analizar eficientemente documentos (PDFs, CSVs, Excel) en ecosistemas digitales. \\
+Solución & Arquitectura serverless con AWS Lambda y Gemini AI para extracción y análisis de contenido multiformat con respuestas en tiempo real. Herramientas: AWS Lambda, Google Gemini AI, serverless, NLP, procesamiento de documentos. \\
+Resultados & Flujos de gestión documental optimizados con mayor accesibilidad y comprensión de texto no estructurado. \\
+Limitaciones & No orientado a artículos científicos ni a estándares editoriales latinoamericanos. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1, RQ3) es una arquitectura de referencia para el despliegue del agente de formateo en entornos cloud. \\
+\end{longtable}
+
+\subsubsection*{IEEE-55. Automatic classification and recognition of complex documents based on Faster RCNN}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.204\textwidth}>{\raggedright\arraybackslash}p{0.743\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Los sistemas OCR convencionales fallan con documentos complejos que contienen información no textual. \\
+Solución & Pipeline con Faster RCNN (RPN + clasificación de regiones) para segmentar y reconocer automáticamente regiones en documentos complejos. Herramientas: Faster RCNN, RPN, OCR, deep learning, segmentación de documentos. \\
+Resultados & Separación precisa de áreas de sello, texto y número de página; mejora del pipeline OCR posterior. \\
+Limitaciones & Evaluado en documentos simples; no probado en artículos científicos multicolumna en español. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1) es una técnica de segmentación regional aplicable al preprocesamiento de manuscripts científicos. \\
+\end{longtable}
+
+\subsubsection*{IEEE-62. X-SCITLDR: Cross-Lingual Extreme Summarization of Scholarly Documents}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.196\textwidth}>{\raggedright\arraybackslash}p{0.751\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & La investigación previa en summarización de papers se ha concentrado solo en inglés; no existe soporte multilingüe. \\
+Solución & Dataset XSCITLDR para summarización multilingüe y modelos basados en mBART; incluye enfoque 'summarize and translate' y modelo cross-lingual directo. Herramientas: mBART, summarización cross-lingüística, NLP multilingüe, SCITLDR. \\
+Resultados & Presenta X-SCITLDR para resumir documentos académicos de forma cross-lingüística. Los modelos directos fueron competitivos frente al proceso de resumir y traducir. \\
+Limitaciones & No incluye español ni portugués; se centra en alemán, italiano, chino y japonés. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ2, RQ3) es ser un referente metodológico clave para adaptar modelos de procesamiento de papers científicos al español. \\
+\end{longtable}
+
+\subsubsection*{SD-04. Mamba-YOLO: Multi-level adaptive rectangular convolution for Document Layout Analysis}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.199\textwidth}>{\raggedright\arraybackslash}p{0.748\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Carencia de datasets chinos de DLA con granularidad fina y limitaciones de modelos existentes para elementos de relación de aspecto variable. \\
+Solución & Framework DocMY con integración Mamba-YOLOv9 y convolución rectangular adaptativa multinivel; dataset PeKi con anotaciones detalladas. Herramientas: Mamba, YOLOv9, DLA, convolución adaptativa, dataset chino. \\
+Resultados & 96.5\% mAP en PeKi; resultados competitivos en benchmarks open-source; reducción del tamaño del modelo. \\
+Limitaciones & Evaluado en documentos chinos; no probado en artículos científicos en español o latinoamericanos. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1) es una arquitectura avanzada de DLA que puede adaptarse para layouts de journals latinoamericanos. \\
+\end{longtable}
+
+\subsubsection*{SD-05. Automatic generation of scientific papers for data augmentation in document layout analysis}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.208\textwidth}>{\raggedright\arraybackslash}p{0.739\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Los métodos de deep learning requieren grandes datasets anotados; escasez de datos para DLA en literatura científica. \\
+Solución & Pipeline de anotación semi-automática + LayoutTransformer para generación de layouts + población de contenido sintético. Herramientas: LayoutTransformer, DLA, generación sintética, deep learning. \\
+Resultados & Mejora en detección de objetos para papers de doble columna y columna simple. \\
+Limitaciones & No aborda documentos en español ni estilos de journals latinoamericanos. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1) es una técnica de augmentación aplicable para entrenar modelos en datasets escasos de journals latinoamericanos. \\
+\end{longtable}
+
+\subsubsection*{SD-06. Cross-domain document layout analysis using document style guide}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.203\textwidth}>{\raggedright\arraybackslash}p{0.744\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Los datos de entrenamiento generados difieren en estilo de los documentos objetivo; gran necesidad de datos anotados. \\
+Solución & Framework DL-DSG con generador de layout, decorador de elementos y discriminador de estilo para generar documentos controlados y reducir brechas de estilo. Herramientas: DLA cross-domain, aprendizaje no supervisado, guía de estilo, generación de documentos. \\
+Resultados & Resultados sólidos en múltiples datasets públicos de DLA; aprendizaje no supervisado efectivo. \\
+Limitaciones & No evaluado en documentos en español ni en estilos de revistas latinoamericanas. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1, RQ2) es una metodología directamente aplicable para adaptar el agente a distintos estilos de journals latinoamericanos sin datos anotados. \\
+\end{longtable}
+
+\subsubsection*{SD-07. Continuous document layout analysis: Human-in-the-loop AI-based data curation, database, and evaluation in the domain of public affairs}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.201\textwidth}>{\raggedright\arraybackslash}p{0.746\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Volumen de documentos digitales que supera la capacidad de procesamiento manual; necesidad de DLA continuo y detección de cambios. \\
+Solución & Procedimiento semi-automático human-in-the-loop para anotar documentos con etiquetas de layout y texto; base de datos PALdb con 37.9K documentos y >8M etiquetas. Herramientas: Human-in-the-loop, DLA, NLP, detección de cambios, anotación semi-automática. \\
+Resultados & PALdb con 441K+ páginas y 8M+ etiquetas; pipeline de DLA continuo y detección de cambios funcionando. \\
+Limitaciones & Dominio de asuntos públicos; no artículos científicos; requiere adaptación. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1, RQ3) es un pipeline human-in-the-loop relevante para la validación editorial asistida por IA en el flujo OJS. \\
+\end{longtable}
+
+\subsubsection*{SD-08. Domain adaptive learning for document layout analysis and object detection using classifier alignment mechanism}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.206\textwidth}>{\raggedright\arraybackslash}p{0.741\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Cambios de dominio y datasets anotados limitados dificultan el rendimiento en detección de objetos en documentos. \\
+Solución & Modelo XDOD con módulo Document Object Attention y Classifier Alignment para aprendizaje adaptativo cross-domain. Herramientas: DLA, detección de objetos, domain adaptation, atención, alineación de clasificadores. \\
+Resultados & Tasas de detección >97\%; rendimiento cross-domain superior a métodos basales. \\
+Limitaciones & No evaluado en artículos científicos en español; dominio de documentos generales. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1, RQ2) es una técnica de adaptación de dominio clave para extender el agente a múltiples estilos editoriales latinoamericanos. \\
+\end{longtable}
+
+\subsubsection*{SD-09. Synthetic document generator for annotation-free layout recognition}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.200\textwidth}>{\raggedright\arraybackslash}p{0.747\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Los modelos de deep learning requieren grandes datasets anotados; alta carga de anotación manual. \\
+Solución & Generador sintético basado en red bayesiana y plantillas estocásticas que produce documentos con etiquetas de layout automáticamente. Herramientas: Red bayesiana, plantillas estocásticas, DLA, generación sintética, annotation-free. \\
+Resultados & Un detector de layout entrenado solo en documentos sintéticos iguala el rendimiento de modelos entrenados en documentos reales. \\
+Limitaciones & No evaluado en artículos científicos en español; documentos financieros como caso de uso. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1) es la generación sin anotaciones es clave para contextos con pocos datos etiquetados, como journals latinoamericanos. \\
+\end{longtable}
+
+\subsubsection*{SPL-01. Visual Document Understanding: A Comparative Review of Modern Methods}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.219\textwidth}>{\raggedright\arraybackslash}p{0.728\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Multiplicidad y heterogeneidad de métodos de comprensión visual de documentos dificulta la selección del enfoque adecuado. \\
+Solución & Revisión comparativa de métodos modernos para comprensión visual de documentos. Herramientas: Comprensión visual de documentos, DLA, deep learning. \\
+Resultados & No disponible (abstract no publicado). \\
+Limitaciones & Abstract no disponible; evaluación limitada a revisión comparativa. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1) es una revisión de estado del arte directamente relevante para fundamentar la elección de tecnologías del agente. \\
+\end{longtable}
+
+\subsubsection*{SPL-02. HiM: hierarchical multimodal network for document layout analysis}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.205\textwidth}>{\raggedright\arraybackslash}p{0.742\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Los métodos de DLA existentes no explotan adecuadamente la información jerárquica y multimodal presente en documentos. \\
+Solución & Red neuronal multimodal jerárquica (HiM) que combina información visual y textual en múltiples niveles para DLA. Herramientas: Red multimodal, DLA, jerarquía, visión computacional, NLP. \\
+Resultados & HiM combina información visual y textual en una red jerárquica multimodal para mejorar el análisis de layout documental. \\
+Limitaciones & Abstract no disponible; evaluación de resultados no verificable. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1) es un enfoque multimodal relevante para capturar la estructura jerárquica de artículos científicos (secciones, subsecciones, figuras). \\
+\end{longtable}
+
+\subsubsection*{SPL-07. Extracting Variable-Depth Logical Document Hierarchy from Long Documents: Method, Evaluation, and Application}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.201\textwidth}>{\raggedright\arraybackslash}p{0.746\textwidth}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Problema & Los documentos largos tienen estructura lógica jerárquica compleja de profundidad variable, difícil de extraer automáticamente. \\
+Solución & Método para extracción de jerarquía lógica de documentos largos con profundidad variable, junto con evaluación y aplicación. Herramientas: Jerarquía lógica de documentos, extracción de estructura, NLP. \\
+Resultados & HELD extrae jerarquías lógicas de documentos largos y reporta buenos resultados en documentos financieros y publicaciones científicas. \\
+Limitaciones & Abstract no disponible; aplicado a documentos largos genéricos. \\
+Conclusiones & El estudio responde al problema mediante una propuesta aplicable al análisis documental. Su aporte para la tesis (RQ1) es ser directamente aplicable para extraer la estructura lógica de artículos científicos en el agente. \\
+\end{longtable}
