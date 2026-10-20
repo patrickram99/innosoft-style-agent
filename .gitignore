@@ -1,11 +1,13 @@
 # Datos reales con posibles datos personales (Ley N.º 29733)
-muestras/
+agente/muestras/
 
 # Archivos recibidos por la API
-storage/
+agente/storage/*
+!agente/storage/.gitkeep
 
 # Credenciales
 .env
+agente/.env
 
 # Python
 __pycache__/
@@ -19,12 +21,22 @@ venv/
 *.sqlite
 *.db
 
+# LaTeX: toda salida de compilación va a Tesis-Doc/build/ (compilar.ps1 / latexmk -outdir=build)
+Tesis-Doc/build/
+Tesis-Doc/*.aux
+Tesis-Doc/*.log
+Tesis-Doc/*.synctex.gz
+Tesis-Doc/main.pdf
+
 # Editores y sistema
 .vscode/
 .idea/
 Thumbs.db
 .DS_Store
-
-# Artefactos locales (no son parte del repo según 00-producto.md §13)
-aqpimg.webp
 ~$*
+
+# Configuración local de Claude Code (por desarrollador)
+.claude/settings.local.json
+
+# Paquete para subir a Overleaf (se genera cuando haga falta)
+Tesis-Doc.zip

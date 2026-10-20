@@ -1,0 +1,255 @@
+% titulo: Capítulo II – Planteamiento del proyecto
+% estado: borrador
+% actualizado: 2026-10-19
+% Sincronizado con specs/00-producto.md v1.0 el 19-oct-2026 (ver Tesis-Doc/README.md, registro S-nn).
+
+\chapter{Planteamiento del Proyecto}\label{cap:planteamiento}
+
+\section{Fundamentos teóricos}
+
+\subsection{Dominio}
+
+El proyecto se enmarca en la gestión editorial de revistas científicas, específicamente en la etapa de revisión estilística de los artículos antes de la revisión por pares.
+
+\begin{itemize}
+  \item \textbf{Gestión editorial científica:} procesos que sigue una revista para recibir, revisar, editar y publicar artículos.
+  \item \textbf{Revisión estilística:} etapa en la que se verifican aspectos de forma del manuscrito, como el formato de referencias y la presentación de figuras y tablas. En Innosoft ocurre en la evaluación editorial inicial, antes de la revisión por pares.
+  \item \textbf{Normas editoriales y directrices:} reglas que define cada revista sobre formato, estructura y estilo. Varían entre revistas, por lo que un mismo manuscrito puede requerir ajustes distintos según la revista de destino. En Innosoft se expresan en la plantilla Word, la plantilla LaTeX (\texttt{innosoft.\allowbreak{}cls}) y las directrices para autores (\texttt{docs/\allowbreak{}plantillas/\allowbreak{}}).
+  \item \textbf{Journals latinoamericanos:} revistas gestionadas en su mayoría por universidades de la región, con recursos limitados y enfocadas en aumentar su producción para ingresar a índices internacionales.
+  \item \textbf{Open Journal Systems (OJS):} plataforma de código abierto usada por la mayoría de las revistas latinoamericanas para gestionar el flujo editorial. América Latina y el Caribe concentran la mayor cantidad de instalaciones de OJS a nivel mundial \cite{ref2}.
+\end{itemize}
+
+\subsection{Tecnología}
+
+\begin{itemize}
+  \item \textbf{Modelos de lenguaje (LLM, IA generativa):} modelos basados en Transformers que generan texto con calidad cercana a la humana \cite{ref27}. En este proyecto \textbf{solo redactan} las sugerencias a partir de hallazgos ya detectados; no deciden qué es un incumplimiento.
+  \item \textbf{Agentes de IA:} sistemas basados en LLM capaces de planificar, razonar y usar herramientas externas para ejecutar tareas en entornos dinámicos \cite{ref28}. El agente orquesta extracción, validación, redacción y publicación.
+  \item \textbf{Procesamiento de lenguaje natural (NLP):} técnicas para analizar texto, identificar secciones y verificar patrones de estilo (por ejemplo, citas IEEE \texttt{[n]}).
+  \item \textbf{Procesamiento de PDF:} extracción de texto, estructura y elementos visuales del manuscrito con PyMuPDF.
+  \item \textbf{Motor de reglas editoriales:} componente que evalúa reglas declarativas (YAML validado con JSON Schema) y produce hallazgos con ubicación y evidencia. Separar la regla del código permite ajustar umbrales sin reprogramar.
+  \item \textbf{Humano en el ciclo (\emph{human-in-the-loop}):} el editor acepta, edita o rechaza cada sugerencia antes de que llegue al autor \cite{ref20}.
+  \item \textbf{Integración con OJS:} mediante un plugin y la API REST de OJS, para recibir los envíos y publicar el comentario aprobado como discusión del envío.
+\end{itemize}
+
+\subsection{Metodología de desarrollo}
+
+\begin{itemize}
+  \item \textbf{Scrum:} metodologia agil de con iteraciones (\emph{sprints}) con retrospectiva al cierre de cada una. \pendiente{cita de la Guía de Scrum}
+  \item \textbf{RICE:} metodo de priorizacion para ordenar el backlog en base a \emph{Reach $\times$ Impact $\times$ Confidence / Effort}. \pendiente{cita del método RICE}
+  \item \textbf{Spec-Driven Development (SDD):} tecnica en la que todas las funcionalidades tienen una especificación revisada con entradas, salidas, reglas, excepciones y criterios de aceptación antes de escribir código; las pruebas se derivan de esos criterios. \pendiente{cita sobre SDD}
+\end{itemize}
+
+\section{Objetivos del proyecto}
+
+\subsection{Objetivo general}
+
+Implementar un agente de IA de sugerencias estilistica integrado con Open Journal Systems que apoye en el proceso de dar formato a artículos científicos en PDF enviados a \emph{journals} latinoamericanos, configurable las plantillas y reglas editoriales propias de cada revista y validado en el caso de la revista Innosoft.
+
+\subsection{Objetivos específicos}
+
+\begin{enumerate}
+  \item \textbf{OE1 -- Arquitectura.} Diseñar una arquitectura agéntica que traduzca las normas editoriales de la revista (plantillas DOCX/LaTeX y directrices para autores) en reglas verificables y configurables, separando la detección determinística de los incumplimientos de la redacción de sugerencias con un LLM.
+  \item \textbf{OE2 -- Análisis documental.} Desarrollar un mecanismo de análisis documental sobre manuscritos en PDF que reconozca su estructura, contenido textual, figuras, citas y referencias como insumo para la revisión estilística.
+  \item \textbf{OE3 -- Validación y reporte.} Construir un componente de validación que compare el manuscrito con las reglas de la revista y entregue un reporte de sugerencias trazable, que el editor revisa antes de publicarlo en OJS.
+  \item \textbf{OE4 -- Evaluación.} Evaluar el desempeño del agente sobre un conjunto de manuscritos de prueba, midiendo la precisión y el recall por regla, la tasa de aceptación de las sugerencias y su aporte a la reducción del tiempo de revisión estilística.
+\end{enumerate}
+
+\section{Justificación}
+
+La revisión estilística de artículos científicos es una parte importante del proceso editorial, ya que permite verificar el formato, las referencias, las figuras y el cumplimiento de las directrices de cada revista. Sin embargo, suele realizarse de forma manual, lo que demanda mucho tiempo de editores y revisores, especialmente en revistas latinoamericanas con recursos limitados que buscan procesar más artículos.
+
+En este contexto, un agente de inteligencia artificial integrado con Open Journal Systems se justifica por la necesidad de optimizar el tiempo dedicado a revisiones menores que, aunque necesarias, reducen el tiempo disponible para analizar el contenido científico. Un sistema que reciba artículos en PDF y genere sugerencias estilísticas claras y objetivas puede detectar errores con mayor rapidez y consistencia, facilitando el trabajo del equipo editorial.
+
+Asimismo, como OJS es una plataforma ampliamente utilizada en revistas latinoamericanas, pero no cuenta con integraciones nativas de inteligencia artificial para este proceso, el proyecto propone una solución complementaria sobre una infraestructura ya existente, que mejora la eficiencia editorial sin afectar los estándares de calidad de la revista.
+
+\section{Viabilidad}
+
+La viabilidad se analiza en tres dimensiones: técnica, económica y operativa.
+
+\subsection{Viabilidad técnica}
+
+El proyecto es técnicamente viable porque se cuenta con los recursos tecnológicos, humanos y metodológicos para construir el agente, integrarlo con OJS y validarlo con manuscritos reales. El desarrollo se realiza en equipos personales, ya que el procesamiento más exigente de IA se delega a la API de Gemini. Además, se dispone de acceso a la revista Innosoft de la Universidad La Salle para probar la solución en un entorno editorial concreto.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.153\textwidth}>{\raggedright\arraybackslash}p{0.203\textwidth}>{\raggedright\arraybackslash}p{0.228\textwidth}>{\raggedright\arraybackslash}p{0.311\textwidth}@{}}
+\caption{Recursos tecnológicos disponibles}\label{tab:2-1}\\
+\toprule
+\textbf{Recurso} & \textbf{Disponibilidad} & \textbf{Especificaciones} & \textbf{Justificación} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Recurso} & \textbf{Disponibilidad} & \textbf{Especificaciones} & \textbf{Justificación} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Equipo de desarrollo & Propiedad del equipo & Procesador i5/i7, 8--16 GB de RAM, SSD; Windows & Suficiente para desarrollo backend en Python, procesamiento de PDF y pruebas locales. La IA se delega a Gemini. \\
+Instancia OJS & Revista Innosoft (Universidad La Salle) & OJS 3.1.2.1 sobre Apache 2.4, PHP y MySQL 5.7 & Permite integrar y validar el agente en un entorno editorial real. \\
+Entorno de despliegue y pruebas & Docker Compose en equipo local; servidor por definir & Contenedores \texttt{api} (FastAPI) y \texttt{db} (PostgreSQL 16) & Reproducible en cualquier equipo. \pendiente{hosting definitivo — universidad o nube (00-producto §18)} \\
+\end{longtable}
+}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.254\textwidth}>{\raggedright\arraybackslash}p{0.234\textwidth}>{\raggedright\arraybackslash}p{0.433\textwidth}@{}}
+\caption{Software y herramientas de desarrollo}\label{tab:2-2}\\
+\toprule
+\textbf{Herramienta} & \textbf{Licencia} & \textbf{Aplicación en el proyecto} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Herramienta} & \textbf{Licencia} & \textbf{Aplicación en el proyecto} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Python 3.11+ & Código abierto & Lenguaje base del agente. \\
+FastAPI + Uvicorn, Pydantic v2 & Código abierto & API del agente y validación de datos. \\
+PyMuPDF & Código abierto (AGPL) & Extracción de texto, bloques, figuras y metadatos del PDF. \\
+PostgreSQL 16, SQLAlchemy 2, Alembic & Código abierto & Persistencia de manuscritos, documentos extraídos, hallazgos y sugerencias. \\
+PyYAML + JSON Schema & Código abierto & Reglas editoriales declarativas y validadas. \\
+API de Gemini & Tier gratuito / pago por uso & Redacción de sugerencias en lenguaje natural a partir de fragmentos anonimizados. \\
+Open Journal Systems & Código abierto & Plataforma editorial donde se integra el agente (plugin + API REST). \\
+Pytest, GitHub Actions & Código abierto / gratuito & Pruebas automatizadas derivadas de las especificaciones e integración continua. \\
+Docker, Git/GitHub & Gratuito & Contenedores, control de versiones y trabajo colaborativo. \\
+\end{longtable}
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.197\textwidth}>{\raggedright\arraybackslash}p{0.155\textwidth}>{\raggedright\arraybackslash}p{0.282\textwidth}>{\raggedright\arraybackslash}p{0.260\textwidth}@{}}
+\caption{Capacidades técnicas del equipo}\label{tab:2-3}\\
+\toprule
+\textbf{Área} & \textbf{Nivel actual} & \textbf{Estrategia de fortalecimiento} & \textbf{Recursos de apoyo} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Área} & \textbf{Nivel actual} & \textbf{Estrategia de fortalecimiento} & \textbf{Recursos de apoyo} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Desarrollo backend en Python & Intermedio-avanzado & Proyectos incrementales y documentación oficial & Asesoría docente, Stack Overflow, GitHub \\
+Procesamiento de PDF y análisis documental & Básico-intermedio & Práctica con PyMuPDF y corpus sintético de prueba & Documentación de la librería y antecedentes \\
+LLM e IA generativa & Intermedio & Experimentación iterativa con prompts versionados & Docentes especializados en IA, comunidades \\
+Integración con OJS & Básico-intermedio & Prueba técnica (\emph{spike}) de la API de OJS en el Sprint 3 & Documentación de OJS e instancia de Innosoft \\
+Maquetación de journals & Avanzado & Experiencia previa del tesista como maquetador & Conocimiento directo de plantillas y directrices \\
+\end{longtable}
+}
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.258\textwidth}>{\raggedright\arraybackslash}p{0.106\textwidth}>{\raggedright\arraybackslash}p{0.104\textwidth}>{\raggedright\arraybackslash}p{0.426\textwidth}@{}}
+\caption{Análisis de riesgos técnicos}\label{tab:2-4}\\
+\toprule
+\textbf{Riesgo} & \textbf{Probabilidad} & \textbf{Impacto} & \textbf{Mitigación} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Riesgo} & \textbf{Probabilidad} & \textbf{Impacto} & \textbf{Mitigación} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Variabilidad en la estructura y calidad de los PDF & Alta & Medio & PyMuPDF, reglas tolerantes a variaciones, corpus sintético y manuscritos heterogéneos; PDFs sin texto se rechazan de forma controlada (ALT-01). \\
+Límites de los planes gratuitos de Gemini & Media & Medio & Fragmentos $\leq$ 600 caracteres, reintentos con \emph{backoff} y \emph{fallback} determinístico con el mensaje de la regla (US-18). \\
+Cambios o limitaciones en la API/plugins de OJS & Media & Alto & Diseño desacoplado (\texttt{OjsGateway}); si el plugin se retrasa, el análisis se dispara manualmente con \texttt{POST /\allowbreak{}manuscripts}. \\
+Precisión insuficiente de las sugerencias & Media & Alto & El motor de reglas decide y el LLM solo redacta; validación del esquema de respuesta y revisión humana obligatoria. \\
+\end{longtable}
+}
+
+\subsection{Viabilidad económica}
+
+Casi todo el software que usa el proyecto es gratuito o de código abierto y por eso el gasto real es pequeño. Lo que sí cuesta dinero son algunos servicios que se usan durante los seis meses del proyecto y que se listan en la Tabla~\ref{tab:2-5}.
+
+\begin{itemize}
+  \item El uso de la API de Gemini cuando las pruebas pasen de la cuota gratuita.
+  \item El servidor donde corre el agente para las pruebas con la revista.
+  \item El espacio para guardar los manuscritos de prueba y los resultados.
+  \item Dos cursos cortos en línea sobre procesamiento de documentos y uso de modelos de lenguaje.
+  \item Impresiones y material para las entrevistas con los editores.
+\end{itemize}
+
+{\scriptsize
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.144\textwidth}>{\raggedright\arraybackslash}p{0.181\textwidth}>{\raggedright\arraybackslash}p{0.092\textwidth}>{\raggedright\arraybackslash}p{0.091\textwidth}>{\raggedright\arraybackslash}p{0.099\textwidth}>{\raggedright\arraybackslash}p{0.235\textwidth}@{}}
+\caption{Costos estimados del proyecto}\label{tab:2-5}\\
+\toprule
+\textbf{Categoría} & \textbf{Concepto} & \textbf{Cantidad} & \textbf{Costo unitario} & \textbf{Costo total} & \textbf{Justificación} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Categoría} & \textbf{Concepto} & \textbf{Cantidad} & \textbf{Costo unitario} & \textbf{Costo total} & \textbf{Justificación} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Servicios tecnológicos & API de Gemini por encima de la cuota gratuita & 6 meses & S/ 30 & S/ 180 & Pruebas de validación que pasen la cuota gratuita \\
+Servicios tecnológicos & Servidor del agente & 6 meses & S/ 25 & S/ 150 & Servidor donde corre el agente durante las pruebas con la revista \\
+Servicios tecnológicos & Almacenamiento y respaldo & 6 meses & S/ 15 & S/ 90 & Guardar manuscritos de prueba reglas y resultados \\
+Capacitación & Cursos en línea & 2 cursos & S/ 120 & S/ 240 & Procesamiento de documentos y uso de modelos de lenguaje \\
+Materiales & Impresiones y material de oficina & Global & S/ 100 & S/ 100 & Formularios de validación y entrevistas con los editores \\
+\textbf{Total} &  &  &  & \textbf{S/ 760} & Lo paga el equipo de tesis \\
+\end{longtable}
+}
+
+Los S/ 760 los puede pagar el equipo de tesis sin apoyo externo porque ninguna de las herramientas principales como Python PyMuPDF PostgreSQL u OJS necesita licencia y porque el trabajo de desarrollo lo hacen los propios tesistas como parte de la tesis.
+
+\subsection{Viabilidad operativa}
+
+El proyecto se puede poner en marcha porque el equipo tiene acceso a la revista Innosoft de la Universidad La Salle que ya funciona sobre OJS y eso permite probar el agente con envíos reales y no solo con ejemplos armados para la tesis. Las condiciones que hacen posible la operación son estas.
+
+\begin{itemize}
+  \item La universidad da acceso a la instancia de OJS de la revista para integrar el agente y hacer las pruebas.
+  \item Los editores de la revista están dispuestos a revisar las reglas que se configuren y a decir si las sugerencias que genera el agente son correctas y útiles.
+  \item Los autores pueden entregar manuscritos de prueba y opinar sobre qué tan claras son las observaciones que reciben.
+  \item Uno de los tesistas ha trabajado como maquetador de revistas científicas y conoce de primera mano las plantillas y las directrices que el agente tiene que revisar.
+\end{itemize}
+
+La Tabla~\ref{tab:2-6} resume quiénes participan y qué aporta cada uno.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.170\textwidth}>{\raggedright\arraybackslash}p{0.244\textwidth}>{\raggedright\arraybackslash}p{0.137\textwidth}>{\raggedright\arraybackslash}p{0.342\textwidth}@{}}
+\caption{Análisis de \emph{stakeholders}}\label{tab:2-6}\\
+\toprule
+\textbf{Stakeholder} & \textbf{Interés} & \textbf{Nivel de apoyo} & \textbf{Contribución esperada} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Stakeholder} & \textbf{Interés} & \textbf{Nivel de apoyo} & \textbf{Contribución esperada} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Editores de Innosoft & Alto porque hoy pierden tiempo en revisar a mano errores de formato & Confirmado & Revisan las reglas y dicen si las sugerencias del agente son correctas y útiles \pendiente{designar al editor que participa en las Sprint Reviews} \\
+Autores de la revista & Alto porque reciben observaciones de formato más claras y más rápido & Muy probable & Entregan manuscritos de prueba y opinan sobre la claridad de las observaciones \\
+Universidad La Salle & Medio alto porque la revista procesa más artículos con el mismo equipo & Confirmado & Da acceso a la instancia de OJS y respalda el proyecto \\
+Equipo de tesis & Alto & Confirmado & Diseña desarrolla integra y evalúa el agente \\
+\end{longtable}
+}
+
+Por todo lo anterior el proyecto se puede hacer con el equipo el dinero y el acceso a la revista con los que ya se cuenta y no depende de recursos que haya que conseguir después.
+
+%
+%\section{Limitaciones}
+
+%\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.164\textwidth}>{\raggedright\arraybackslash}p{0.403\textwidth}>{\raggedright\arraybackslash}p{0.354\textwidth}@{}}
+%\caption{Limitaciones del estudio}\label{tab:2-7}\\
+%\toprule
+%\textbf{Tipo} & \textbf{Condición e impacto} & \textbf{Mitigación} \\
+%\midrule
+%\endfirsthead
+%\toprule
+%\textbf{Tipo} & \textbf{Condición e impacto} & \textbf{Mitigación} \\
+%\midrule
+%\endhead
+%\bottomrule
+%\endfoot
+%\endlastfoot
+%Metodológica / de instrumento & La extracción depende de la calidad y estructura del PDF; diseños irregulares, fuentes incrustadas, tablas complejas o baja legibilidad pueden causar omisiones. & PyMuPDF, reglas tolerantes, manuscritos heterogéneos y revisión humana del reporte. \\
+%De alcance funcional & El agente solo revisa aspectos estilísticos y de formato; no evalúa calidad científica, metodología, originalidad ni plagio, ni hace corrección ortográfica general. & El reporte es asistencia editorial; la revisión por pares y la decisión final siguen en el equipo editorial. \\
+%De muestra & La validación usa un conjunto limitado de manuscritos y de editores disponibles. & Anonimizar documentos, incluir casos variados y recomendar muestras más amplias. \\
+%Geográfica / contextual & El estudio se centra en Innosoft (manuscritos en español de tres secciones). Otras revistas, como RICCE, quedan como trabajo futuro. & Motor de reglas configurable por revista: incorporar otra revista es agregar su carpeta \texttt{rules/\allowbreak{}<revista>/\allowbreak{}}. \\
+%Temporal & La medición se realiza durante el periodo del proyecto (hasta diciembre de 2026). & Registrar versiones de reglas y prompts; sugerir estudios longitudinales. \\
+%De recursos tecnológicos & Depende de la disponibilidad de OJS, de su API y de Gemini (cuotas, latencia). & Arquitectura desacoplada, fragmentos cortos, \emph{fallback} determinístico y presupuesto mínimo. \\
+%\end{longtable}

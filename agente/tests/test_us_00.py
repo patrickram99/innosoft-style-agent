@@ -50,6 +50,9 @@ def test_repo_layout_matches_spec_section_13():
         "app/api", "app/extraction", "app/models", "app/rules/evaluators", "app/suggestion",
         "app/review", "app/ojs", "app/workers", "rules/innosoft", "rules/schema",
         "prompts/sugerencia", "specs", "tests/fixtures/pdfs", "docs", "alembic",
-        "docker-compose.yml", ".github/workflows/ci.yml", ".env.example",
+        "docker-compose.yml", ".env.example",
     ]:
         assert (ROOT / rel).exists(), rel
+    # El workflow de CI vive en la raíz del repositorio git (un nivel arriba de agente/),
+    # porque GitHub Actions solo lee .github/ desde ahí.
+    assert (ROOT / ".github/workflows/ci.yml").exists() or (ROOT.parent / ".github/workflows/ci.yml").exists()
