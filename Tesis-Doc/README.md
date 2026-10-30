@@ -13,7 +13,8 @@ winget install MiKTeX.MiKTeX      # una sola vez; aceptar la instalación autom�
 El PDF queda en `build/main.pdf` (`build/` está ignorada por git). Claude también puede compilar desde su shell Linux
 sobre este equipo para verificar (ver `CLAUDE.md`), pero ese PDF no lleva las fuentes de la clase.
 
-Verificación de referencia: el 19-oct-2026 el proyecto compiló con pdfLaTeX (TeX Live 2023) sin errores.
+Verificación de referencia: el 30-oct-2026 el proyecto compiló con pdfLaTeX (MiKTeX) sin errores ni referencias sin
+resolver, en tres pasadas directas de `pdflatex`.
 
 ## Esquema oficial ↔ archivos
 
@@ -47,6 +48,9 @@ el trabajo actual (specs, catálogo, Excel RICE), **prevalece el trabajo actual*
 | S-10 | Antecedentes | "24 documentos" | 24 seleccionados, de los cuales GS-13 duplica a GS-10: 23 estudios independientes. Se añade una síntesis con la brecha. |
 | S-11 | Abstract y portada | Ausentes | Abstract en borrador (por revisar); grado y asesor como marcadores en `main.tex`. |
 | S-12 | Formato | Google Docs | LaTeX con la clase oficial, un archivo por capítulo; numeración de tablas y figuras continua (la impone la clase). |
+| S-13 | Avance en Cap. III | Cifras congeladas solo al cierre del Sprint 6 | Excepción pedida por el usuario el 30-oct: el Capítulo III lleva un corte fechado (84 casos, 96 % de cobertura medida con `pytest-cov`, instalado aparte y fuera de `requirements.txt`). Se reemplaza al cierre del Sprint 6. |
+| S-14 | Diseño de pruebas | No existía | Nueva sección del Capítulo III que consolida los §8 y §9 de las specs. Registra una brecha: faltan casos en el borde exacto de RE-20, RE-21 y US-01. |
+| S-15 | Plan y acceso a OJS | Plan del 29-sep; "se dispone de acceso a la revista" | Sin acceso al servidor de OJS al 30-oct: el Capítulo II se corrigió y se añadió un plan ajustado **propuesto**. Falta validarlo con el asesor y pasarlo a la hoja del Excel RICE; prevalece la tabla base mientras tanto. Se corrigió además "sobre el entorno Docker": Docker sigue sin ejecutarse. |
 
 ## Pendiente de reflejar en la tesis
 
@@ -60,6 +64,4 @@ Lista que alimentan las tareas de código (paso 8 de `../agente/CLAUDE.md`). Vac
 - Las fichas citan RQ1, RQ2 y RQ3, pero la tesis formula una sola pregunta de investigación: definir las RQ o quitar
   esas referencias.
 - `ref3` (Khalifa y Albadawy) no se cita en el cuerpo; `ref29` (Kanban) quedó sin uso.
-- Faltan citas para Scrum, RICE, SDD, la documentación de OJS y la Ley N.º 29733 (listadas al final de
-  `capitulos/referencias.tex`).
 - Grado a obtener, nombre del asesor, dedicatoria y agradecimientos.
