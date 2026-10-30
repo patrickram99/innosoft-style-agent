@@ -19,52 +19,69 @@ mirar el estado del proyecto, tanto del software como del documento de tesis.
 | Decisiones vigentes y preguntas abiertas | [`agente/specs/00-producto.md` §17–§18](agente/specs/00-producto.md) · [registro de sincronización de la tesis](Tesis-Doc/README.md#registro-de-sincronización) |
 | Cómo trabaja Claude en cada parte | `CLAUDE.md` (mapa) · `agente/CLAUDE.md` (código) · `Tesis-Doc/CLAUDE.md` (tesis) |
 
-## Ahora (actualizado 19-oct-2026)
+## Ahora (actualizado 30-oct-2026)
 
-**Sprint 3 (12-oct → 23-oct).** Meta: citas y referencias IEEE detectadas y decisión técnica sobre la API de OJS.
+**Sprint 4 (26-oct → 06-nov), día 5 de 10.** El plan se ajustó porque no hay acceso al servidor de OJS. El plan ajustado es
+una propuesta: está en el Capítulo III de la tesis y falta validarlo con el asesor y pasarlo al Excel RICE.
+
+**Resumen del avance**
+
+- **Software:** sin cambios desde el Sprint 2. Hay 6 de 37 historias implementadas, 84 de 84 casos en verde en local y 96 %
+  de cobertura de líneas del código existente. Ninguna historia está verificada.
+- **Sprint 3:** no cumplió su meta. Sus 7 historias no se implementaron porque las specs siguen en `Borrador`, y el *spike*
+  de OJS no se hizo por falta de acceso.
+- **Tesis:** el Capítulo III tiene ahora un corte de avance fechado y una sección nueva de diseño de pruebas. El Capítulo II
+  ya no afirma que haya acceso a OJS. Se añadieron resumen, abstract y 7 referencias.
+- **Diseño de pruebas:** cubre niveles, técnicas, corpus, dobles de prueba y 58 casos para las 17 historias R1 pendientes:
+  52 se ejecutan en local, 4 requieren OJS y 2 requieren un editor.
 
 **Bloqueos**
 
-- Las specs del Sprint 3 (US-03, US-05, US-07, US-08, US-11, US-12, US-13) siguen en `Borrador`. Según el ciclo SDD no se
-  pueden implementar hasta que el otro developer las revise y pasen a `Aprobada`. Quedan 5 días hábiles de sprint (19 al 23 de octubre).
+- Sin acceso al servidor de OJS: el *spike*, US-02 y la publicación real de US-24 quedan a la espera. El resto se hace en
+  local, con un doble de `OjsGateway`.
+- Las 31 specs restantes siguen en `Borrador`. Según el ciclo SDD no se pueden implementar hasta que el otro developer las
+  revise y pasen a `Aprobada`.
+- La instancia de OJS de prueba que prevé US-02 T-01 usa Docker, que no está instalado.
 - La hoja de tareas del Sprint 3 aún no existe en el Excel RICE.
 - Sin cerrar: *stakeholder* editorial, corpus anotado, hosting y presupuesto de Gemini (00-producto §18).
 
 **Próximos pasos**
 
-1. Revisión cruzada y aprobación de las specs del Sprint 3 (empezar por US-05, US-07 y US-08, de las que dependen US-12 y US-13).
-2. *Spike* de la API REST de OJS 3.1.2.1 sobre la instancia de Innosoft.
-3. Tesis: resolver las marcas `\pendiente` de los capítulos I y II y validar con el asesor la sincronización S-01..S-12.
-4. Pasar US-00..US-10 de `Implementada` a `Verificada` (casilla *Verificar* de la §13) tras confirmar CI en verde.
+1. Revisión cruzada y aprobación de las specs (empezar por US-05, US-07 y US-08, de las que dependen US-12 y US-13).
+2. Integrar la rama `tesis/avance-30-oct` a `main`, que trae la corrección del CI, y agregar los casos de borde exacto de
+   RE-20, RE-21 y US-01 para pasar US-00..US-10 a `Verificada`.
+3. Implementar en el Sprint 4 las historias locales de citas y referencias, ampliando el corpus sintético.
+4. Validar con el asesor el plan ajustado y la sincronización S-01..S-15, y pasar el plan al Excel RICE.
+5. Gestionar el acceso al servidor de OJS. Si no llega antes del Sprint 6, la integración real queda como limitación declarada.
 
 <!-- AUTO:INICIO (generado por scripts/avance.py; no editar a mano) -->
 
-_Generado el 2026-10-19._
+_Generado el 2026-10-30._
 
 ### Tablero
 
 | Indicador | Valor |
 |---|---|
-| Sprint en curso | **Sprint 3** (12-oct → 23-oct): Citas y referencias IEEE detectadas; decisión técnica sobre OJS |
+| Sprint en curso | **Sprint 4** (26-oct → 06-nov): Sugerencias con Gemini anonimizadas y visibles para el editor |
 | Historias implementadas | 6 / 37 — US-00, US-01, US-04, US-06, US-09, US-10 |
 | Historias en borrador | 31 / 37 |
 | Walking skeleton ★ | 5 / 17 implementadas |
 | Reglas con evaluador | 2 de 8 declaradas en YAML · 44 en el catálogo — RE-20, RE-21 |
 | Endpoints canónicos (§8.3) | 4 / 13 — `POST /manuscripts`, `GET /manuscripts/{id}/findings`, `GET /rules`, `GET /health` |
 | Funciones de prueba | 80 en `tests/` |
-| Tesis: archivos revisados | 0 / 8 · marcas \pendiente abiertas: 14 |
+| Tesis: archivos revisados | 0 / 9 · marcas \pendiente abiertas: 12 |
 
-### Sprint 3 — historias comprometidas
+### Sprint 4 — historias comprometidas
 
 | ID | Historia | Estado spec | Fase SDD |
 |---|---|---|---|
-| [US-03](agente/specs/US-03.md) | Obtener metadatos del envío (sección, título, idioma) | Borrador | Especificar |
-| [US-05](agente/specs/US-05.md) | Detectar secciones IMRyD | Borrador | Especificar |
-| [US-07](agente/specs/US-07.md) | Extraer citas en texto [n] | Borrador | Especificar |
-| [US-08](agente/specs/US-08.md) | Extraer lista de referencias | Borrador | Especificar |
-| [US-11](agente/specs/US-11.md) | Validar figuras: pie, numeración y orden | Borrador | Especificar |
-| [US-12](agente/specs/US-12.md) | Validar citas IEEE en el texto | Borrador | Especificar |
-| [US-13](agente/specs/US-13.md) | Validar referencias IEEE (formato, orden y mínimo) | Borrador | Especificar |
+| [US-15](agente/specs/US-15.md) | Redactar sugerencia con Gemini | Borrador | Especificar |
+| [US-16](agente/specs/US-16.md) | Validar el esquema de respuesta del LLM | Borrador | Especificar |
+| [US-17](agente/specs/US-17.md) | Anonimizar el contexto antes de enviarlo al LLM | Borrador | Especificar |
+| [US-18](agente/specs/US-18.md) | Reintentos, límite de tokens y fallback determinístico | Borrador | Especificar |
+| [US-19](agente/specs/US-19.md) | Ver cola de manuscritos pendientes | Borrador | Especificar |
+| [US-20](agente/specs/US-20.md) | Ver sugerencias con su evidencia | Borrador | Especificar |
+| [US-28](agente/specs/US-28.md) | Registro de ejecución por manuscrito | Borrador | Especificar |
 
 ### Historias
 
@@ -126,8 +143,8 @@ _Generado el 2026-10-19._
 | Sprint | Fechas | Historias | Meta |
 |---|---|---|---|
 | 2 | 29-sep → 09-oct | US-00, US-01, US-04, US-09, US-06, US-10 | Walking skeleton en Docker con RE-20/RE-21 |
-| 3 ◀ en curso | 12-oct → 23-oct | US-03, US-05*, US-07, US-08*, US-11*, US-12, US-13* + spike OJS | Citas y referencias IEEE detectadas; decisión técnica sobre OJS |
-| 4 | 26-oct → 06-nov | US-17, US-15, US-16, US-18*, US-28, US-19, US-20 | Sugerencias con Gemini anonimizadas y visibles para el editor |
+| 3 | 12-oct → 23-oct | US-03, US-05*, US-07, US-08*, US-11*, US-12, US-13* + spike OJS | Citas y referencias IEEE detectadas; decisión técnica sobre OJS |
+| 4 ◀ en curso | 26-oct → 06-nov | US-17, US-15, US-16, US-18*, US-28, US-19, US-20 | Sugerencias con Gemini anonimizadas y visibles para el editor |
 | 5 | 09-nov → 20-nov | US-21, US-24, US-02 | Flujo completo: OJS → agente → editor → comentario en OJS |
 | 6 | 23-nov → 04-dic | Sin historias nuevas | Buffer, evaluación (precisión, recall, F1, aceptación), manuales, tesis |
 
@@ -135,13 +152,14 @@ _Generado el 2026-10-19._
 
 | Parte | Archivo | Estado | Actualizado | \pendiente |
 |---|---|---|---|---|
-| Preliminares (dedicatoria, siglas, resumen, abstract) | [Tesis-Doc/capitulos/00-preliminares.tex](Tesis-Doc/capitulos/00-preliminares.tex) | borrador | 2026-10-19 | 3 |
-| Capítulo I – Problemática del proyecto | [Tesis-Doc/capitulos/01-problematica.tex](Tesis-Doc/capitulos/01-problematica.tex) | borrador | 2026-10-19 | 2 |
-| Capítulo II – Planteamiento del proyecto | [Tesis-Doc/capitulos/02-planteamiento.tex](Tesis-Doc/capitulos/02-planteamiento.tex) | borrador | 2026-10-19 | 5 |
-| Capítulo III – Metodología de desarrollo | [Tesis-Doc/capitulos/03-metodologia.tex](Tesis-Doc/capitulos/03-metodologia.tex) | borrador | 2026-10-19 | 3 |
+| Preliminares (dedicatoria, siglas, resumen, abstract) | [Tesis-Doc/capitulos/00-preliminares.tex](Tesis-Doc/capitulos/00-preliminares.tex) | borrador | 2026-10-30 | 4 |
+| Capítulo I – Problemática del proyecto | [Tesis-Doc/capitulos/01-problematica.tex](Tesis-Doc/capitulos/01-problematica.tex) | borrador | 2026-10-19 |  |
+| Capítulo II – Planteamiento del proyecto | [Tesis-Doc/capitulos/02-planteamiento.tex](Tesis-Doc/capitulos/02-planteamiento.tex) | borrador | 2026-10-30 | 2 |
+| Capítulo III – Metodología de desarrollo | [Tesis-Doc/capitulos/03-metodologia.tex](Tesis-Doc/capitulos/03-metodologia.tex) | borrador | 2026-10-30 | 3 |
 | Conclusiones | [Tesis-Doc/capitulos/04-conclusiones.tex](Tesis-Doc/capitulos/04-conclusiones.tex) | pendiente | 2026-10-19 | 1 |
-| Referencias | [Tesis-Doc/capitulos/referencias.tex](Tesis-Doc/capitulos/referencias.tex) | borrador | 2026-10-19 |  |
-| Anexo A – Fichas de lectura crítica | [Tesis-Doc/anexos/A-fichas-lectura.tex](Tesis-Doc/anexos/A-fichas-lectura.tex) | borrador | 2026-10-19 |  |
-| Anexo B – Matriz de trazabilidad | [Tesis-Doc/anexos/B-matriz-trazabilidad.tex](Tesis-Doc/anexos/B-matriz-trazabilidad.tex) | borrador | 2026-10-19 |  |
+| Referencias | [Tesis-Doc/capitulos/referencias.tex](Tesis-Doc/capitulos/referencias.tex) | borrador | 2026-10-30 |  |
+| Anexo A – Ficha de búsqueda | [Tesis-Doc/anexos/A-ficha-busqueda.tex](Tesis-Doc/anexos/A-ficha-busqueda.tex) | borrador | 2026-10-19 | 2 |
+| Anexo A – Fichas de lectura crítica | [Tesis-Doc/anexos/fichas-lectura.tex](Tesis-Doc/anexos/fichas-lectura.tex) | no incluido | 2026-10-19 |  |
+| Anexo B – Matriz de trazabilidad | [Tesis-Doc/anexos/matriz-trazabilidad.tex](Tesis-Doc/anexos/matriz-trazabilidad.tex) | borrador | 2026-10-19 |  |
 
 <!-- AUTO:FIN -->

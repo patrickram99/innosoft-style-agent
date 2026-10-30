@@ -1,6 +1,6 @@
 % titulo: Preliminares (dedicatoria, siglas, resumen, abstract)
 % estado: borrador
-% actualizado: 2026-10-19
+% actualizado: 2026-10-30
 % La portada se llena en main.tex (\titulo, \autor, ...).
 
 \begin{dedicatoria}
@@ -18,6 +18,7 @@
   \sigla{CI}{Continuous Integration (integración continua)}
   \sigla{DLA}{Document Layout Analysis (análisis de la disposición del documento)}
   \sigla{DOI}{Digital Object Identifier}
+  \sigla{E2E}{End-to-End (de extremo a extremo)}
   \sigla{IEEE}{Institute of Electrical and Electronics Engineers}
   \sigla{IMRyD}{Introducción, Métodos, Resultados y Discusión}
   \sigla{LLM}{Large Language Model (modelo de lenguaje de gran tamaño)}
@@ -39,11 +40,15 @@
 \indicefiguras
 
 \begin{resumen}
+La revisión estilística de los manuscritos que llegan a las revistas científicas gestionadas con Open Journal Systems (OJS) consume tiempo editorial en observaciones menores y repetitivas. Esta tesis propone un agente de inteligencia artificial, con la revista \emph{Innovación y Software} (Innosoft) de la Universidad La Salle como caso de estudio, que analiza el manuscrito en PDF, detecta incumplimientos de las normas editoriales y redacta sugerencias para que un editor las apruebe antes de que lleguen al autor. Un motor de reglas determinísticas decide qué es un incumplimiento y el modelo de lenguaje solo redacta. El proyecto sigue un desarrollo iterativo con Scrum, priorización RICE y Spec-Driven Development. El diseño de pruebas combina pruebas unitarias, por regla y de integración con un corpus sintético, y usa dobles de prueba para OJS y Gemini mientras no estén disponibles. La evaluación medirá precisión, recall, aceptación por parte de los editores y tiempo de análisis.
+
+\pendiente{actualizar con los resultados de la evaluación al cierre del Sprint 6.}
 \end{resumen}
 
 \begin{abstract}
-\pendiente{revisar la traducción}
+Stylistic review of manuscripts submitted to scientific journals managed with Open Journal Systems (OJS) takes up editorial time with minor, repetitive observations. This thesis proposes an artificial intelligence agent, using the journal \emph{Innovación y Software} (Innosoft) of Universidad La Salle as a case study, that analyzes the manuscript in PDF format, detects violations of the editorial guidelines, and drafts suggestions for an editor to approve before they reach the author. A deterministic rule engine decides what counts as a violation, and the language model only writes the text. The project follows an iterative process with Scrum, RICE prioritization, and Spec-Driven Development. The test design combines unit, per-rule, and integration tests on a synthetic corpus, and uses test doubles for OJS and Gemini while they are unavailable. The evaluation will measure precision, recall, editor acceptance, and analysis time.
 
+\pendiente{revisar la traducción y actualizar con los resultados al cierre del Sprint 6.}
 
 \textbf{Keywords:} artificial intelligence, Open Journal Systems, editorial review, academic manuscripts, stylistic
 suggestions.

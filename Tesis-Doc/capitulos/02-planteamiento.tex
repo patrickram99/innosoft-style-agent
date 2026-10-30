@@ -1,6 +1,6 @@
 % titulo: Capítulo II – Planteamiento del proyecto
 % estado: borrador
-% actualizado: 2026-10-19
+% actualizado: 2026-10-30
 % Sincronizado con specs/00-producto.md v1.0 el 19-oct-2026 (ver Tesis-Doc/README.md, registro S-nn).
 
 \chapter{Planteamiento del Proyecto}\label{cap:planteamiento}
@@ -34,9 +34,9 @@ El proyecto se enmarca en la gestión editorial de revistas científicas, espec�
 \subsection{Metodología de desarrollo}
 
 \begin{itemize}
-  \item \textbf{Scrum:} metodologia agil de con iteraciones (\emph{sprints}) con retrospectiva al cierre de cada una. \pendiente{cita de la Guía de Scrum}
-  \item \textbf{RICE:} metodo de priorizacion para ordenar el backlog en base a \emph{Reach $\times$ Impact $\times$ Confidence / Effort}. \pendiente{cita del método RICE}
-  \item \textbf{Spec-Driven Development (SDD):} tecnica en la que todas las funcionalidades tienen una especificación revisada con entradas, salidas, reglas, excepciones y criterios de aceptación antes de escribir código; las pruebas se derivan de esos criterios. \pendiente{cita sobre SDD}
+  \item \textbf{Scrum:} metodología ágil con iteraciones (\emph{sprints}) y retrospectiva al cierre de cada una~\cite{ref30}.
+  \item \textbf{RICE:} método de priorización para ordenar el backlog en base a \emph{Reach $\times$ Impact $\times$ Confidence / Effort}~\cite{ref31}.
+  \item \textbf{Spec-Driven Development (SDD):} técnica en la que todas las funcionalidades tienen una especificación revisada con entradas, salidas, reglas, excepciones y criterios de aceptación antes de escribir código; las pruebas se derivan de esos criterios~\cite{ref32}.
 \end{itemize}
 
 \section{Objetivos del proyecto}
@@ -68,7 +68,7 @@ La viabilidad se analiza en tres dimensiones: técnica, económica y operativa.
 
 \subsection{Viabilidad técnica}
 
-El proyecto es técnicamente viable porque se cuenta con los recursos tecnológicos, humanos y metodológicos para construir el agente, integrarlo con OJS y validarlo con manuscritos reales. El desarrollo se realiza en equipos personales, ya que el procesamiento más exigente de IA se delega a la API de Gemini. Además, se dispone de acceso a la revista Innosoft de la Universidad La Salle para probar la solución en un entorno editorial concreto.
+El proyecto es técnicamente viable porque se cuenta con los recursos tecnológicos, humanos y metodológicos para construir el agente, integrarlo con OJS y validarlo con manuscritos reales. El desarrollo se realiza en equipos personales, ya que el procesamiento más exigente de IA se delega a la API de Gemini. La revista Innosoft de la Universidad La Salle es el entorno editorial concreto de la solución. Al 30 de octubre de 2026 el equipo aún no tiene acceso a su servidor de OJS, por lo que la integración real está pendiente y el resto del producto se desarrolla y se prueba en local.
 
 {\small
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.153\textwidth}>{\raggedright\arraybackslash}p{0.203\textwidth}>{\raggedright\arraybackslash}p{0.228\textwidth}>{\raggedright\arraybackslash}p{0.311\textwidth}@{}}
@@ -85,8 +85,8 @@ El proyecto es técnicamente viable porque se cuenta con los recursos tecnológi
 \endfoot
 \endlastfoot
 Equipo de desarrollo & Propiedad del equipo & Procesador i5/i7, 8--16 GB de RAM, SSD; Windows & Suficiente para desarrollo backend en Python, procesamiento de PDF y pruebas locales. La IA se delega a Gemini. \\
-Instancia OJS & Revista Innosoft (Universidad La Salle) & OJS 3.1.2.1 sobre Apache 2.4, PHP y MySQL 5.7 & Permite integrar y validar el agente en un entorno editorial real. \\
-Entorno de despliegue y pruebas & Docker Compose en equipo local; servidor por definir & Contenedores \texttt{api} (FastAPI) y \texttt{db} (PostgreSQL 16) & Reproducible en cualquier equipo. \pendiente{hosting definitivo — universidad o nube (00-producto §18)} \\
+Instancia OJS & Revista Innosoft (Universidad La Salle); acceso al servidor pendiente al 30-oct-2026 & OJS 3.1.2.1 sobre Apache 2.4, PHP y MySQL 5.7 & Permite integrar y validar el agente en un entorno editorial real. Mientras tanto se usa un doble de prueba de \texttt{OjsGateway}. \\
+Entorno de despliegue y pruebas & Pruebas en local con SQLite; Docker Compose preparado, sin ejecutar; servidor por definir & Contenedores \texttt{api} (FastAPI) y \texttt{db} (PostgreSQL 16) & Reproducible en cualquier equipo. \pendiente{hosting definitivo — universidad o nube (00-producto §18)} \\
 \end{longtable}
 }
 
@@ -131,7 +131,7 @@ Docker, Git/GitHub & Gratuito & Contenedores, control de versiones y trabajo col
 Desarrollo backend en Python & Intermedio-avanzado & Proyectos incrementales y documentación oficial & Asesoría docente, Stack Overflow, GitHub \\
 Procesamiento de PDF y análisis documental & Básico-intermedio & Práctica con PyMuPDF y corpus sintético de prueba & Documentación de la librería y antecedentes \\
 LLM e IA generativa & Intermedio & Experimentación iterativa con prompts versionados & Docentes especializados en IA, comunidades \\
-Integración con OJS & Básico-intermedio & Prueba técnica (\emph{spike}) de la API de OJS en el Sprint 3 & Documentación de OJS e instancia de Innosoft \\
+Integración con OJS & Básico-intermedio & Prueba técnica (\emph{spike}) de la API de OJS, reprogramada hasta tener acceso al servidor & Documentación de OJS~\cite{ref35} e instancia de Innosoft \\
 Maquetación de journals & Avanzado & Experiencia previa del tesista como maquetador & Conocimiento directo de plantillas y directrices \\
 \end{longtable}
 }
@@ -153,6 +153,8 @@ Maquetación de journals & Avanzado & Experiencia previa del tesista como maquet
 Variabilidad en la estructura y calidad de los PDF & Alta & Medio & PyMuPDF, reglas tolerantes a variaciones, corpus sintético y manuscritos heterogéneos; PDFs sin texto se rechazan de forma controlada (ALT-01). \\
 Límites de los planes gratuitos de Gemini & Media & Medio & Fragmentos $\leq$ 600 caracteres, reintentos con \emph{backoff} y \emph{fallback} determinístico con el mensaje de la regla (US-18). \\
 Cambios o limitaciones en la API/plugins de OJS & Media & Alto & Diseño desacoplado (\texttt{OjsGateway}); si el plugin se retrasa, el análisis se dispara manualmente con \texttt{POST /\allowbreak{}manuscripts}. \\
+Sin acceso al servidor de OJS & Ocurrió & Alto & Riesgo materializado al 30-oct-2026. Se desarrolla en local con un doble de \texttt{OjsGateway} y el análisis manual; si el acceso no llega, la integración real queda como limitación declarada. \\
+Especificaciones sin aprobar & Ocurrió & Alto & Riesgo materializado en el Sprint 3. Revisión cruzada durante el Sprint 4 y aplicación de los recortes del plan (Sección~\ref{sec:avance}). \\
 Precisión insuficiente de las sugerencias & Media & Alto & El motor de reglas decide y el LLM solo redacta; validación del esquema de respuesta y revisión humana obligatoria. \\
 \end{longtable}
 }
@@ -196,10 +198,10 @@ Los S/ 760 los puede pagar el equipo de tesis sin apoyo externo porque ninguna d
 
 \subsection{Viabilidad operativa}
 
-El proyecto se puede poner en marcha porque el equipo tiene acceso a la revista Innosoft de la Universidad La Salle que ya funciona sobre OJS y eso permite probar el agente con envíos reales y no solo con ejemplos armados para la tesis. Las condiciones que hacen posible la operación son estas.
+El proyecto se puede poner en marcha porque la revista Innosoft de la Universidad La Salle ya funciona sobre OJS y eso permite orientar el agente a envíos reales y no solo a ejemplos armados para la tesis. Las condiciones que hacen posible la operación son estas.
 
 \begin{itemize}
-  \item La universidad da acceso a la instancia de OJS de la revista para integrar el agente y hacer las pruebas.
+  \item La universidad da acceso a la instancia de OJS de la revista para integrar el agente y hacer las pruebas. Esta condición sigue pendiente al 30 de octubre de 2026.
   \item Los editores de la revista están dispuestos a revisar las reglas que se configuren y a decir si las sugerencias que genera el agente son correctas y útiles.
   \item Los autores pueden entregar manuscritos de prueba y opinar sobre qué tan claras son las observaciones que reciben.
   \item Uno de los tesistas ha trabajado como maquetador de revistas científicas y conoce de primera mano las plantillas y las directrices que el agente tiene que revisar.
@@ -223,12 +225,12 @@ La Tabla~\ref{tab:2-6} resume quiénes participan y qué aporta cada uno.
 \endlastfoot
 Editores de Innosoft & Alto porque hoy pierden tiempo en revisar a mano errores de formato & Confirmado & Revisan las reglas y dicen si las sugerencias del agente son correctas y útiles \pendiente{designar al editor que participa en las Sprint Reviews} \\
 Autores de la revista & Alto porque reciben observaciones de formato más claras y más rápido & Muy probable & Entregan manuscritos de prueba y opinan sobre la claridad de las observaciones \\
-Universidad La Salle & Medio alto porque la revista procesa más artículos con el mismo equipo & Confirmado & Da acceso a la instancia de OJS y respalda el proyecto \\
+Universidad La Salle & Medio alto porque la revista procesa más artículos con el mismo equipo & Confirmado; acceso a OJS pendiente & Da acceso a la instancia de OJS y respalda el proyecto \\
 Equipo de tesis & Alto & Confirmado & Diseña desarrolla integra y evalúa el agente \\
 \end{longtable}
 }
 
-Por todo lo anterior el proyecto se puede hacer con el equipo el dinero y el acceso a la revista con los que ya se cuenta y no depende de recursos que haya que conseguir después.
+Por todo lo anterior el proyecto se puede hacer con el equipo y el dinero con los que ya se cuenta. La única dependencia externa sin resolver es el acceso al servidor de OJS. Esa dependencia afecta a la integración real, pero no al desarrollo ni a la evaluación en local del agente.
 
 %
 %\section{Limitaciones}

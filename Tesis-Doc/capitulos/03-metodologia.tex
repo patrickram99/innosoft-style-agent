@@ -1,7 +1,8 @@
 % titulo: Capítulo III – Metodología de desarrollo
 % estado: borrador
-% actualizado: 2026-10-19
-% Sincronizado con specs/00-producto.md v1.0 el 19-oct-2026 (ver Tesis-Doc/README.md, registro S-nn).
+% actualizado: 2026-10-30
+% Sincronizado con specs/00-producto.md v1.0 el 19-oct-2026; corte de avance y diseño de pruebas del 30-oct-2026
+% (ver Tesis-Doc/README.md, registro S-13 a S-15).
 
 \chapter{Metodología de Desarrollo}\label{cap:metodologia}
 
@@ -211,8 +212,8 @@ El Sprint 1 que fue del 14 al 25 de septiembre se usó por completo en escribir 
 \endlastfoot
 1 & 14-sep $\rightarrow$ 25-sep & Catálogo, RICE, diagramas, 00-producto, formato-reglas y specs de las 37 historias & Especificación y diseño \\
 2 & 29-sep $\rightarrow$ 09-oct & US-00, US-01, US-04, US-09, US-06, US-10 & \emph{Walking skeleton} en Docker con RE-20/RE-21 \\
-3 & 12-oct $\rightarrow$ 23-oct & US-03, US-05\textbackslash\{\}\emph{, US-07, US-08\textbackslash\{\}}, US-11\textbackslash\{\}\emph{, US-12, US-13\textbackslash\{\}} + \emph{spike} OJS & Citas y referencias IEEE detectadas; decisión técnica sobre OJS \\
-4 & 26-oct $\rightarrow$ 06-nov & US-17, US-15, US-16, US-18\textbackslash\{\}*, US-28, US-19, US-20 & Sugerencias con Gemini anonimizadas y visibles para el editor \\
+3 & 12-oct $\rightarrow$ 23-oct & US-03, US-05*, US-07, US-08*, US-11*, US-12, US-13* + \emph{spike} OJS & Citas y referencias IEEE detectadas; decisión técnica sobre OJS \\
+4 & 26-oct $\rightarrow$ 06-nov & US-17, US-15, US-16, US-18*, US-28, US-19, US-20 & Sugerencias con Gemini anonimizadas y visibles para el editor \\
 5 & 09-nov $\rightarrow$ 20-nov & US-21, US-24, US-02 & El flujo completo funciona desde OJS hasta el comentario que ve el autor \\
 6 & 23-nov $\rightarrow$ 04-dic & Sin historias nuevas & Evaluación (precisión, recall, F1, aceptación), manuales y tesis \\
 \end{longtable}
@@ -228,7 +229,7 @@ Las historias marcadas con asterisco entran al producto mínimo con un alcance m
   \item US-18 hace reintentos pero no controla el presupuesto de tokens.
 \end{itemize}
 
-Si el proyecto vuelve a atrasarse se recorta en este orden. Primero sale el plugin de OJS de US-02 y el análisis se dispara a mano. Después US-11 pasa completa a la entrega R2. Después US-13 queda solo con RE-44 y RE-46. Y por último la evidencia que muestra US-20 queda solo en texto sin miniaturas.
+Si el proyecto vuelve a atrasarse se recorta en este orden. Primero sale el plugin de OJS de US-02 y el análisis se dispara a mano. Después US-11 pasa completa a la entrega R2. Después US-13 queda solo con RE-44 y RE-46. Y por último la evidencia que muestra US-20 queda solo en texto sin miniaturas. La Tabla~\ref{tab:3-2} y la Figura~\ref{fig:gantt} son la línea base del 29 de septiembre. El primer recorte se activó el 30 de octubre por la falta de acceso a OJS, y el plan vigente se detalla en la Sección~\ref{sec:avance}.
 
 \begin{figure}[H]
   \centering
@@ -281,13 +282,419 @@ Metodológicos & Excel RICE, specs SDD, Sprint Backlog, encuestas de validación
 \end{longtable}
 }
 
-\section{Avance de la implementación}
+\section{Avance de la implementación}\label{sec:avance}
 
-El avance se registra por historia al cierre de cada sprint, con el estado de su especificación, sus pruebas automatizadas y su commit en el repositorio. Al cierre del Sprint 2 (9 de octubre de 2026) quedó implementado el \emph{walking skeleton} de extracción y validación: recepción de PDF por API con idempotencia (US-01), extracción de texto (US-04) y de figuras con DPI efectivo (US-06), carga de reglas YAML (US-09) y validación de figuras RE-20 y RE-21 con consulta de hallazgos (US-10), sobre el entorno Docker con integración continua (US-00): 6 de 37 historias, 2 de 44 reglas y 4 de 13 endpoints canónicos, con 84 casos de prueba en verde.
+El avance se registra por historia al cierre de cada sprint, con el estado de su especificación, sus pruebas automatizadas y su commit en el repositorio. Esta sección es un corte con fecha 30 de octubre de 2026, quinto día hábil del Sprint 4. Las cifras son las de ese día y se reemplazan por las finales al cierre del Sprint 6. Solo se cuenta como avance lo que tiene evidencia en el repositorio.
+
+\subsection{Estado por sprint}
+
+Al cierre del Sprint 2 quedó implementado el \emph{walking skeleton} de extracción y validación: recepción de PDF por API con idempotencia (US-01), extracción de texto (US-04) y de figuras con DPI efectivo (US-06), carga de reglas YAML (US-09) y validación de figuras RE-20 y RE-21 con consulta de hallazgos (US-10). La base del entorno también quedó lista (US-00). Las pruebas corren con SQLite, sin Docker. Los archivos de Docker Compose existen en el repositorio, pero aún no se han ejecutado porque el equipo de desarrollo no tiene Docker instalado. Por eso el criterio AC-01 de US-00 sigue sin verificar.
+
+El Sprint 3 terminó sin cumplir su meta. Ninguna de sus siete historias se implementó, porque sus especificaciones siguen en borrador y el ciclo SDD no permite programar sin una especificación aprobada. El \emph{spike} de la API de OJS tampoco se hizo, porque el equipo no tiene acceso al servidor de la revista. En ese periodo el trabajo fue documental: se reorganizó el repositorio y la tesis se migró a LaTeX. La Tabla~\ref{tab:3-4} resume la situación de cada sprint.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.095\textwidth}>{\raggedright\arraybackslash}p{0.275\textwidth}>{\raggedright\arraybackslash}p{0.135\textwidth}>{\raggedright\arraybackslash}p{0.395\textwidth}@{}}
+\caption{Estado de cada sprint al 30 de octubre de 2026}\label{tab:3-4}\\
+\toprule
+\textbf{Sprint} & \textbf{Meta planificada} & \textbf{Estado} & \textbf{Evidencia} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Sprint} & \textbf{Meta planificada} & \textbf{Estado} & \textbf{Evidencia} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+1 (14-sep a 25-sep) & Especificación y diseño & Cumplido & Catálogo, RICE, diagramas y 37 especificaciones \\
+2 (29-sep a 09-oct) & \emph{Walking skeleton} en Docker con RE-20 y RE-21 & Cumplido en parte & 6 historias implementadas y 84 casos de prueba en verde; Docker sin ejecutar \\
+3 (12-oct a 23-oct) & Citas y referencias IEEE; decisión técnica sobre OJS & No cumplido & 0 de 7 historias; \emph{spike} sin hacer; repositorio reorganizado y tesis en LaTeX \\
+4 (26-oct a 06-nov) & Sugerencias con Gemini visibles para el editor & En curso, replanificado & Diseño de pruebas (Sección~\ref{sec:pruebas}) y plan ajustado (Tabla~\ref{tab:3-7}) \\
+5 (09-nov a 20-nov) & Flujo completo hasta el comentario en OJS & Por iniciar & Depende del acceso a OJS para su parte real \\
+6 (23-nov a 04-dic) & Evaluación, manuales y tesis & Por iniciar & --- \\
+\end{longtable}
+}
+
+\subsection{Indicadores al corte}
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.470\textwidth}>{\raggedright\arraybackslash}p{0.170\textwidth}>{\raggedright\arraybackslash}p{0.300\textwidth}@{}}
+\caption{Indicadores de avance al 30 de octubre de 2026}\label{tab:3-5}\\
+\toprule
+\textbf{Indicador} & \textbf{Valor} & \textbf{Observación} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Indicador} & \textbf{Valor} & \textbf{Observación} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Historias implementadas & 6 de 37 & 6 de las 23 de la entrega R1 \\
+Historias verificadas & 0 de 37 & Falta confirmar la integración continua en verde \\
+Historias del \emph{walking skeleton} & 5 de 17 & US-01, US-04, US-06, US-09, US-10 \\
+Especificaciones aprobadas sin implementar & 0 & Las 31 restantes siguen en borrador \\
+Reglas con evaluador & 2 & De 8 declaradas en YAML y 44 del catálogo \\
+Endpoints canónicos & 4 de 13 & \texttt{POST /\allowbreak{}manuscripts}, \texttt{GET /\allowbreak{}manuscripts/\allowbreak{}\{id\}/\allowbreak{}findings}, \texttt{GET /\allowbreak{}rules}, \texttt{GET /\allowbreak{}health} \\
+Casos de prueba automatizados & 84 de 84 en verde & Ejecución local del 30 de octubre \\
+Cobertura de líneas del código actual & 96 \% & 878 de 912 sentencias \\
+\end{longtable}
+}
+
+La cobertura mide solo el código que existe hoy. Los módulos de sugerencias, revisión y OJS todavía están vacíos, de modo que esa cifra no dice nada sobre ellos.
+
+\subsection{Ajuste del plan por la falta de acceso a OJS}
+
+A la fecha de corte el equipo no tiene acceso al servidor de OJS de la revista. Esto afecta solo a una parte del trabajo. La arquitectura separa a OJS detrás de la interfaz \texttt{OjsGateway} y el análisis se puede disparar directamente con \texttt{POST /\allowbreak{}manuscripts}, así que el resto del producto se puede construir y probar en local. La Tabla~\ref{tab:3-6} separa lo que se puede hacer en local de lo que queda a la espera.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.190\textwidth}>{\raggedright\arraybackslash}p{0.340\textwidth}>{\raggedright\arraybackslash}p{0.410\textwidth}@{}}
+\caption{Trabajo según su dependencia del servidor de OJS}\label{tab:3-6}\\
+\toprule
+\textbf{Modo} & \textbf{Trabajo} & \textbf{Condición} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Modo} & \textbf{Trabajo} & \textbf{Condición} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+En local & US-03, US-05*, US-07, US-08*, US-11*, US-12, US-13*, US-28, US-19, US-20, US-21 & Requiere aprobar antes cada especificación \\
+En local con doble de Gemini & US-15, US-16, US-17, US-18* & Si no hay cuenta de Gemini, se prueba con un doble de \texttt{LlmClient} y el \emph{fallback} determinístico \\
+En local con doble de OJS & US-24, salvo la publicación real & Implementación falsa de \texttt{OjsGateway}; no demuestra que OJS acepte la discusión \\
+A la espera de acceso & \emph{Spike} de la API, US-02 y publicación real de US-24 & Primer recorte del plan: el análisis se dispara a mano con \texttt{POST /\allowbreak{}manuscripts} \\
+\end{longtable}
+}
+
+Con esa separación, lo pendiente del Sprint 3 pasa al Sprint 4 y lo pendiente del Sprint 4 pasa al Sprint 5. La Tabla~\ref{tab:3-7} y la Figura~\ref{fig:gantt-ajustado} muestran el plan resultante. Las fechas de los sprints no cambian. Es una propuesta del equipo, y falta validarla con el asesor y trasladarla a la hoja de planificación del Excel RICE.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.075\textwidth}>{\raggedright\arraybackslash}p{0.125\textwidth}>{\raggedright\arraybackslash}p{0.395\textwidth}>{\raggedright\arraybackslash}p{0.305\textwidth}@{}}
+\caption{Plan ajustado al 30 de octubre de 2026 (propuesta por validar)}\label{tab:3-7}\\
+\toprule
+\textbf{Sprint} & \textbf{Fechas} & \textbf{Trabajo} & \textbf{Entregable verificable} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Sprint} & \textbf{Fechas} & \textbf{Trabajo} & \textbf{Entregable verificable} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+4 & 26-oct $\rightarrow$ 06-nov & Diseño de pruebas; revisión cruzada de especificaciones; US-03, US-05*, US-07, US-08*, US-11*, US-12, US-13*; pasar US-00 a US-10 a verificadas & Citas y referencias IEEE detectadas en PDFs sintéticos, con integración continua en verde \\
+5 & 09-nov $\rightarrow$ 20-nov & US-17, US-15, US-16, US-18*, US-28, US-19, US-20, US-21 y US-24 con doble de OJS & Flujo local completo: PDF, hallazgos, sugerencias, decisión del editor y comentario simulado \\
+6 & 23-nov $\rightarrow$ 04-dic & Sin historias nuevas: evaluación en local, manuales y tesis; integración real solo si hay acceso & Métricas de la Tabla~\ref{tab:3-3} y tesis completa \\
+\end{longtable}
+}
+
+El plan ajustado concentra 16 historias en dos sprints, frente a las 6 del Sprint 2, y por eso es el principal riesgo de cronograma. Si la revisión cruzada se retrasa, se aplican los recortes siguientes en el orden ya definido: US-11 a la entrega R2, US-13 solo con RE-44 y RE-46, y US-20 solo con evidencia en texto. Si el acceso a OJS no llega antes del Sprint 6, el objetivo OE1 se valida con el flujo local y la integración real queda como limitación declarada de la tesis.
+
+\begin{figure}[H]
+  \centering
+  \begin{ganttchart}[
+      x unit=1.2mm, y unit chart=0.65cm, y unit title=0.55cm,
+      hgrid, vgrid={*{6}{draw=none}, dotted}, canvas/.style={draw=gray!50},
+      time slot format=isodate,
+      title/.style={fill=gray!15, draw=gray!50},
+      title label font=\scriptsize,
+      bar/.style={fill=gray!60, draw=gray!80},
+      bar label font=\footnotesize,
+      bar height=0.55,
+      milestone/.style={fill=black, draw=black},
+      milestone label font=\footnotesize]{2026-09-14}{2026-12-04}
+    \gantttitle{Sep}{17}\gantttitle{Oct}{31}\gantttitle{Nov}{30}\gantttitle{Dic}{4} \\
+    \ganttbar{S1 Especificación y diseño}{2026-09-14}{2026-09-25} \\
+    \ganttbar{S2 Walking skeleton}{2026-09-29}{2026-10-09} \\
+    \ganttbar[bar/.append style={fill=white}]{S3 Sin historias cerradas}{2026-10-12}{2026-10-23} \\
+    \ganttbar{S4 Pruebas, citas y referencias}{2026-10-26}{2026-11-06} \\
+    \ganttbar{S5 Gemini, editor y OJS simulado}{2026-11-09}{2026-11-20} \\
+    \ganttbar{S6 Evaluación, manuales y tesis}{2026-11-23}{2026-12-04} \\
+    \ganttbar[bar/.append style={fill=white, dashed}]{OJS real (sujeto a acceso)}{2026-11-23}{2026-12-04} \\
+    \ganttmilestone{Hitos: corte (30-oct), flujo local (20-nov)}{2026-10-30}
+    \ganttmilestone{}{2026-11-20}
+  \end{ganttchart}
+  \caption{Diagrama de Gantt del plan ajustado al 30 de octubre de 2026}
+  \label{fig:gantt-ajustado}
+\end{figure}
 
 \pendiente{al cierre del Sprint 6, actualizar las cifras finales y describir lo construido en los sprints 3 a 6.}
 
-\section{Validación y evaluación}
+\section{Diseño de pruebas}\label{sec:pruebas}
+
+Las pruebas no se diseñan aparte de los requisitos. En el ciclo SDD, cada especificación de historia incluye criterios de aceptación (sección 8) y un plan de pruebas con casos \texttt{T-nn} (sección 9), y los casos se escriben a partir de ellos. Esta sección reúne esos planes en una sola estrategia y fija lo que ninguna historia define por sí sola: los niveles, las técnicas, el entorno, los dobles de prueba y los criterios para dar algo por probado.
+
+El diseño se apoya en el programa de estudios ISTQB~\cite{ref33} para las técnicas de caja negra y en la pirámide de pruebas de Cohn~\cite{ref34} para repartir el esfuerzo: muchas pruebas rápidas abajo y pocas de extremo a extremo arriba.
+
+\subsection{Objetivos y alcance}
+
+Las pruebas buscan responder cuatro preguntas.
+
+\begin{itemize}
+  \item Si cada historia hace lo que dice su especificación.
+  \item Si cada regla editorial detecta lo que debe y no marca lo que cumple.
+  \item Si el sistema falla de forma controlada, sin perder el manuscrito.
+  \item Si se cumplen las garantías que no se pueden negociar: la revisión humana y la protección de datos personales.
+\end{itemize}
+
+Quedan fuera la calidad científica de los manuscritos, que no es parte del producto, y las pruebas contra el servidor real de OJS mientras no exista acceso. La calidad de las sugerencias frente a un corpus anotado se trata como evaluación en la Sección~\ref{sec:evaluacion}.
+
+\subsection{Niveles y tipos de prueba}
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.145\textwidth}>{\raggedright\arraybackslash}p{0.310\textwidth}>{\raggedright\arraybackslash}p{0.275\textwidth}>{\raggedright\arraybackslash}p{0.170\textwidth}@{}}
+\caption{Niveles y tipos de prueba}\label{tab:3-8}\\
+\toprule
+\textbf{Nivel} & \textbf{Qué verifica} & \textbf{Cómo se ejecuta} & \textbf{Estado} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Nivel} & \textbf{Qué verifica} & \textbf{Cómo se ejecuta} & \textbf{Estado} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Unitaria & Una función o clase aislada: cálculo de DPI, firma del PDF, cargador de reglas & Pytest en \texttt{tests/\allowbreak{}test\_\allowbreak{}us\_\allowbreak{}NN.\allowbreak{}py} & En uso \\
+Por regla & Cada regla tiene un caso que cumple y uno que incumple (\texttt{formato-\allowbreak{}reglas.\allowbreak{}md} §14) & Pytest en \texttt{tests/\allowbreak{}rules/\allowbreak{}test\_\allowbreak{}RE-nn.\allowbreak{}py}, con una prueba que falla si falta un archivo & En uso \\
+Integración & API, base de datos, extracción y motor funcionando juntos & \texttt{TestClient} de FastAPI, SQLite con migraciones Alembic y corpus sintético & En uso \\
+Extremo a extremo (E2E) local & Flujo completo con OJS y Gemini simulados & Pytest con dobles; guiones \texttt{demo.\allowbreak{}ps1} y \texttt{probar.\allowbreak{}ps1} para la parte manual & Parcial; se completa en el Sprint 5 \\
+Rendimiento & Tiempos límite: 30 páginas en menos de 10 s (US-04) y 15 páginas en menos de 3 min (RNF-03) & Prueba cronometrada y medición en \texttt{runs} (US-28) & Parcial \\
+Privacidad & Que ningún dato personal llegue a Gemini & Búsqueda de datos personales en \texttt{llm\_\allowbreak{}payloads} (US-17) & Diseñada \\
+Integración con OJS & Hook del plugin y publicación real & OJS 3.1.2.1 de prueba (US-02 T-01, US-24 T-01) & Bloqueada \\
+Aceptación & Comprensión y utilidad para un editor real & Revisión manual (US-15 T-03, US-20 T-03) & Diseñada; requiere editor \\
+\end{longtable}
+}
+
+\subsection{Técnicas de diseño de casos}
+
+Los casos no se eligen al azar. La Tabla~\ref{tab:3-9} muestra qué técnica se aplica y dónde.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.210\textwidth}>{\raggedright\arraybackslash}p{0.300\textwidth}>{\raggedright\arraybackslash}p{0.430\textwidth}@{}}
+\caption{Técnicas de diseño de casos de prueba}\label{tab:3-9}\\
+\toprule
+\textbf{Técnica} & \textbf{Para qué sirve} & \textbf{Aplicación en el proyecto} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Técnica} & \textbf{Para qué sirve} & \textbf{Aplicación en el proyecto} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+Partición de equivalencia & Un caso por cada grupo de entradas que se comporta igual & Figuras raster y vectoriales; PDF válido, renombrado, corrupto, cifrado y escaneado \\
+Valores límite & Probar justo en el borde de un umbral & Resolución de exactamente 300 dpi en RE-21; una sola dimensión bajo el umbral en RE-20 \\
+Tabla de decisión & Cubrir las combinaciones de condiciones & Sección e idioma del envío en US-03; umbrales por tipo de artículo en las reglas \\
+Transición de estados & Comprobar que el manuscrito solo pasa por estados permitidos & Hoy cubre \texttt{received} y \texttt{unreadable}; se amplía a \texttt{ready\_\allowbreak{}for\_\allowbreak{}review} y a la versión desactualizada con respuesta 409 de US-21 \\
+Inyección de fallos & Provocar un error a propósito para ver cómo reacciona el sistema & Fallo al escribir en disco (US-01 T-07), evaluador con excepción (US-10 T-05), errores 503 de Gemini (US-18 T-01) \\
+Regresión por corpus & Comparar con resultados conocidos & Hallazgos esperados por PDF sintético (US-10 T-06) \\
+\end{longtable}
+}
+
+Esta revisión encontró una brecha en los valores límite. El borde exacto de RE-20 (531 $\times$ 1328 px) y el de 25 MB en US-01 no se prueban: los casos actuales usan valores claramente distantes, como 26 MB. Tampoco se prueba 299 dpi en RE-21. Esos casos deben agregarse antes de pasar US-01 y US-10 a verificadas.
+
+\subsection{Entorno y datos de prueba}
+
+El entorno no necesita OJS, Docker ni conexión a Gemini. Las pruebas crean una base SQLite temporal, le aplican las migraciones de Alembic y guardan los archivos en una carpeta desechable. La integración continua ejecuta la misma suite en GitHub Actions con Python 3.12 sobre Ubuntu, y el desarrollo local usa Python 3.14 sobre Windows.
+
+Los datos son sintéticos. Cada PDF se genera con PyMuPDF, de modo que el tamaño y la resolución de sus figuras se conocen con exactitud y no hay datos personales de por medio (Ley N.º 29733~\cite{ref36}). Una prueba comprueba además que estos archivos no contienen correos ni ORCID. La Tabla~\ref{tab:3-10} describe el corpus. Los manuscritos reales se quedan fuera del repositorio y las pruebas que los usan se omiten si la carpeta no existe.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.260\textwidth}>{\raggedright\arraybackslash}p{0.340\textwidth}>{\raggedright\arraybackslash}p{0.340\textwidth}@{}}
+\caption{Corpus sintético de prueba}\label{tab:3-10}\\
+\toprule
+\textbf{Archivo} & \textbf{Caso} & \textbf{Resultado esperado} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Archivo} & \textbf{Caso} & \textbf{Resultado esperado} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+\texttt{figuras\_\allowbreak{}pequenas.\allowbreak{}pdf} & 3 figuras de 300 $\times$ 600 px a 300 dpi & RE-20 tres veces; ningún hallazgo de RE-21 \\
+\texttt{figuras\_\allowbreak{}baja\_\allowbreak{}dpi.\allowbreak{}pdf} & 2 figuras a 200 dpi, una sin pie & RE-20 una vez; RE-21 dos veces \\
+\texttt{sin\_\allowbreak{}figuras.\allowbreak{}pdf} & 15 páginas sin figuras (ALT-03) & Sin hallazgos \\
+\texttt{escaneado.\allowbreak{}pdf} & Páginas solo con imagen (ALT-01) & Estado \texttt{unreadable}, motivo \texttt{no\_\allowbreak{}text\_\allowbreak{}layer} \\
+\texttt{correcto.\allowbreak{}pdf} & 10 páginas, 2 figuras correctas y un logo & Sin hallazgos; el logo se ignora \\
+\texttt{vectorial.\allowbreak{}pdf} & Una figura vectorial & RE-21 no aplica \\
+\texttt{corrupto.\allowbreak{}pdf} & Bytes truncados (ALT-01) & Estado \texttt{unreadable}, motivo \texttt{corrupt} \\
+\texttt{treinta\_\allowbreak{}paginas.\allowbreak{}pdf} & 30 páginas & Extracción en menos de 10 s \\
+\end{longtable}
+}
+
+Este corpus solo cubre figuras. Para los sprints siguientes hay que ampliarlo con PDFs que tengan citas y referencias correctas, formato mixto APA e IEEE, secciones faltantes, y correos y nombres ficticios para probar la anonimización. US-05 T-04 pide además un PDF generado desde Word y otro desde LaTeX.
+
+\subsection{Dobles de prueba}
+
+Lo que no está disponible en local se reemplaza por dobles de prueba, como prevé la especificación del producto. Un doble permite probar el código propio, pero no el servicio que reemplaza. La Tabla~\ref{tab:3-11} deja claro qué se demuestra y qué no.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.130\textwidth}>{\raggedright\arraybackslash}p{0.200\textwidth}>{\raggedright\arraybackslash}p{0.285\textwidth}>{\raggedright\arraybackslash}p{0.285\textwidth}@{}}
+\caption{Dobles de prueba y sus límites}\label{tab:3-11}\\
+\toprule
+\textbf{Dependencia} & \textbf{Doble} & \textbf{Qué permite probar} & \textbf{Qué queda sin probar} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Dependencia} & \textbf{Doble} & \textbf{Qué permite probar} & \textbf{Qué queda sin probar} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+OJS & Implementación falsa de \texttt{OjsGateway} que guarda lo publicado & Armado del comentario, publicación solo con aprobación, idempotencia, manejo de errores & Hook del plugin, autenticación y si la API 3.1.2.1~\cite{ref35} permite crear discusiones \\
+Gemini & Implementación falsa de \texttt{LlmClient} con respuestas fijas & Armado del \emph{prompt}, validación del esquema, reintentos y \emph{fallback} & Calidad real de la redacción, latencia y cuotas \\
+PDF & PDFs sintéticos; \texttt{PdfExtractor} permite sustituir PyMuPDF & Casos exactos y repetibles & Variedad de los manuscritos reales, que se mide en la evaluación \\
+PostgreSQL & SQLite con las mismas migraciones & Modelo de datos y flujo sin Docker & Diferencias de JSONB y concurrencia, que se comprueban al ejecutar Docker Compose \\
+\end{longtable}
+}
+
+\subsection{Casos diseñados por historia}
+
+La Tabla~\ref{tab:3-12} reúne los casos \texttt{T-nn} de las 17 historias de la entrega R1 que faltan. Son 58 casos en total: 52 se pueden ejecutar en local, 4 requieren OJS y 2 requieren un editor real. Los casos de las historias con alcance reducido (*) se limitan a ese alcance.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.085\textwidth}>{\raggedright\arraybackslash}p{0.075\textwidth}>{\raggedright\arraybackslash}p{0.060\textwidth}>{\raggedright\arraybackslash}p{0.420\textwidth}>{\raggedright\arraybackslash}p{0.230\textwidth}@{}}
+\caption{Casos de prueba diseñados para las historias pendientes de la entrega R1}\label{tab:3-12}\\
+\toprule
+\textbf{Historia} & \textbf{Sprint} & \textbf{Casos} & \textbf{Foco del diseño} & \textbf{Ejecución} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Historia} & \textbf{Sprint} & \textbf{Casos} & \textbf{Foco del diseño} & \textbf{Ejecución} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+US-03 & 4 & 4 & Mapeo de secciones; sección desconocida; inglés; sin extracción fuera de alcance & Local \\
+US-05* & 4 & 4 & Encabezados con tildes; sección faltante; PDF desde Word y LaTeX & Local \\
+US-07 & 4 & 3 & 15 cadenas de cita; intervalo \texttt{[0, 1]} no es cita; formato mixto & Local \\
+US-08* & 4 & 3 & Referencia en varias líneas; lista APA sin numerar & Local \\
+US-11* & 4 & 4 & Pie mal escrito, numeración repetida, figura sin mención, caso correcto & Local \\
+US-12 & 4 & 2 & Caso positivo y negativo por regla RE-40 a RE-43; formato mixto & Local \\
+US-13* & 4 & 3 & Caso positivo y negativo por regla; referencia web; PDF correcto & Local \\
+US-17 & 5 & 4 & Correo y ORCID enmascarados; nombre de autor; fragmento $\leq$ 600; búsqueda en el corpus & Local \\
+US-15 & 5 & 3 & \emph{Prompt} sin el PDF completo; respuesta válida; muestra de 30 hallazgos & 2 con doble; 1 con editor \\
+US-16 & 5 & 4 & JSON mal formado; \texttt{rule\_\allowbreak{}id} alterado; dos fallos; respuesta válida & Con doble \\
+US-18* & 5 & 4 & 503 con reintento; 400 sin reintento; presupuesto agotado; Gemini desactivado & Con doble \\
+US-28 & 5 & 3 & Etapas registradas; 15 páginas en menos de 3 min; fallo simulado & Local \\
+US-19 & 5 & 3 & Contadores, rol sin permiso (403), filtros y paginación & Local \\
+US-20 & 5 & 3 & Agrupación, miniatura y revisión con un editor & 2 local; 1 con editor \\
+US-21 & 5 & 4 & Decisiones, aceptación masiva, conflicto 409, publicar sin decisión & Local \\
+US-24 & 5 & 4 & Sin aprobación no hay discusión; plantilla; doble publicación; publicación real & 3 con doble; 1 requiere OJS \\
+US-02 & Sujeto a acceso & 3 & Envío real, agente detenido, configuración del plugin & Requiere OJS \\
+\end{longtable}
+}
+
+Dos casos pedidos por la especificación necesitan una instancia de OJS 3.1.2.1 de prueba, y US-02 T-01 la prevé en Docker. Como Docker no está instalado en el equipo, esa vía tampoco está disponible hoy.
+
+\subsection{Cobertura de requisitos no funcionales y flujos de excepción}
+
+Los requisitos no funcionales y los flujos alternativos no pertenecen a una sola historia, por lo que se comprueban por separado. Las tablas~\ref{tab:3-13} y~\ref{tab:3-14} indican cómo se verifica cada uno y en qué estado está.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.095\textwidth}>{\raggedright\arraybackslash}p{0.290\textwidth}>{\raggedright\arraybackslash}p{0.325\textwidth}>{\raggedright\arraybackslash}p{0.190\textwidth}@{}}
+\caption{Verificación de los requisitos no funcionales}\label{tab:3-13}\\
+\toprule
+\textbf{RNF} & \textbf{Requisito} & \textbf{Verificación} & \textbf{Estado} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{RNF} & \textbf{Requisito} & \textbf{Verificación} & \textbf{Estado} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+RNF-01 & Nada llega al autor sin aprobación humana & US-21 T-04 y US-24 T-02: sin decisión no se publica & Diseñada; con doble de OJS \\
+RNF-02 & Datos personales no salen a Gemini & US-17 T-03: 0 coincidencias en \texttt{llm\_\allowbreak{}payloads} & Diseñada \\
+RNF-03 & Análisis de 15 páginas en menos de 3 min & US-28 T-02 & Diseñada \\
+RNF-04 & Trazabilidad de regla a comentario & \texttt{rule\_\allowbreak{}id} en hallazgos (US-10) y sugerencias (US-16 T-02) & Parcial; hallazgos en verde \\
+RNF-05 & Reglas editables sin cambiar código & Prueba de que los umbrales vienen del YAML (US-10) & En verde \\
+RNF-06 & Un fallo no pierde el manuscrito & US-01 T-07, US-10 T-05, US-28 T-03 & Parcial; primeros dos en verde \\
+RNF-07 & Todo versionado en GitHub & Revisión del repositorio y prueba de estructura (US-00) & En verde \\
+\end{longtable}
+}
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.095\textwidth}>{\raggedright\arraybackslash}p{0.345\textwidth}>{\raggedright\arraybackslash}p{0.230\textwidth}>{\raggedright\arraybackslash}p{0.230\textwidth}@{}}
+\caption{Cobertura de los flujos alternativos}\label{tab:3-14}\\
+\toprule
+\textbf{Flujo} & \textbf{Situación} & \textbf{Historia} & \textbf{Estado} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Flujo} & \textbf{Situación} & \textbf{Historia} & \textbf{Estado} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+ALT-01 & PDF sin texto o corrupto & US-04 & En verde \\
+ALT-02 & Sin secciones estándar & US-05 (US-14 en R2) & Diseñada \\
+ALT-03 & Manuscrito sin figuras & US-06 & En verde \\
+ALT-04 & Referencias mixtas APA e IEEE & US-12, US-13 & Diseñada \\
+ALT-05 & Gemini falla o responde mal & US-16, US-18 & Diseñada \\
+ALT-06 & Editor rechaza todas las sugerencias & US-23 & Fuera de R1 \\
+ALT-07 & Sección de OJS no mapeada & US-03 & Diseñada \\
+ALT-08 & Manuscrito en inglés & US-03 & Diseñada \\
+ALT-09 & Versión corregida del autor & US-31, US-26 & Fuera de R1 \\
+ALT-10 & API de OJS caída al publicar & US-25 & Fuera de R1 \\
+ALT-11 & PDF con datos personales & US-17 & Diseñada \\
+ALT-12 & Dos editores a la vez & US-21 & Diseñada \\
+\end{longtable}
+}
+
+\subsection{Criterios de entrada, salida y suspensión}
+
+\begin{itemize}
+  \item \textbf{Entrada.} Una historia entra a pruebas cuando su especificación está aprobada y sus criterios de aceptación se pueden comprobar.
+  \item \textbf{Salida.} Una historia queda verificada cuando pasan todos sus casos en GitHub Actions, sus reglas tienen caso positivo y negativo, y el comportamiento coincide con la especificación.
+  \item \textbf{Suspensión.} No se avanza a otra historia con la suite en rojo. Los casos que dependen de OJS o de un editor no bloquean la historia si se registran como pendientes con su motivo.
+  \item \textbf{Defectos.} Si la especificación y el código difieren, se corrige el que esté mal y la decisión se registra en la especificación.
+\end{itemize}
+
+\subsection{Resultados a la fecha}
+
+La suite se ejecutó el 30 de octubre de 2026 en local y pasaron los 84 casos, sin fallos ni omisiones, en menos de 9 segundos. La Tabla~\ref{tab:3-15} muestra el detalle. Las 80 funciones de prueba producen 84 casos porque una de ellas se repite con varios PDFs.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.290\textwidth}>{\raggedright\arraybackslash}p{0.400\textwidth}>{\raggedright\arraybackslash}p{0.075\textwidth}>{\raggedright\arraybackslash}p{0.135\textwidth}@{}}
+\caption{Resultados de la suite automatizada al 30 de octubre de 2026}\label{tab:3-15}\\
+\toprule
+\textbf{Suite} & \textbf{Alcance} & \textbf{Casos} & \textbf{Resultado} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Suite} & \textbf{Alcance} & \textbf{Casos} & \textbf{Resultado} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+\texttt{test\_\allowbreak{}us\_\allowbreak{}00} & Entorno, salud, corpus y estructura & 6 & 6 en verde \\
+\texttt{test\_\allowbreak{}us\_\allowbreak{}01} & Recepción de PDF por API & 11 & 11 en verde \\
+\texttt{test\_\allowbreak{}us\_\allowbreak{}04} & Extracción de texto y páginas & 11 & 11 en verde \\
+\texttt{test\_\allowbreak{}us\_\allowbreak{}06} & Extracción de figuras & 13 & 13 en verde \\
+\texttt{test\_\allowbreak{}us\_\allowbreak{}09} & Carga de reglas YAML & 15 & 15 en verde \\
+\texttt{test\_\allowbreak{}us\_\allowbreak{}10} & Validación de figuras y hallazgos & 18 & 18 en verde \\
+\texttt{test\_\allowbreak{}RE-20}, \texttt{test\_\allowbreak{}RE-21} & Casos por regla & 8 & 8 en verde \\
+\texttt{test\_\allowbreak{}rule\_\allowbreak{}coverage} & Toda regla activa tiene su prueba & 2 & 2 en verde \\
+\textbf{Total} &  & \textbf{84} & \textbf{84 en verde} \\
+\end{longtable}
+}
+
+La cobertura de líneas se midió con \texttt{pytest-cov} y fue de 96 \%. En GitHub Actions, la última corrida de la rama principal (20 de octubre) pasó el trabajo de pruebas y falló el trabajo que comprueba que \texttt{AVANCE.\allowbreak{}md} esté al día. La causa estaba en el flujo: esa comprobación cuenta los commits de cada historia y la integración continua descargaba solo el último. Se corrigió el 30 de octubre en la rama de trabajo \texttt{tesis/\allowbreak{}avance-\allowbreak{}30-\allowbreak{}oct}, donde ambos trabajos pasan, y falta integrarla a la rama principal. Las historias siguen como implementadas, y no como verificadas, hasta que ambas comprobaciones estén en verde en la rama principal y se completen los casos de valores límite. Tampoco se cumple aún la condición de entrar a la rama principal por pull request revisado, porque el Sprint 2 se integró de forma directa.
+
+\section{Validación y evaluación}\label{sec:evaluacion}
 
 {\small
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.158\textwidth}>{\raggedright\arraybackslash}p{0.231\textwidth}>{\raggedright\arraybackslash}p{0.248\textwidth}>{\raggedright\arraybackslash}p{0.257\textwidth}@{}}
@@ -303,7 +710,7 @@ El avance se registra por historia al cierre de cada sprint, con el estado de su
 \bottomrule
 \endfoot
 \endlastfoot
-OE1 -- Arquitectura & Módulos integrados y reglas aplicadas por revista & Prueba del flujo completo: recepción $\rightarrow$ reporte $\rightarrow$ comentario en OJS & Flujo de punta a punta en el Sprint 5 \\
+OE1 -- Arquitectura & Módulos integrados y reglas aplicadas por revista & Prueba del flujo completo: recepción $\rightarrow$ reporte $\rightarrow$ comentario, con OJS simulado; contra OJS real si hay acceso & Flujo local de punta a punta en el Sprint 5 \\
 OE2 -- Análisis documental & Reconocimiento de secciones, figuras, citas y referencias & Comparación con anotación manual sobre un corpus & Recall por regla $\geq$ 0,75 en reglas D \\
 OE3 -- Validación y reporte & Precisión y utilidad de las sugerencias & Precisión por regla; aceptación / edición / rechazo por los editores & Precisión $\geq$ 0,85 en reglas D; aceptación $\geq$ 70 \% \\
 OE4 -- Evaluación & Tiempo de análisis y de revisión estilística & Medición en \texttt{runs} (US-28) y comparación manual vs. asistida & Análisis < 3 min para 15 páginas (RNF-03); \pendiente{definir instrumento y meta de reducción del tiempo de revisión — el borrador proponía 20 \%} \\
@@ -313,6 +720,24 @@ Usabilidad del reporte & Claridad y aplicabilidad para autores y editores & Encu
 
 Las metas son propuestas del equipo y se confirman con el asesor antes del Sprint 6 (\texttt{specs/\allowbreak{}00-producto.\allowbreak{}md} §1). \pendiente{corpus anotado — número de manuscritos históricos y autorización (00-producto §18).}
 
+La evaluación se hace en local y no depende de OJS. El procedimiento tiene tres pasos.
+
+\begin{enumerate}
+  \item Un revisor anota a mano cada incumplimiento real por regla, antes de ver la salida del agente.
+  \item El agente analiza los mismos manuscritos con las reglas vigentes.
+  \item Cada hallazgo se compara con la anotación y se clasifica como verdadero positivo ($VP$), falso positivo ($FP$) o falso negativo ($FN$).
+\end{enumerate}
+
+Con esos conteos se calculan, para cada regla determinística, las métricas de la especificación del producto y su media armónica $F_1$.
+
+\begin{equation}
+  \text{Precisión} = \frac{VP}{VP + FP}, \qquad
+  \text{Recall} = \frac{VP}{VP + FN}, \qquad
+  F_1 = \frac{2 \cdot \text{Precisión} \cdot \text{Recall}}{\text{Precisión} + \text{Recall}}
+\end{equation}
+
+La tasa de aceptación necesita decisiones de un editor y se mide con la muestra de 30 hallazgos de US-15 T-03. Si no se designa un editor a tiempo, esa métrica queda sin medir y se informa así en las conclusiones.
+
 \section{Aspectos éticos y protección de datos}
 
-Los manuscritos reales pueden contener datos personales de los autores (nombres, correos, ORCID, afiliaciones). Por la Ley N.º 29733, (i) se guardan fuera del repositorio (\texttt{muestras/\allowbreak{}} en \texttt{.\allowbreak{}gitignore}), (ii) las pruebas automatizadas usan PDFs sintéticos generados con PyMuPDF, y (iii) a Gemini solo sale un fragmento de hasta 600 caracteres anonimizado, con registro de lo enviado (US-17, RNF-02).
+Los manuscritos reales pueden contener datos personales de los autores (nombres, correos, ORCID, afiliaciones). Por la Ley N.º 29733~\cite{ref36}, (i) se guardan fuera del repositorio (\texttt{muestras/\allowbreak{}} en \texttt{.\allowbreak{}gitignore}), (ii) las pruebas automatizadas usan PDFs sintéticos generados con PyMuPDF, y (iii) a Gemini solo sale un fragmento de hasta 600 caracteres anonimizado, con registro de lo enviado (US-17, RNF-02).
