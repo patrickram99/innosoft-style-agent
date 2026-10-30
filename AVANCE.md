@@ -41,8 +41,6 @@ una propuesta: está en el Capítulo III de la tesis y falta validarlo con el as
   local, con un doble de `OjsGateway`.
 - Las 31 specs restantes siguen en `Borrador`. Según el ciclo SDD no se pueden implementar hasta que el otro developer las
   revise y pasen a `Aprobada`.
-- CI en rojo: el trabajo `avance` falla aunque se regenere este archivo. `--check` cuenta commits y `actions/checkout` clona
-  con profundidad 1; además, el bloque automático cambia solo al pasar de sprint.
 - La instancia de OJS de prueba que prevé US-02 T-01 usa Docker, que no está instalado.
 - La hoja de tareas del Sprint 3 aún no existe en el Excel RICE.
 - Sin cerrar: *stakeholder* editorial, corpus anotado, hosting y presupuesto de Gemini (00-producto §18).
@@ -50,8 +48,8 @@ una propuesta: está en el Capítulo III de la tesis y falta validarlo con el as
 **Próximos pasos**
 
 1. Revisión cruzada y aprobación de las specs (empezar por US-05, US-07 y US-08, de las que dependen US-12 y US-13).
-2. Corregir el trabajo `avance` del CI y agregar los casos de borde exacto de RE-20, RE-21 y US-01 para pasar US-00..US-10 a
-   `Verificada`.
+2. Integrar la rama `tesis/avance-30-oct` a `main`, que trae la corrección del CI, y agregar los casos de borde exacto de
+   RE-20, RE-21 y US-01 para pasar US-00..US-10 a `Verificada`.
 3. Implementar en el Sprint 4 las historias locales de citas y referencias, ampliando el corpus sintético.
 4. Validar con el asesor el plan ajustado y la sincronización S-01..S-15, y pasar el plan al Excel RICE.
 5. Gestionar el acceso al servidor de OJS. Si no llega antes del Sprint 6, la integración real queda como limitación declarada.

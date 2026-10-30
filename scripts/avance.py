@@ -318,10 +318,16 @@ def main() -> int:
         return 2
     head, rest = current.split(START, 1)
     tail = rest.split(END, 1)[1]
+    old_block = START + rest.split(END, 1)[0] + END
+
+    # --check compara contra la fecha de corte del archivo: el bloque no caduca solo por cambiar de sprint.
+    if args.check and not args.fecha:
+        stamp = re.search(r"_Generado el (\d{4}-\d{2}-\d{2})\._", old_block)
+        if stamp:
+            today = dt.date.fromisoformat(stamp.group(1))
     new_block = render(today)
 
     strip_date = lambda s: re.sub(r"_Generado el .*?_", "", s)  # noqa: E731
-    old_block = START + rest.split(END, 1)[0] + END
     if args.check:
         if strip_date(old_block) != strip_date(new_block):
             print("AVANCE.md está desactualizado: ejecuta python scripts/avance.py", file=sys.stderr)
