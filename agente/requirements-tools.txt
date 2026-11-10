@@ -1,0 +1,5 @@
+# Herramientas del proceso (no las usa app/ ni el CI): revisor multiagente de specs y reportes de pruebas.
+google-adk>=2.14
+google-genai>=2.34
+pytest-html>=4.2
+pytest-cov>=7.1

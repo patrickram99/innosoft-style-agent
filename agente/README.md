@@ -4,6 +4,10 @@ Agente de sugerencias estilísticas para la revista *Innovación y Software* (In
 Recibe manuscritos en PDF, extrae texto y figuras, aplica las reglas editoriales de `rules/innosoft/*.yaml`
 y expone los hallazgos para que un editor los revise.
 
+**Alcance vigente.** Hasta el 04-dic-2026 el agente funciona en modo *headless*: se le envía un PDF por la API y devuelve
+hallazgos y sugerencias por la API. La integración con OJS y la revisión del editor se desarrollan de enero a marzo de
+2027 (decisión D-05 de [`specs/00-producto.md`](specs/00-producto.md) §17).
+
 Esta carpeta (`agente/`) es la raíz del software; todos los comandos de abajo se ejecutan desde aquí. El avance del
 proyecto está en [`../AVANCE.md`](../AVANCE.md) y la tesis en [`../Tesis-Doc/`](../Tesis-Doc/README.md).
 

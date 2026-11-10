@@ -4,6 +4,10 @@ Tesis de Ingeniería de Software (Universidad La Salle, 2026): *Agente de IA de 
 OJS*, caso de estudio revista Innosoft. El repositorio tiene **dos productos** con reglas distintas, cada uno con su
 propio `CLAUDE.md`. Este archivo solo dice dónde está cada cosa; no lo cargues todo: entra a la carpeta que toque.
 
+**Alcance vigente (10-nov-2026).** Fase 1, hasta el cierre de Tesis II el 04-dic-2026: agente *headless* (PDF por API →
+sugerencias por API, con Gemini). Fase 2, de enero a marzo de 2027: integración con OJS, revisión del editor y pruebas
+de integración. Detalle en `agente/specs/00-producto.md` §17 (D-05 a D-07).
+
 | Carpeta | Qué es | Reglas en |
 |---|---|---|
 | `AVANCE.md` | **Fuente única del avance** del software y de la tesis. Léelo primero. | — |

@@ -1,8 +1,9 @@
 % titulo: Capítulo III – Metodología de desarrollo
 % estado: borrador
-% actualizado: 2026-10-30
+% actualizado: 2026-11-10
 % Sincronizado con specs/00-producto.md v1.0 el 19-oct-2026; corte de avance y diseño de pruebas del 30-oct-2026
-% (ver Tesis-Doc/README.md, registro S-13 a S-15).
+% (ver Tesis-Doc/README.md, registro S-13 a S-15). El 10-nov-2026 se añadieron la entrega en dos fases, la revisión
+% multiagente de especificaciones y la evidencia de ejecución de las pruebas (00-producto v1.1, registro S-16 a S-18).
 
 \chapter{Metodología de Desarrollo}\label{cap:metodologia}
 
@@ -421,6 +422,114 @@ El plan ajustado concentra 16 historias en dos sprints, frente a las 6 del Sprin
   \label{fig:gantt-ajustado}
 \end{figure}
 
+\subsection{Replanificación del 10 de noviembre: entrega en dos fases}\label{sec:dos-fases}
+
+El plan ajustado del 30 de octubre mantenía la integración con OJS dentro del semestre, sujeta a que llegara el acceso al servidor. Al 10 de noviembre el acceso no había llegado y el Sprint 4 cerró sin historias implementadas. El equipo decidió entonces separar la entrega en dos fases, y la decisión quedó registrada como D-05 en la especificación de producto.
+
+\begin{itemize}
+  \item \textbf{Fase 1: agente \emph{headless}.} Va hasta el 4 de diciembre de 2026, fecha de cierre del curso Tesis II. El agente recibe un PDF y sus metadatos por la API y devuelve por la API los hallazgos y las sugerencias redactadas con Gemini. No hay plugin de OJS ni interfaz de editor: quien envía el manuscrito es un cliente de la API.
+  \item \textbf{Fase 2: integración con OJS.} Va del 4 de enero al 26 de marzo de 2027. Incluye el plugin de OJS, la cola de revisión y las decisiones del editor, la publicación del comentario, las pruebas de integración y la evaluación con editores.
+\end{itemize}
+
+El modelo de lenguaje no sale del alcance en ninguna fase: el producto sigue siendo un agente de inteligencia artificial, y el motor de reglas por sí solo entrega hallazgos, no sugerencias. Gemini se usa a través de Vertex AI con un presupuesto de 10 dólares al mes (decisión D-06). En la Fase 1 las sugerencias no llegan al autor, porque solo se consultan por la API, así que el requisito RNF-01 se cumple por construcción. La Tabla~\ref{tab:3-16} y la Figura~\ref{fig:gantt-fases} muestran el plan vigente, que reemplaza al de la Tabla~\ref{tab:3-7}. Está en la hoja \emph{Replan 10-nov} del Excel RICE y falta validarlo con el asesor.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.060\textwidth}>{\raggedright\arraybackslash}p{0.060\textwidth}>{\raggedright\arraybackslash}p{0.150\textwidth}>{\raggedright\arraybackslash}p{0.250\textwidth}>{\raggedright\arraybackslash}p{0.370\textwidth}@{}}
+\caption{Plan en dos fases al 10 de noviembre de 2026 (propuesta por validar)}\label{tab:3-16}\\
+\toprule
+\textbf{Fase} & \textbf{Sprint} & \textbf{Fechas} & \textbf{Historias} & \textbf{Meta} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Fase} & \textbf{Sprint} & \textbf{Fechas} & \textbf{Historias} & \textbf{Meta} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+1 & 5 & 09-nov $\rightarrow$ 20-nov-2026 & US-03, US-05*, US-07, US-08*, US-11*, US-12, US-13* & Citas y referencias IEEE detectadas por la API; especificaciones revisadas por el sistema multiagente \\
+1 & 6 & 23-nov $\rightarrow$ 04-dic-2026 & US-17, US-15, US-16, US-18*, US-28, US-20 & Sugerencias con Gemini consultables por la API; evaluación preliminar y entrega de Tesis II \\
+2 & 7 & 04-ene $\rightarrow$ 15-ene-2027 & US-02 y \emph{spike} de OJS & Instancia de OJS de prueba y plugin que entrega el envío al agente \\
+2 & 8 & 18-ene $\rightarrow$ 29-ene-2027 & US-19, US-21 & Cola de revisión y decisiones del editor \\
+2 & 9 & 01-feb $\rightarrow$ 12-feb-2027 & US-24 & Flujo completo: OJS, agente, editor y comentario en OJS \\
+2 & 10 & 15-feb $\rightarrow$ 26-feb-2027 & Sin historias nuevas & Pruebas de integración con OJS (4 casos) y con un editor (2 casos) \\
+2 & 11 & 01-mar $\rightarrow$ 12-mar-2027 & Sin historias nuevas & Evaluación con editores: precisión, \emph{recall}, F1 y tasa de aceptación \\
+2 & 12 & 15-mar $\rightarrow$ 26-mar-2027 & Sin historias nuevas & Margen, manuales y versión final de la tesis \\
+\end{longtable}
+}
+
+\begin{figure}[H]
+  \centering
+  \begin{ganttchart}[
+      x unit=0.72mm, y unit chart=0.65cm, y unit title=0.55cm,
+      hgrid, vgrid={*{6}{draw=none}, dotted}, canvas/.style={draw=gray!50},
+      time slot format=isodate,
+      title/.style={fill=gray!15, draw=gray!50},
+      title label font=\scriptsize,
+      bar/.style={fill=gray!60, draw=gray!80},
+      bar label font=\footnotesize,
+      bar height=0.55,
+      group label font=\footnotesize\bfseries,
+      milestone/.style={fill=black, draw=black},
+      milestone label font=\footnotesize]{2026-11-09}{2027-03-26}
+    \gantttitle{Nov}{22}\gantttitle{Dic}{31}\gantttitle{Ene}{31}\gantttitle{Feb}{28}\gantttitle{Mar}{26} \\
+    \ganttgroup{Fase 1: agente headless}{2026-11-09}{2026-12-04} \\
+    \ganttbar{S5 Citas y referencias}{2026-11-09}{2026-11-20} \\
+    \ganttbar{S6 Sugerencias con Gemini}{2026-11-23}{2026-12-04} \\
+    \ganttmilestone{Entrega de Tesis II}{2026-12-04} \\
+    \ganttgroup{Fase 2: integración con OJS}{2027-01-04}{2027-03-26} \\
+    \ganttbar{S7 Plugin y spike de OJS}{2027-01-04}{2027-01-15} \\
+    \ganttbar{S8 Revisión del editor}{2027-01-18}{2027-01-29} \\
+    \ganttbar{S9 Publicación en OJS}{2027-02-01}{2027-02-12} \\
+    \ganttbar{S10 Pruebas de integración}{2027-02-15}{2027-02-26} \\
+    \ganttbar{S11 Evaluación con editores}{2027-03-01}{2027-03-12} \\
+    \ganttbar{S12 Margen, manuales y tesis}{2027-03-15}{2027-03-26}
+  \end{ganttchart}
+  \caption{Diagrama de Gantt del plan en dos fases (noviembre de 2026 a marzo de 2027)}
+  \label{fig:gantt-fases}
+\end{figure}
+
+El riesgo principal de la Fase 1 sigue siendo de cronograma: quedan 13 historias para dos sprints. Los recortes ya definidos se mantienen en el mismo orden. El riesgo principal de la Fase 2 es el acceso a OJS. Si al 4 de enero de 2027 no hay acceso al servidor de la revista ni una instancia de prueba, la fase empieza con un doble de \texttt{OjsGateway} y la integración real se reprograma dentro de la misma fase.
+
+\subsection{Revisión multiagente de especificaciones}\label{sec:revision-multiagente}
+
+El ciclo SDD exige que cada especificación se revise antes de implementarla. Esa revisión cruzada entre los dos desarrolladores fue el cuello de botella de los Sprints 3 y 4: 31 especificaciones seguían en borrador. Para destrabarlo sin eliminar la revisión, el equipo construyó un revisor automático y lo registró como decisión D-07.
+
+El revisor es un sistema multiagente hecho con Google Agent Development Kit (ADK) sobre Gemini en Vertex AI. Tres agentes leen la misma especificación en paralelo, cada uno con una dimensión distinta, y un cuarto agente consolida sus dictámenes:
+
+\begin{itemize}
+  \item \textbf{Revisor de consistencia.} Busca contradicciones con la especificación de producto (rutas de la API, estados, modelo de datos y decisiones vigentes), con las especificaciones de las que depende la historia y dentro de la propia especificación.
+  \item \textbf{Revisor de testabilidad.} Comprueba que cada criterio de aceptación y cada excepción tenga un caso de prueba que se pueda ejecutar en local.
+  \item \textbf{Revisor de alcance y reglas.} Contrasta las reglas editoriales citadas con el catálogo, verifica que los umbrales vivan en YAML y señala lo que excede el alcance declarado.
+  \item \textbf{Coordinador.} Une las observaciones repetidas, fija la severidad de cada una y emite un veredicto: favorable, con observaciones o bloqueante.
+\end{itemize}
+
+Una especificación con veredicto favorable pasa al estado \emph{Revisada (IA)} y se puede implementar. Los integrantes del equipo la ratifican después, y solo entonces pasa a \emph{Aprobada}. El revisor no decide el comportamiento del producto: propone correcciones, y las que cambian el comportamiento las resuelve el equipo. Tampoco lee manuscritos reales, porque su entrada son solo las especificaciones, el catálogo y las reglas.
+
+El 10 de noviembre se revisaron las tres especificaciones de las que dependen las historias de citas y referencias. La Tabla~\ref{tab:3-17} resume el resultado.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.090\textwidth}>{\raggedright\arraybackslash}p{0.130\textwidth}>{\raggedright\arraybackslash}p{0.170\textwidth}>{\raggedright\arraybackslash}p{0.500\textwidth}@{}}
+\caption{Primera revisión multiagente de especificaciones (10 de noviembre de 2026)}\label{tab:3-17}\\
+\toprule
+\textbf{Historia} & \textbf{Veredicto} & \textbf{Observaciones} & \textbf{Observación bloqueante principal} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Historia} & \textbf{Veredicto} & \textbf{Observaciones} & \textbf{Observación bloqueante principal} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+US-05 & Bloqueante & 2 bloqueantes, 5 mayores & El alcance recortado (solo resumen, palabras clave y referencias) contradice los criterios de aceptación, que piden detectar todas las secciones \\
+US-07 & Bloqueante & 1 bloqueante, 4 mayores, 1 menor & El alcance pide una posición aproximada de cada cita que no aparece en las salidas ni tiene tolerancia definida \\
+US-08 & Bloqueante & 1 bloqueante, 6 mayores, 1 menor & El recorte pasa el análisis por campos a la entrega R2, pero el resto de la especificación lo sigue exigiendo \\
+\end{longtable}
+}
+
+Ninguna de las tres obtuvo veredicto favorable, de modo que siguen en borrador. En dos de ellas el problema es el mismo: el recorte de alcance del 29 de septiembre se anotó en una sección y no se propagó al resto de la especificación. Es el tipo de defecto que la revisión cruzada debía encontrar. Cada revisión consumió entre 62\,000 y 72\,000 \emph{tokens} con el modelo \texttt{gemini-2.5-flash}. \pendiente{corregir US-05, US-07 y US-08 según los informes de \texttt{specs/revisiones/}, volver a revisarlas y registrar aquí el resultado.}
+
 \pendiente{al cierre del Sprint 6, actualizar las cifras finales y describir lo construido en los sprints 3 a 6.}
 
 \section{Diseño de pruebas}\label{sec:pruebas}
@@ -693,6 +802,61 @@ La suite se ejecutó el 30 de octubre de 2026 en local y pasaron los 84 casos, s
 }
 
 La cobertura de líneas se midió con \texttt{pytest-cov} y fue de 96 \%. En GitHub Actions, la última corrida de la rama principal (20 de octubre) pasó el trabajo de pruebas y falló el trabajo que comprueba que \texttt{AVANCE.\allowbreak{}md} esté al día. La causa estaba en el flujo: esa comprobación cuenta los commits de cada historia y la integración continua descargaba solo el último. Se corrigió el 30 de octubre en la rama de trabajo \texttt{tesis/\allowbreak{}avance-\allowbreak{}30-\allowbreak{}oct}, donde ambos trabajos pasan, y falta integrarla a la rama principal. Las historias siguen como implementadas, y no como verificadas, hasta que ambas comprobaciones estén en verde en la rama principal y se completen los casos de valores límite. Tampoco se cumple aún la condición de entrar a la rama principal por pull request revisado, porque el Sprint 2 se integró de forma directa.
+
+\subsection{Evidencia de ejecución al 10 de noviembre de 2026}\label{sec:evidencia}
+
+La suite se volvió a ejecutar el 10 de noviembre de 2026 en local, con Python 3.14 sobre Windows 11. Pasaron los mismos 84 casos del producto, sin fallos ni omisiones, y la cobertura de líneas se mantuvo en 96 \% (878 de 912 sentencias). A ellos se suman 5 casos nuevos de la herramienta de revisión de especificaciones, que no forma parte del producto. Las capturas de esta sección son la evidencia de esa ejecución. Las Figuras~\ref{fig:pytest-general} a~\ref{fig:pytest-reglas} son los reportes que genera \texttt{pytest-html}, y la Figura~\ref{fig:pytest-cobertura} es el reporte de \texttt{pytest-cov}.
+
+\newcommand{\capturaprueba}[3]{%
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth,height=0.80\textheight,keepaspectratio]{figuras/pruebas/#1}
+  \caption{#2}
+  \label{fig:#3}
+\end{figure}}
+
+\capturaprueba{pytest-00-general.png}{Reporte general de la suite: 84 casos en verde (10 de noviembre de 2026)}{pytest-general}
+\capturaprueba{pytest-us00.png}{Casos de US-00: entorno, salud del servicio, corpus y estructura}{pytest-us00}
+\capturaprueba{pytest-us01.png}{Casos de US-01: recepción de PDF por la API}{pytest-us01}
+\capturaprueba{pytest-us04.png}{Casos de US-04: extracción de texto y páginas}{pytest-us04}
+\capturaprueba{pytest-us06.png}{Casos de US-06: extracción de figuras}{pytest-us06}
+\capturaprueba{pytest-us09.png}{Casos de US-09: carga de reglas desde YAML}{pytest-us09}
+\capturaprueba{pytest-us10.png}{Casos de US-10: validación de figuras y hallazgos}{pytest-us10}
+\capturaprueba{pytest-reglas.png}{Casos por regla editorial (RE-20 y RE-21) y cobertura de reglas}{pytest-reglas}
+\capturaprueba{pytest-cobertura.png}{Cobertura de líneas por módulo medida con \texttt{pytest-cov}}{pytest-cobertura}
+
+Además de la suite, se ejecutó el flujo \emph{headless} completo contra el agente levantado en local, con los PDFs sintéticos del corpus de prueba y sin ningún manuscrito real. La Figura~\ref{fig:api-openapi} muestra la documentación OpenAPI que publica el propio servicio. Las Figuras~\ref{fig:api-health} a~\ref{fig:api-negativos} muestran las respuestas reales de la API a cada petición, presentadas en formato de consola. El token de servicio se ocultó.
+
+\capturaprueba{api-00-openapi.png}{Documentación OpenAPI del agente (\texttt{/docs}) con las cuatro rutas implementadas}{api-openapi}
+\capturaprueba{api-01-health-rules.png}{Estado del servicio y reglas cargadas para un artículo original}{api-health}
+\capturaprueba{api-02-envio-hallazgos.png}{Envío de un PDF con figuras deficientes y hallazgos de RE-20 y RE-21}{api-hallazgos}
+\capturaprueba{api-03-pdf-correcto.png}{Envío de un PDF conforme: el análisis termina sin hallazgos}{api-correcto}
+\capturaprueba{api-04-casos-negativos.png}{Casos negativos: archivo que no es PDF, petición sin token, reenvío idéntico y PDF escaneado}{api-negativos}
+
+La Tabla~\ref{tab:3-18} relaciona cada comprobación del flujo con su resultado. El flujo llega hasta los hallazgos del motor de reglas. Las sugerencias redactadas con Gemini todavía no aparecen, porque las historias US-15 a US-18 se implementan en el Sprint 6.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.300\textwidth}>{\raggedright\arraybackslash}p{0.300\textwidth}>{\raggedright\arraybackslash}p{0.300\textwidth}@{}}
+\caption{Resultados del flujo \emph{headless} ejecutado el 10 de noviembre de 2026}\label{tab:3-18}\\
+\toprule
+\textbf{Comprobación} & \textbf{Resultado esperado} & \textbf{Resultado obtenido} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Comprobación} & \textbf{Resultado esperado} & \textbf{Resultado obtenido} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+PDF con figuras de baja resolución & Análisis completo con hallazgos de RE-20 y RE-21 & Estado \texttt{validated}, 3 hallazgos (Figura~\ref{fig:api-hallazgos}) \\
+PDF conforme & Análisis completo sin hallazgos & Estado \texttt{validated}, 0 hallazgos (Figura~\ref{fig:api-correcto}) \\
+Archivo DOCX & Rechazo con código 400 & 400 \texttt{not\_pdf} (Figura~\ref{fig:api-negativos}) \\
+Petición sin token de servicio & Rechazo con código 401 & 401 \texttt{unauthorized} (Figura~\ref{fig:api-negativos}) \\
+Reenvío idéntico del mismo envío & Código 200 con el manuscrito existente, sin nuevo análisis & 200 con el mismo identificador (Figura~\ref{fig:api-negativos}) \\
+PDF escaneado, sin capa de texto & Estado \texttt{unreadable} con su motivo & \texttt{unreadable}, motivo \texttt{no\_text\_layer} (Figura~\ref{fig:api-negativos}) \\
+\end{longtable}
+}
 
 \section{Validación y evaluación}\label{sec:evaluacion}
 

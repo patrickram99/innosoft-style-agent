@@ -3,6 +3,11 @@
 Agente que analiza manuscritos PDF enviados a la revista *Innovación y Software* (OJS 3.1.2.1), detecta incumplimientos
 de las normas editoriales y genera sugerencias que un editor aprueba antes de que lleguen al autor.
 
+**Alcance vigente (D-05 a D-07, `specs/00-producto.md` §17).** Hasta el 04-dic-2026 el agente es **headless**: entra un
+PDF por la API y salen hallazgos y sugerencias por la API; no hay plugin de OJS ni interfaz de editor. OJS y la revisión
+del editor (US-02, US-19, US-21, US-24) son de la Fase 2, de enero a marzo de 2027: no las implementes antes. Gemini
+(Vertex AI, gestionado con la CLI `gcloud`, 10 USD al mes) es parte del producto en las dos fases.
+
 **Esta carpeta es la raíz del software** (`innosoft-style-agent/` en `specs/00-producto.md` §13). Todos los comandos
 de este archivo se ejecutan desde aquí (`cd agente`). El mapa general del repositorio y las reglas comunes están en
 `../CLAUDE.md`; el avance, en `../AVANCE.md`.
@@ -19,8 +24,17 @@ de este archivo se ejecutan desde aquí (`cd agente`). El mapa general del repos
 | `catalogo_requisitos_innosoft.md` | Catálogo original de requisitos y reglas RE-nn (solo lectura). | Si una spec cita una RE-nn que no entiendes. |
 | `priorizacion_rice_sprint1.xlsx` | Priorización RICE, calendario de sprints (*Replan 29-sep*), hojas de tareas por sprint. | Al planificar o cerrar tareas. Léelo con openpyxl, no lo describas de memoria. |
 
-**Solo se implementan las historias con `estado_spec: Aprobada`.** Las que están en `Borrador` no se tocan: si el
-sprint las necesita, el bloqueo se anota en `../AVANCE.md` y se pide la revisión cruzada.
+**Solo se implementan las historias con `estado_spec: Revisada (IA)` o `Aprobada`.** Las que están en `Borrador` no se
+tocan: primero pasan por el revisor multiagente (`tools/spec_review/`, D-07), que deja su informe en
+`specs/revisiones/US-nn.md`. Con veredicto favorable la spec pasa a `Revisada (IA)` y se puede implementar; el equipo la
+ratifica después (`Aprobada`). Con observaciones bloqueantes se corrige la spec y se vuelve a revisar.
+
+```powershell
+python -m tools.spec_review US-05 US-07     # revisa las specs indicadas con Gemini (Vertex AI)
+```
+
+El revisor solo lee `specs/`, el catálogo y `rules/`. Nunca le pases nada de `muestras/`. Cada ejecución cuesta
+centavos, pero el presupuesto es de 10 USD al mes: no lo lances en bucle sobre las 37 specs sin necesidad.
 
 ## Ciclo de trabajo por historia (Spec-Driven Development)
 
@@ -44,7 +58,7 @@ pregunta**. No lo resuelvas en silencio.
 ## Convenciones técnicas
 
 - Estructura según `specs/00-producto.md` §13: `app/`, `rules/`, `tests/`, `prompts/`, `scripts/`, `specs/`, `docs/`,
-  `alembic/`. `docs/` guarda las plantillas oficiales de la revista y los diagramas (fuente `.tex` + `.png/.svg`).
+  `alembic/`, más `tools/spec_review/` (herramienta del proceso, no parte del producto: `app/` nunca la importa). `docs/` guarda las plantillas oficiales de la revista y los diagramas (fuente `.tex` + `.png/.svg`).
 - Stack: Python 3.11+, FastAPI, Pydantic v2; SQLAlchemy 2 + Alembic; PyMuPDF (versión fijada en `requirements.txt`),
   PyYAML, jsonschema; Pytest.
 - PostgreSQL 16 mediante `docker-compose.yml`. Los modelos usan el tipo JSON de SQLAlchemy con variante JSONB en
@@ -71,8 +85,10 @@ pregunta**. No lo resuelvas en silencio.
 ## Qué no tocar
 
 - `catalogo_requisitos_innosoft.md`, `docs/plantillas/`, `docs/diagramas/` (salvo regenerar un diagrama desde su `.tex`).
-- Las specs, salvo los cambios del paso 6 del ciclo.
-- El Excel, salvo la columna Estado de la hoja de tareas del sprint en curso.
+- Las specs, salvo los cambios del paso 6 del ciclo, el paso a `Revisada (IA)` y las correcciones que pida el informe
+  del revisor (con su fila en el historial de cambios).
+- El Excel, salvo la columna Estado de la hoja de tareas del sprint en curso. El calendario vigente es la hoja
+  *Replan 10-nov*.
 - `../Tesis-Doc/` desde una tarea de código (ver paso 8).
 
 ## Pide permiso antes de

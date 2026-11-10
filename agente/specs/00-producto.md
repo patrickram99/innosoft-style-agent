@@ -4,8 +4,8 @@ titulo: "Especificación general del producto"
 tipo: spec de producto (nivel superior)
 historia: US-00
 estado_spec: Aprobada   # Borrador → En revisión → Aprobada
-version_spec: 1.0
-fecha: 2026-09-29
+version_spec: 1.1
+fecha: 2026-11-10
 fuentes: [catalogo_requisitos_innosoft.md v1.0, priorizacion_rice_sprint1.xlsx v1.0, diagramas/clases_innosoft, diagramas/despliegue_innosoft]
 ---
 
@@ -30,17 +30,22 @@ Desarrollar un agente de inteligencia artificial integrado con Open Journal Syst
 Innosoft en formato PDF, identifique incumplimientos respecto de las normas editoriales de la revista y genere sugerencias
 estilísticas claras, trazables y revisables por un editor.
 
+**Entrega en dos fases (D-05).** Hasta el 04-dic-2026 (cierre del curso Tesis II) el agente opera en modo *headless*:
+recibe el PDF y sus metadatos por la API y devuelve hallazgos y sugerencias por la API, sin conexión con OJS. La
+integración con OJS, la revisión del editor y sus pruebas se desarrollan en la Fase 2 (ene–mar 2027). Gemini forma parte
+del producto en las dos fases (D-06).
+
 **Problema que resuelve.** En la evaluación editorial inicial, el editor revisa a mano el estilo de cada manuscrito. Los
 problemas más frecuentes son figuras con etiquetas incorrectas, demasiado pequeñas o recortadas, y referencias que no siguen
 el formato IEEE. El agente automatiza la detección y la redacción; el editor conserva la decisión.
 
-**Criterio de éxito del producto (evaluación del Sprint 6).**
+**Criterio de éxito del producto (evaluación preliminar en el Sprint 6; evaluación final en la Fase 2).**
 
 | Métrica | Definición | Meta inicial |
 |---|---|---|
 | Precisión por regla | Hallazgos correctos / hallazgos emitidos, sobre un corpus anotado | ≥ 0,85 en reglas D |
 | Recall por regla | Hallazgos correctos / incumplimientos reales anotados | ≥ 0,75 en reglas D |
-| Tasa de aceptación | (aceptadas + editadas) / sugerencias decididas por el editor | ≥ 70 % |
+| Tasa de aceptación | (aceptadas + editadas) / sugerencias decididas por el editor (se mide en la Fase 2) | ≥ 70 % |
 | Tiempo de análisis | Envío recibido → `ready_for_review` para un artículo original de 15 páginas | < 3 min (RNF-03) |
 
 _Las metas son propuestas del equipo y se confirman con el asesor antes del Sprint 6._
@@ -54,6 +59,17 @@ _Las metas son propuestas del equipo y se confirman con el asesor antes del Spri
 - Entrada en PDF (el equipo editorial convierte DOCX y LaTeX a PDF).
 - Reglas editoriales RE-01..RE-66 del catálogo, priorizadas por release.
 - Revisión humana obligatoria de cada sugerencia y publicación como discusión en OJS.
+
+**Fases de entrega (D-05)**
+
+| Fase | Periodo | Qué entrega | Historias R1 |
+|---|---|---|---|
+| 1 · Agente *headless* | hasta el 04-dic-2026 (Sprints 2-6) | `POST /manuscripts` → extracción → motor de reglas → sugerencias con Gemini → consulta por API (`/findings`, `/suggestions`, `/runs`). Quien envía el PDF es un cliente de la API (script, `curl`); no hay plugin ni interfaz de editor. | US-00, US-01, US-03..US-13, US-15..US-18, US-20, US-28 |
+| 2 · Integración con OJS | 04-ene → 26-mar-2027 (Sprints 7-12) | Plugin de OJS, cola de revisión y decisiones del editor, publicación del comentario, pruebas de integración y evaluación con editores. | US-02, US-19, US-21, US-24 |
+
+En la Fase 1 las sugerencias **no llegan al autor**: quedan en estado `proposed` y solo se consultan por la API, de modo
+que RNF-01 se cumple por construcción. Las secciones 3 a 8 describen el producto completo; lo que depende de OJS o de la
+revisión del editor se implementa en la Fase 2.
 
 **No incluye**
 
@@ -88,6 +104,9 @@ flowchart LR
     admin([Administrador]) -- reglas YAML, registros --> agente
 ```
 
+En la Fase 1 (D-05) solo existen las flechas agente ↔ Gemini y la entrada `POST /manuscripts`, que invoca un cliente de la
+API en lugar del plugin. Las flechas hacia OJS y la del editor corresponden a la Fase 2.
+
 ## 5. Arquitectura
 
 ### 5.1 Despliegue (resumen de `diagramas/despliegue_innosoft`)
@@ -96,7 +115,7 @@ flowchart LR
 |---|---|---|
 | Servidor de la revista (Universidad La Salle, Linux) | Apache 2.4 + PHP · OJS 3.1.2.1 · plugin `innosoft-style-agent` · MySQL 5.7 (`ojs_db`) | El plugin escucha el hook de envío completado (US-02) y publica vía API REST (US-24). |
 | Servidor del agente (Linux, Docker Engine) | `agent-api` (FastAPI + Uvicorn :8000) · `agent-worker` (Celery: extracción PyMuPDF, motor de reglas, generador de sugerencias, publicador) · Redis 7 (cola de trabajos) · PostgreSQL 16 (`agent_db`) · volumen `/srv/innosoft` (PDFs, `rules/*.yaml`) | Arquitectura objetivo. En la primera etapa `agent-api` ejecuta el análisis con `BackgroundTasks`; `agent-worker` (Celery) y Redis se incorporan después sin cambiar la API (D-04). |
-| Google Cloud | Gemini API | Solo recibe fragmentos anonimizados (US-17). |
+| Google Cloud | Gemini en Vertex AI | Solo recibe fragmentos anonimizados (US-17). Proyecto y credenciales gestionados con la CLI `gcloud` (D-06). |
 | Estación de trabajo | Navegador del editor y del autor | Interfaz web de OJS y cola de revisión (sesión OJS o token de editor). |
 
 ### 5.2 Módulos lógicos (resumen de `diagramas/clases_innosoft`)
@@ -144,6 +163,9 @@ sequenceDiagram
     W->>OJS: Crea discusión en etapa Envío
     OJS-->>Autor: Comentario de estilo visible
 ```
+
+En la Fase 1 el flujo empieza en el paso 2 (un cliente de la API envía el PDF) y termina en `ready_for_review`: las
+sugerencias se leen con `GET /manuscripts/{id}/suggestions`. Los pasos del editor y de OJS son de la Fase 2.
 
 ## 7. Estados
 
@@ -301,10 +323,11 @@ erDiagram
 | Persistencia | PostgreSQL 16 (JSONB para el `Document`), Alembic para migraciones |
 | Extracción PDF | PyMuPDF |
 | Reglas | YAML + JSON Schema (`jsonschema`) |
-| LLM | Gemini API (modelo configurable, `temperature ≤ 0,3`, salida JSON con esquema) |
+| LLM | Gemini en Vertex AI (modelo configurable, `temperature ≤ 0,3`, salida JSON con esquema); presupuesto de 10 USD al mes (D-06) |
 | Pruebas | Pytest; GitHub Actions |
 | Contenedores | Docker Compose (`agent-api`, `db`; luego `agent-worker`, `redis`) |
-| Integración | Plugin genérico PHP para OJS 3.1.2.1 (Apache 2.4, MySQL 5.7) |
+| Integración (Fase 2) | Plugin genérico PHP para OJS 3.1.2.1 (Apache 2.4, MySQL 5.7) |
+| Revisión de specs | Sistema multiagente con Google ADK sobre Gemini (`tools/spec_review/`, D-07) |
 
 ## 13. Estructura del repositorio
 
@@ -334,15 +357,18 @@ innosoft-style-agent/
 
 ## 14. Proceso de desarrollo
 
-- **Scrum:** sprints de 2 semanas del 14-sep al 04-dic-2026; Product Owner y Scrum Master asumidos por los dos developers.
-- **Priorización:** RICE (`priorizacion_rice_sprint1.xlsx`); release R1 = MVP (Sprints 1-5), R2 = mejoras, R3 = futuro.
+- **Scrum:** sprints de 2 semanas. Fase 1: del 14-sep al 04-dic-2026 (Sprints 1-6). Fase 2: del 04-ene al 26-mar-2027
+  (Sprints 7-12). Product Owner y Scrum Master asumidos por los dos developers.
+- **Priorización:** RICE (`priorizacion_rice_sprint1.xlsx`); release R1 = MVP (Fases 1 y 2), R2 = mejoras, R3 = futuro.
+  El plan vigente está en la hoja *Replan 10-nov*.
 - **Ciclo SDD por historia:** Especificar → Revisar → Planificar → Implementar → Verificar → Cerrar (ver `README.md`).
+  La fase *Revisar* la ejecuta primero el sistema multiagente de D-07; la aprobación humana la ratifica después.
 - **Definition of Done:**
-  1. La spec existe, fue revisada por el otro developer y coincide con lo implementado.
+  1. La spec existe, pasó la revisión multiagente (D-07), fue ratificada por el equipo y coincide con lo implementado.
   2. Pruebas Pytest en verde en GitHub Actions.
   3. Código en `main` mediante pull request revisado.
   4. Cada hallazgo devuelto tiene `rule_id` trazable a `rules/*.yaml`.
-  5. Demo reproducible con `docker compose up` + `curl` en la Sprint Review.
+  5. Demo reproducible con `scripts/demo.ps1` (o `docker compose up`) + `curl` en la Sprint Review.
 
 ## 15. Glosario
 
@@ -375,13 +401,18 @@ de la columna **Corregir** debe actualizarse.
 | D-02 | RE-22 (figura dentro de márgenes) sale de US-10 y se evalúa en US-35. | US-10, US-35, formato-reglas |
 | D-03 | Supuesto aprobado para RE-20: mínimo 531 × 1328 px (alto × ancho) para toda figura raster; la variante panorámica 200 × 500 se añadirá al YAML si la revista la precisa. | US-10, formato-reglas |
 | D-04 | Procesamiento asíncrono con `BackgroundTasks` de FastAPI en la primera etapa; Celery + Redis se incorporan después sin cambiar los contratos. | US-00, US-01, 00-producto |
+| D-05 | **Entrega en dos fases.** Fase 1 (hasta el 04-dic-2026): agente *headless*, sin conexión con OJS; entra un PDF por la API y salen hallazgos y sugerencias por la API. Fase 2 (04-ene → 26-mar-2027): plugin de OJS, revisión del editor, publicación, pruebas de integración y evaluación con editores. Motivo: no hay acceso al servidor de OJS y el curso Tesis II cierra en diciembre. | 00-producto, US-02, US-19, US-21, US-24 (pasan a la Fase 2); US-03 (metadatos por la API) |
+| D-06 | **Gemini es parte del producto en las dos fases.** Se accede por Vertex AI; el proyecto, las API y las credenciales se gestionan con la CLI `gcloud`. Presupuesto: 10 USD al mes, con alerta de presupuesto y tope de tokens por ejecución. | US-15..US-18, US-29 |
+| D-07 | **Revisión de specs asistida por un sistema multiagente** (Google ADK, `tools/spec_review/`). Una spec con veredicto favorable pasa a `Revisada (IA)` y **puede implementarse**; el equipo la ratifica después (`Aprobada`). Si el equipo la observa, se corrigen la spec y el código. El sistema solo lee specs, catálogo y reglas; nunca `muestras/`. | Todas las specs en `Borrador`; `specs/README.md`; `CLAUDE.md` |
 
 ## 18. Preguntas abiertas
 
 - [ ] ¿Quién hará las veces de *stakeholder* editorial en las Sprint Reviews (editor jefe de Innosoft)?
 - [ ] Corpus anotado para medir precisión y recall: ¿cuántos manuscritos históricos se pueden usar y bajo qué autorización?
 - [ ] Hosting del servidor del agente: ¿infraestructura de la universidad o nube?
-- [ ] Cuenta y presupuesto de Gemini API.
+- [x] Cuenta y presupuesto de Gemini: Vertex AI con la CLI `gcloud`, 10 USD al mes (D-06).
+- [ ] Acceso al servidor de OJS de Innosoft (o instancia de prueba) antes del 04-ene-2027, inicio de la Fase 2.
+- [ ] Validar con el asesor el plan en dos fases y el calendario de 2027.
 
 ## 19. Aprobación
 
@@ -396,3 +427,4 @@ de la columna **Corregir** debe actualizarse.
 |---|---|---|---|
 | 0.1 | 2026-09-29 | Equipo | Borrador inicial a partir del catálogo v1.0, la priorización RICE y los diagramas de clases y despliegue. |
 | 1.0 | 2026-09-29 | Dev A, Dev B | Aprobada. Incorpora las decisiones D-01 a D-04 y la corrección de rutas del diagrama de clases. |
+| 1.1 | 2026-11-10 | Dev A | Decisiones D-05 (entrega en dos fases: *headless* hasta dic-2026, OJS en 2027), D-06 (Gemini en Vertex AI, 10 USD/mes) y D-07 (revisión multiagente de specs). Pendiente de ratificar por Dev B. |

@@ -9,7 +9,7 @@ contradiga a las specs, al código ni a las pruebas:
 - agente/app/rules/evaluators/ ... evaluadores registrados (@registry.register)
 - agente/app/api/ ................ endpoints implementados vs. los canónicos de 00-producto §8.3
 - agente/catalogo_requisitos_innosoft.md ... total de reglas RE del catálogo
-- agente/priorizacion_rice_sprint1.xlsx .... calendario de sprints (hoja "Replan 29-sep")
+- agente/priorizacion_rice_sprint1.xlsx .... calendario de sprints (hoja "Replan 10-nov")
 - Tesis-Doc/capitulos/*.tex y anexos/*.tex ... cabecera (% titulo / % estado / % actualizado) y marcas \\pendiente{}
 - git log ................. commits por historia (si git está disponible)
 
@@ -38,6 +38,7 @@ AVANCE = ROOT / "AVANCE.md"
 START = "<!-- AUTO:INICIO (generado por scripts/avance.py; no editar a mano) -->"
 END = "<!-- AUTO:FIN -->"
 MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"]
+REPLAN_SHEET = "Replan 10-nov"  # hoja vigente del calendario de sprints
 SDD_PHASES = ["Especificar", "Revisar", "Planificar", "Implementar", "Verificar", "Cerrar"]
 
 
@@ -178,7 +179,7 @@ def sprints() -> list[dict]:
     try:
         import openpyxl
 
-        ws = openpyxl.load_workbook(path, data_only=True)["Replan 29-sep"]
+        ws = openpyxl.load_workbook(path, data_only=True)[REPLAN_SHEET]
     except Exception:  # noqa: BLE001 - el calendario es opcional
         return []
     rows, cols = [], {}
@@ -249,10 +250,10 @@ def render(today: dt.date) -> str:
         out.append(
             f"| Sprint en curso | **Sprint {current['n']}** ({fmt(current['inicio'])} → {fmt(current['fin'])}): {current['meta']} |"
         )
-    for state in ["Verificada", "Implementada", "Aprobada", "En revisión", "Borrador"]:
+    for state in ["Verificada", "Implementada", "Aprobada", "Revisada (IA)", "En revisión", "Borrador"]:
         ids = by_state.get(state, [])
         if ids:
-            label = {"Verificada": "verificadas", "Implementada": "implementadas", "Aprobada": "aprobadas", "En revisión": "en revisión", "Borrador": "en borrador"}[state]
+            label = {"Verificada": "verificadas", "Implementada": "implementadas", "Aprobada": "aprobadas", "Revisada (IA)": "revisadas por IA (implementables)", "En revisión": "en revisión", "Borrador": "en borrador"}[state]
             listed = " — " + ", ".join(ids) if len(ids) <= 12 else ""
             out.append(f"| Historias {label} | {len(ids)} / {len(us)}{listed} |")
     out.append(f"| Walking skeleton ★ | {len(ws_done)} / {len(ws_total)} implementadas |")
@@ -291,7 +292,7 @@ def render(today: dt.date) -> str:
         )
 
     if sp:
-        out += ["", "### Calendario de sprints (fuente: Excel RICE, hoja *Replan 29-sep*)", "", "| Sprint | Fechas | Historias | Meta |", "|---|---|---|---|"]
+        out += ["", f"### Calendario de sprints (fuente: Excel RICE, hoja *{REPLAN_SHEET}*)", "", "| Sprint | Fechas | Historias | Meta |", "|---|---|---|---|"]
         for s in sp:
             mark = " ◀ en curso" if s is current else ""
             out.append(f"| {s['n']}{mark} | {fmt(s['inicio'])} → {fmt(s['fin'])} | {s['historias']} | {s['meta']} |")

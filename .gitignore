@@ -40,3 +40,7 @@ Thumbs.db
 
 # Paquete para subir a Overleaf (se genera cuando haga falta)
 Tesis-Doc.zip
+
+# Cobertura de pruebas
+.coverage
+htmlcov/
