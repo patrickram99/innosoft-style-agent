@@ -59,7 +59,9 @@ el trabajo actual (specs, catálogo, Excel RICE), **prevalece el trabajo actual*
 
 Lista que alimentan las tareas de código (paso 8 de `../agente/CLAUDE.md`). Vacía cuando la tesis está al día.
 
-- (vacío)
+- D-08 (10-nov-2026): el flujo de GitHub Actions está desactivado por un bloqueo de la cuenta. El Capítulo III dice que
+  una historia queda verificada cuando sus casos pasan en GitHub Actions (marco de trabajo, criterios de salida y
+  "Resultados a la fecha"): hay que aclarar que, mientras dure el bloqueo, la evidencia es la ejecución local.
 
 ## Observaciones del borrador por resolver
 

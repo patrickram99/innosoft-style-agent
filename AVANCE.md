@@ -53,6 +53,9 @@ El plan está en la hoja *Replan 10-nov* del Excel RICE y en el Capítulo III. E
 - Sin acceso al servidor de OJS. Ya no bloquea la Fase 1; hay que resolverlo antes del 04-ene-2027.
 - La hoja de tareas del Sprint 5 aún no existe en el Excel RICE.
 - D-05, D-06 y D-07 están pendientes de ratificar por el otro developer y de validar con el asesor.
+- **CI desactivado (D-08).** GitHub no ejecuta Actions por un bloqueo de facturación de la cuenta sin causa visible. El
+  flujo quedó desactivado el 10-nov; las historias se cierran con el `pytest` del ciclo SDD y se asume que pasarían en
+  Actions. Falta pedir a GitHub Support que quite el bloqueo y reactivar con `gh workflow enable ci.yml`.
 - Sin cerrar: *stakeholder* editorial, corpus anotado y hosting (00-producto §18).
 
 **Próximos pasos**

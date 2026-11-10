@@ -4,7 +4,7 @@ titulo: "Especificación general del producto"
 tipo: spec de producto (nivel superior)
 historia: US-00
 estado_spec: Aprobada   # Borrador → En revisión → Aprobada
-version_spec: 1.1
+version_spec: 1.2
 fecha: 2026-11-10
 fuentes: [catalogo_requisitos_innosoft.md v1.0, priorizacion_rice_sprint1.xlsx v1.0, diagramas/clases_innosoft, diagramas/despliegue_innosoft]
 ---
@@ -365,7 +365,7 @@ innosoft-style-agent/
   La fase *Revisar* la ejecuta primero el sistema multiagente de D-07; la aprobación humana la ratifica después.
 - **Definition of Done:**
   1. La spec existe, pasó la revisión multiagente (D-07), fue ratificada por el equipo y coincide con lo implementado.
-  2. Pruebas Pytest en verde en GitHub Actions.
+  2. Pruebas Pytest en verde en GitHub Actions (mientras el flujo esté desactivado rige D-08).
   3. Código en `main` mediante pull request revisado.
   4. Cada hallazgo devuelto tiene `rule_id` trazable a `rules/*.yaml`.
   5. Demo reproducible con `scripts/demo.ps1` (o `docker compose up`) + `curl` en la Sprint Review.
@@ -404,6 +404,7 @@ de la columna **Corregir** debe actualizarse.
 | D-05 | **Entrega en dos fases.** Fase 1 (hasta el 04-dic-2026): agente *headless*, sin conexión con OJS; entra un PDF por la API y salen hallazgos y sugerencias por la API. Fase 2 (04-ene → 26-mar-2027): plugin de OJS, revisión del editor, publicación, pruebas de integración y evaluación con editores. Motivo: no hay acceso al servidor de OJS y el curso Tesis II cierra en diciembre. | 00-producto, US-02, US-19, US-21, US-24 (pasan a la Fase 2); US-03 (metadatos por la API) |
 | D-06 | **Gemini es parte del producto en las dos fases.** Se accede por Vertex AI; el proyecto, las API y las credenciales se gestionan con la CLI `gcloud`. Presupuesto: 10 USD al mes, con alerta de presupuesto y tope de tokens por ejecución. | US-15..US-18, US-29 |
 | D-07 | **Revisión de specs asistida por un sistema multiagente** (Google ADK, `tools/spec_review/`). Una spec con veredicto favorable pasa a `Revisada (IA)` y **puede implementarse**; el equipo la ratifica después (`Aprobada`). Si el equipo la observa, se corrigen la spec y el código. El sistema solo lee specs, catálogo y reglas; nunca `muestras/`. | Todas las specs en `Borrador`; `specs/README.md`; `CLAUDE.md` |
+| D-08 | **Integración continua desactivada temporalmente.** GitHub no inicia los trabajos de Actions porque la cuenta tiene un bloqueo de facturación sin causa visible (plan gratuito, sin consumo ni pagos); el flujo `CI` se desactivó el 10-nov-2026. Mientras dure, el punto 2 de la Definition of Done **no bloquea**: una historia se cierra con el `pytest` del ciclo SDD en verde y se asume que el flujo pasaría en GitHub Actions. Ninguna corrida de Actions respalda ese supuesto: al reactivar el flujo (`gh workflow enable ci.yml`) se relanza sobre `main` y se corrige lo que falle. | DoD (§14), todas las historias |
 
 ## 18. Preguntas abiertas
 
@@ -413,6 +414,7 @@ de la columna **Corregir** debe actualizarse.
 - [x] Cuenta y presupuesto de Gemini: Vertex AI con la CLI `gcloud`, 10 USD al mes (D-06).
 - [ ] Acceso al servidor de OJS de Innosoft (o instancia de prueba) antes del 04-ene-2027, inicio de la Fase 2.
 - [ ] Validar con el asesor el plan en dos fases y el calendario de 2027.
+- [ ] Bloqueo de facturación de la cuenta de GitHub: pedir a GitHub Support que lo retire y reactivar el flujo `CI` (D-08).
 
 ## 19. Aprobación
 
@@ -428,3 +430,4 @@ de la columna **Corregir** debe actualizarse.
 | 0.1 | 2026-09-29 | Equipo | Borrador inicial a partir del catálogo v1.0, la priorización RICE y los diagramas de clases y despliegue. |
 | 1.0 | 2026-09-29 | Dev A, Dev B | Aprobada. Incorpora las decisiones D-01 a D-04 y la corrección de rutas del diagrama de clases. |
 | 1.1 | 2026-11-10 | Dev A | Decisiones D-05 (entrega en dos fases: *headless* hasta dic-2026, OJS en 2027), D-06 (Gemini en Vertex AI, 10 USD/mes) y D-07 (revisión multiagente de specs). Pendiente de ratificar por Dev B. |
+| 1.2 | 2026-11-10 | Dev A | Decisión D-08: integración continua desactivada temporalmente por el bloqueo de la cuenta de GitHub; el punto 2 de la DoD no bloquea mientras dure. |
