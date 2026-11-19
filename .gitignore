@@ -44,3 +44,6 @@ Tesis-Doc.zip
 # Cobertura de pruebas
 .coverage
 htmlcov/
+
+# Dataset sintético de evaluación (D-09): los PDFs se regeneran con la semilla; manifest.json y resultados/ sí se versionan
+agente/evaluacion/dataset/

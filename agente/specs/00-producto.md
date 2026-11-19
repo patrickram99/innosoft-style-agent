@@ -4,8 +4,8 @@ titulo: "Especificación general del producto"
 tipo: spec de producto (nivel superior)
 historia: US-00
 estado_spec: Aprobada   # Borrador → En revisión → Aprobada
-version_spec: 1.2
-fecha: 2026-11-10
+version_spec: 1.3
+fecha: 2026-11-18
 fuentes: [catalogo_requisitos_innosoft.md v1.0, priorizacion_rice_sprint1.xlsx v1.0, diagramas/clases_innosoft, diagramas/despliegue_innosoft]
 ---
 
@@ -43,8 +43,8 @@ el formato IEEE. El agente automatiza la detección y la redacción; el editor c
 
 | Métrica | Definición | Meta inicial |
 |---|---|---|
-| Precisión por regla | Hallazgos correctos / hallazgos emitidos, sobre un corpus anotado | ≥ 0,85 en reglas D |
-| Recall por regla | Hallazgos correctos / incumplimientos reales anotados | ≥ 0,75 en reglas D |
+| Precisión por regla | Hallazgos correctos / hallazgos emitidos, sobre el dataset sintético de evaluación (D-09) | ≥ 0,85 en reglas D |
+| Recall por regla | Hallazgos correctos / incumplimientos presentes en el dataset sintético (D-09) | ≥ 0,75 en reglas D |
 | Tasa de aceptación | (aceptadas + editadas) / sugerencias decididas por el editor (se mide en la Fase 2) | ≥ 70 % |
 | Tiempo de análisis | Envío recibido → `ready_for_review` para un artículo original de 15 páginas | < 3 min (RNF-03) |
 
@@ -349,6 +349,8 @@ innosoft-style-agent/
 ├── prompts/sugerencia/ # v1.md, v2.md, … (versionados)
 ├── specs/              # 00-producto.md, formato-reglas.md, _template.md, US-nn.md
 ├── tests/              # test_usNN_*.py, rules/test_RE-nn.py, fixtures/pdfs/
+├── tools/              # herramientas del proceso: spec_review/ (D-07), eval_dataset/ (D-09)
+├── evaluacion/         # manifest.json y resultados/ versionados; dataset/ (PDFs) se regenera con la semilla
 ├── docs/               # plantillas oficiales, innosoft.cls, diagramas
 ├── alembic/
 ├── docker-compose.yml
@@ -406,10 +408,12 @@ de la columna **Corregir** debe actualizarse.
 | D-07 | **Revisión de specs asistida por un sistema multiagente** (Google ADK, `tools/spec_review/`). Una spec con veredicto favorable pasa a `Revisada (IA)` y **puede implementarse**; el equipo la ratifica después (`Aprobada`). Si el equipo la observa, se corrigen la spec y el código. El sistema solo lee specs, catálogo y reglas; nunca `muestras/`. | Todas las specs en `Borrador`; `specs/README.md`; `CLAUDE.md` |
 | D-08 | **Integración continua desactivada temporalmente.** GitHub no inicia los trabajos de Actions porque la cuenta tiene un bloqueo de facturación sin causa visible (plan gratuito, sin consumo ni pagos); el flujo `CI` se desactivó el 10-nov-2026. Mientras dure, el punto 2 de la Definition of Done **no bloquea**: una historia se cierra con el `pytest` del ciclo SDD en verde y se asume que el flujo pasaría en GitHub Actions. Ninguna corrida de Actions respalda ese supuesto: al reactivar el flujo (`gh workflow enable ci.yml`) se relanza sobre `main` y se corrige lo que falle. | DoD (§14), todas las historias |
 
+| D-09 | **La evaluación de la Fase 1 usa un dataset sintético en lugar de un corpus anotado.** Los manuscritos se generan con las plantillas oficiales de la revista (LaTeX y Word) y con defectos inyectados a partir de una semilla, de modo que la verdad de referencia se conoce por construcción y no hay datos personales. La verdad se fija sobre el PDF que recibe el agente y se comprueba con una librería distinta de la que usa el agente (pypdf frente a PyMuPDF); lo que el autor incrustó se guarda aparte para medir el efecto de la conversión a PDF. Gemini (D-06) solo redacta los textos de relleno. La herramienta vive en `tools/eval_dataset/` y no forma parte del producto. Límite declarado: mide la corrección frente a defectos controlados, no el desempeño con manuscritos reales; la evaluación con editores y manuscritos reales sigue en la Fase 2 (D-05). | 00-producto §1; métricas de todas las reglas D; Capítulos III y IV de la tesis |
+
 ## 18. Preguntas abiertas
 
 - [ ] ¿Quién hará las veces de *stakeholder* editorial en las Sprint Reviews (editor jefe de Innosoft)?
-- [ ] Corpus anotado para medir precisión y recall: ¿cuántos manuscritos históricos se pueden usar y bajo qué autorización?
+- [x] Corpus para medir precisión y recall en la Fase 1: dataset sintético (D-09). El uso de manuscritos históricos, con su autorización, se decide para la Fase 2.
 - [ ] Hosting del servidor del agente: ¿infraestructura de la universidad o nube?
 - [x] Cuenta y presupuesto de Gemini: Vertex AI con la CLI `gcloud`, 10 USD al mes (D-06).
 - [ ] Acceso al servidor de OJS de Innosoft (o instancia de prueba) antes del 04-ene-2027, inicio de la Fase 2.
@@ -431,3 +435,4 @@ de la columna **Corregir** debe actualizarse.
 | 1.0 | 2026-09-29 | Dev A, Dev B | Aprobada. Incorpora las decisiones D-01 a D-04 y la corrección de rutas del diagrama de clases. |
 | 1.1 | 2026-11-10 | Dev A | Decisiones D-05 (entrega en dos fases: *headless* hasta dic-2026, OJS en 2027), D-06 (Gemini en Vertex AI, 10 USD/mes) y D-07 (revisión multiagente de specs). Pendiente de ratificar por Dev B. |
 | 1.2 | 2026-11-10 | Dev A | Decisión D-08: integración continua desactivada temporalmente por el bloqueo de la cuenta de GitHub; el punto 2 de la DoD no bloquea mientras dure. |
+| 1.3 | 2026-11-18 | Dev A | Decisión D-09: la evaluación de la Fase 1 se hace con un dataset sintético (`tools/eval_dataset/`) en lugar de un corpus anotado. Pendiente de ratificar por Dev B y de validar con el asesor. |

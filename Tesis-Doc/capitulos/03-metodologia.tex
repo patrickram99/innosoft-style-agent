@@ -1,6 +1,7 @@
 % titulo: Capítulo III – Metodología de desarrollo
 % estado: borrador
-% actualizado: 2026-11-10
+% actualizado: 2026-11-18
+% El 18-nov-2026 la evaluación pasó de un corpus anotado a un dataset sintético (D-09, 00-producto v1.3, registro S-19).
 % Sincronizado con specs/00-producto.md v1.0 el 19-oct-2026; corte de avance y diseño de pruebas del 30-oct-2026
 % (ver Tesis-Doc/README.md, registro S-13 a S-15). El 10-nov-2026 se añadieron la entrega en dos fases, la revisión
 % multiagente de especificaciones y la evidencia de ejecución de las pruebas (00-producto v1.1, registro S-16 a S-18).
@@ -549,7 +550,7 @@ Las pruebas buscan responder cuatro preguntas.
   \item Si se cumplen las garantías que no se pueden negociar: la revisión humana y la protección de datos personales.
 \end{itemize}
 
-Quedan fuera la calidad científica de los manuscritos, que no es parte del producto, y las pruebas contra el servidor real de OJS mientras no exista acceso. La calidad de las sugerencias frente a un corpus anotado se trata como evaluación en la Sección~\ref{sec:evaluacion}.
+Quedan fuera la calidad científica de los manuscritos, que no es parte del producto, y las pruebas contra el servidor real de OJS mientras no exista acceso. La calidad de los hallazgos frente a un \emph{dataset} sintético con defectos conocidos se trata como evaluación en la Sección~\ref{sec:evaluacion}.
 
 \subsection{Niveles y tipos de prueba}
 
@@ -875,22 +876,27 @@ PDF escaneado, sin capa de texto & Estado \texttt{unreadable} con su motivo & \t
 \endfoot
 \endlastfoot
 OE1 -- Arquitectura & Módulos integrados y reglas aplicadas por revista & Prueba del flujo completo: recepción $\rightarrow$ reporte $\rightarrow$ comentario, con OJS simulado; contra OJS real si hay acceso & Flujo local de punta a punta en el Sprint 5 \\
-OE2 -- Análisis documental & Reconocimiento de secciones, figuras, citas y referencias & Comparación con anotación manual sobre un corpus & Recall por regla $\geq$ 0,75 en reglas D \\
+OE2 -- Análisis documental & Reconocimiento de secciones, figuras, citas y referencias & Comparación con la verdad de referencia de un \emph{dataset} sintético & Recall por regla $\geq$ 0,75 en reglas D \\
 OE3 -- Validación y reporte & Precisión y utilidad de las sugerencias & Precisión por regla; aceptación / edición / rechazo por los editores & Precisión $\geq$ 0,85 en reglas D; aceptación $\geq$ 70 \% \\
 OE4 -- Evaluación & Tiempo de análisis y de revisión estilística & Medición en \texttt{runs} (US-28) y comparación manual vs. asistida & Análisis < 3 min para 15 páginas (RNF-03); \pendiente{definir instrumento y meta de reducción del tiempo de revisión — el borrador proponía 20 \%} \\
 Usabilidad del reporte & Claridad y aplicabilidad para autores y editores & Encuesta breve o juicio de expertos & Reporte valorado como útil \\
 \end{longtable}
 }
 
-Las metas son propuestas del equipo y se confirman con el asesor antes del Sprint 6 (\texttt{specs/\allowbreak{}00-producto.\allowbreak{}md} §1). \pendiente{corpus anotado — número de manuscritos históricos y autorización (00-producto §18).}
+Las metas son propuestas del equipo y se confirman con el asesor antes del Sprint 6 (\texttt{specs/\allowbreak{}00-producto.\allowbreak{}md} §1).
 
-La evaluación se hace en local y no depende de OJS. El procedimiento tiene tres pasos.
+El plan inicial era medir estas métricas sobre un corpus de manuscritos históricos anotados a mano. No se obtuvo ese corpus ni la autorización para usar manuscritos reales, que contienen datos personales. Por eso, el 18 de noviembre de 2026 se decidió evaluar la Fase 1 con un \emph{dataset} sintético (decisión D-09 de \texttt{specs/\allowbreak{}00-producto.\allowbreak{}md}). La evaluación con manuscritos reales y con editores se mantiene en la Fase 2.
+
+La evaluación se hace en local y no depende de OJS. El procedimiento tiene cuatro pasos.
 
 \begin{enumerate}
-  \item Un revisor anota a mano cada incumplimiento real por regla, antes de ver la salida del agente.
-  \item El agente analiza los mismos manuscritos con las reglas vigentes.
-  \item Cada hallazgo se compara con la anotación y se clasifica como verdadero positivo ($VP$), falso positivo ($FP$) o falso negativo ($FN$).
+  \item Un generador produce manuscritos con las plantillas oficiales de la revista, en LaTeX y en Word, e inyecta defectos a partir de una semilla. Cada defecto queda registrado en un manifiesto, que es la verdad de referencia.
+  \item La verdad de referencia se comprueba sobre cada PDF con una librería distinta de la que usa el agente.
+  \item El agente analiza los mismos manuscritos por su API con las reglas vigentes.
+  \item Cada par de figura y regla se compara con el manifiesto y se clasifica como verdadero positivo ($VP$), falso positivo ($FP$), falso negativo ($FN$) o verdadero negativo ($VN$).
 \end{enumerate}
+
+El diseño del \emph{dataset}, sus resultados y sus límites se presentan en el Capítulo~\ref{cap:resultados}.
 
 Con esos conteos se calculan, para cada regla determinística, las métricas de la especificación del producto y su media armónica $F_1$.
 

@@ -15,6 +15,7 @@ clase `tesisulasalle` (esquema oficial de informe de investigación tecnológica
 | `capitulos/01-problematica.tex` | Capítulo I: contexto, antecedentes y estado del arte, definición del problema. |
 | `capitulos/02-planteamiento.tex` | Capítulo II: fundamentos, objetivos, justificación, viabilidad, limitaciones. |
 | `capitulos/03-metodologia.tex` | Capítulo III: marco de trabajo, requisitos, propuesta, arquitectura, plan, evaluación. |
+| `capitulos/03b-resultados.tex` | Capítulo IV: análisis y presentación de resultados de la evaluación con el *dataset* sintético (D-09). Sus cifras y gráficos (`figuras/resultados/`) salen de `../agente/evaluacion/resultados/`; se regeneran con `python -m tools.eval_dataset todo --tesis` desde `../agente/`. |
 | `capitulos/04-conclusiones.tex` | Conclusiones (se redactan al cierre del Sprint 6). |
 | `capitulos/referencias.tex` | `thebibliography` en formato IEEE; se cita con `\cite{refN}`. |
 | `anexos/A-fichas-lectura.tex` | Fichas de lectura crítica de los 24 documentos seleccionados. |

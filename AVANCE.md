@@ -20,7 +20,7 @@ mirar el estado del proyecto, tanto del software como del documento de tesis.
 | Informes del revisor multiagente de specs | `agente/specs/revisiones/US-nn.md` · [`agente/tools/spec_review/README.md`](agente/tools/spec_review/README.md) |
 | Cómo trabaja Claude en cada parte | `CLAUDE.md` (mapa) · `agente/CLAUDE.md` (código) · `Tesis-Doc/CLAUDE.md` (tesis) |
 
-## Ahora (actualizado 10-nov-2026)
+## Ahora (actualizado 18-nov-2026)
 
 **Sprint 5 (09-nov → 20-nov), día 2 de 10.** El 10-nov se decidió entregar en dos fases (D-05 de `00-producto.md` v1.1):
 
@@ -45,7 +45,26 @@ El plan está en la hoja *Replan 10-nov* del Excel RICE y en el Capítulo III. E
 - **Tesis:** el Capítulo III tiene el plan en dos fases, la revisión multiagente y 14 capturas de las pruebas
   (`Tesis-Doc/figuras/pruebas/`). Capítulo II y resumen ajustados. Compila sin errores (91 páginas).
 
+**Evaluación con dataset sintético (18-nov, D-09 de `00-producto.md` v1.3)**
+
+- El corpus anotado se reemplazó por un *dataset* sintético: `agente/tools/eval_dataset/` genera 200 manuscritos (140
+  con LaTeX, 60 con Word) con las plantillas de la revista, los evalúa por la API y calcula las métricas. Se ejecuta
+  por tandas y se puede parar y reanudar. Resultados en `agente/evaluacion/resultados/`.
+- Corte al 18-nov, solo RE-20 y RE-21: precisión 0,909 y 0,942; *recall* 0,971 y 0,996; análisis en 0,27 s de mediana.
+  En el subconjunto de LaTeX la precisión no alcanza la meta de 0,85 (0,795 en RE-20).
+- Los 47 errores tienen tres causas, todas en la extracción de figuras (US-06): figuras rotadas (39 falsos positivos),
+  recortadas (5 falsos negativos) y muy pequeñas (3 falsos negativos).
+- Word reduce las imágenes a unos 200 ppp al exportar a PDF: ninguna figura de Word llega al PDF con los 300 dpi de RE-21.
+- Tesis: Capítulo IV nuevo (`Tesis-Doc/capitulos/03b-resultados.tex`), 105 páginas en total. No está en el esquema
+  oficial; falta validarlo con el asesor.
+- Gemini: unos 187 000 tokens para el banco de textos (menos de 1 USD, estimado por tokens).
+
 **Bloqueos**
+
+- D-09 está pendiente de ratificar por el otro developer y de validar con el asesor.
+- Los tres defectos de US-06 que encontró la evaluación cambian una historia implementada: hay que decidirlos y
+  llevarlos a su spec antes de corregir el código.
+- La revista debe decidir qué hacer con RE-21 en manuscritos de Word (Capítulo IV, implicancias para la revista).
 
 - US-05, US-07 y US-08 no se pueden implementar hasta corregir sus observaciones bloqueantes. Varias son decisiones de
   alcance (qué secciones detecta US-05 en R1, qué campos extrae US-08), no de redacción.
@@ -68,7 +87,7 @@ El plan está en la hoja *Replan 10-nov* del Excel RICE y en el Capítulo III. E
 
 <!-- AUTO:INICIO (generado por scripts/avance.py; no editar a mano) -->
 
-_Generado el 2026-11-10._
+_Generado el 2026-11-18._
 
 ### Tablero
 
@@ -80,8 +99,8 @@ _Generado el 2026-11-10._
 | Walking skeleton ★ | 5 / 17 implementadas |
 | Reglas con evaluador | 2 de 8 declaradas en YAML · 44 en el catálogo — RE-20, RE-21 |
 | Endpoints canónicos (§8.3) | 4 / 13 — `POST /manuscripts`, `GET /manuscripts/{id}/findings`, `GET /rules`, `GET /health` |
-| Funciones de prueba | 85 en `tests/` |
-| Tesis: archivos revisados | 0 / 9 · marcas \pendiente abiertas: 13 |
+| Funciones de prueba | 98 en `tests/` |
+| Tesis: archivos revisados | 0 / 10 · marcas \pendiente abiertas: 14 |
 
 ### Sprint 5 — historias comprometidas
 
@@ -173,9 +192,10 @@ _Generado el 2026-11-10._
 | Preliminares (dedicatoria, siglas, resumen, abstract) | [Tesis-Doc/capitulos/00-preliminares.tex](Tesis-Doc/capitulos/00-preliminares.tex) | borrador | 2026-11-10 | 4 |
 | Capítulo I – Problemática del proyecto | [Tesis-Doc/capitulos/01-problematica.tex](Tesis-Doc/capitulos/01-problematica.tex) | borrador | 2026-10-19 |  |
 | Capítulo II – Planteamiento del proyecto | [Tesis-Doc/capitulos/02-planteamiento.tex](Tesis-Doc/capitulos/02-planteamiento.tex) | borrador | 2026-11-10 | 2 |
-| Capítulo III – Metodología de desarrollo | [Tesis-Doc/capitulos/03-metodologia.tex](Tesis-Doc/capitulos/03-metodologia.tex) | borrador | 2026-11-10 | 4 |
+| Capítulo III – Metodología de desarrollo | [Tesis-Doc/capitulos/03-metodologia.tex](Tesis-Doc/capitulos/03-metodologia.tex) | borrador | 2026-11-18 | 3 |
+| Capítulo IV – Análisis y presentación de resultados | [Tesis-Doc/capitulos/03b-resultados.tex](Tesis-Doc/capitulos/03b-resultados.tex) | borrador | 2026-11-18 | 2 |
 | Conclusiones | [Tesis-Doc/capitulos/04-conclusiones.tex](Tesis-Doc/capitulos/04-conclusiones.tex) | pendiente | 2026-10-19 | 1 |
-| Referencias | [Tesis-Doc/capitulos/referencias.tex](Tesis-Doc/capitulos/referencias.tex) | borrador | 2026-10-30 |  |
+| Referencias | [Tesis-Doc/capitulos/referencias.tex](Tesis-Doc/capitulos/referencias.tex) | borrador | 2026-11-18 |  |
 | Anexo A – Ficha de búsqueda | [Tesis-Doc/anexos/A-ficha-busqueda.tex](Tesis-Doc/anexos/A-ficha-busqueda.tex) | borrador | 2026-10-19 | 2 |
 | Anexo A – Fichas de lectura crítica | [Tesis-Doc/anexos/fichas-lectura.tex](Tesis-Doc/anexos/fichas-lectura.tex) | no incluido | 2026-10-19 |  |
 | Anexo B – Matriz de trazabilidad | [Tesis-Doc/anexos/matriz-trazabilidad.tex](Tesis-Doc/anexos/matriz-trazabilidad.tex) | borrador | 2026-10-19 |  |

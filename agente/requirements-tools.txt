@@ -1,5 +1,11 @@
-# Herramientas del proceso (no las usa app/ ni el CI): revisor multiagente de specs y reportes de pruebas.
+# Herramientas del proceso (no las usa app/ ni el CI): revisor multiagente de specs, reportes de pruebas y
+# dataset sintético de evaluación (D-09).
 google-adk>=2.14
 google-genai>=2.34
 pytest-html>=4.2
 pytest-cov>=7.1
+Pillow>=11.0
+python-docx>=1.1
+pypdf>=5.0
+pywin32>=306; sys_platform == "win32"
+matplotlib>=3.9

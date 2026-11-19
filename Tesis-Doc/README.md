@@ -24,6 +24,7 @@ resolver, en tres pasadas directas de `pdflatex`.
 | Capítulo I – Problemática del proyecto | `capitulos/01-problematica.tex` |
 | Capítulo II – Planteamiento del proyecto (el esquema lo numera "III" por error) | `capitulos/02-planteamiento.tex` |
 | Capítulo III – Metodología de desarrollo | `capitulos/03-metodologia.tex` |
+| (No está en el esquema) Capítulo IV – Análisis y presentación de resultados | `capitulos/03b-resultados.tex` |
 | Conclusiones | `capitulos/04-conclusiones.tex` |
 | Referencias | `capitulos/referencias.tex` |
 | Anexos | `anexos/A-fichas-lectura.tex`, `anexos/B-matriz-trazabilidad.tex` |
@@ -54,6 +55,7 @@ el trabajo actual (specs, catálogo, Excel RICE), **prevalece el trabajo actual*
 | S-16 | Alcance y cronograma | Todo el producto, con OJS, hasta el 04-dic-2026 | Decisión del usuario del 10-nov (D-05 de 00-producto v1.1): Fase 1 *headless* hasta el 04-dic-2026 y Fase 2 con OJS del 04-ene al 26-mar-2027. Capítulo III (plan y Gantt en dos fases, Tabla 3-16), Capítulo II y resumen actualizados. El plan de la Tabla 3-7 queda como antecedente. El título no cambia. Falta validarlo con el asesor. |
 | S-17 | Revisión de especificaciones | Revisión cruzada entre los dos developers | Se añade el revisor multiagente con Google ADK (D-07) y el estado `Revisada (IA)`. El Capítulo III registra la primera revisión: US-05, US-07 y US-08 con veredicto bloqueante. |
 | S-18 | Evidencia de pruebas | Solo tabla de resultados | Capturas del 10-nov en `figuras/pruebas/` (9 de `pytest-html` y `pytest-cov`, 5 del flujo *headless*). Las del flujo son respuestas reales de la API con PDFs sintéticos, presentadas en formato de consola; se regeneran con los reportes de `pytest --html` y el agente en local. |
+| S-19 | Evaluación y capítulo de resultados | Corpus de manuscritos históricos anotado a mano; sin capítulo de resultados | Decisión del usuario del 18-nov (D-09 de 00-producto v1.3): la Fase 1 se evalúa con un *dataset* sintético (`agente/tools/eval_dataset/`). Se corrige la Sección de validación del Capítulo III y se añade el Capítulo IV (`capitulos/03b-resultados.tex`), ordenado según el referencial del curso: estadística descriptiva e inferencial, síntesis narrativa, cualitativa y cuantitativa, e interpretación. El Capítulo IV no está en el esquema oficial de la universidad: falta validar con el asesor si queda como capítulo o como sección del III. Sus cifras son un corte al 18-nov (solo RE-20 y RE-21) y se regeneran con `python -m tools.eval_dataset todo --tesis` al cierre del Sprint 6. Se añaden las referencias `ref37` a `ref39`. |
 
 ## Pendiente de reflejar en la tesis
 
