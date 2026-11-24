@@ -58,6 +58,9 @@ El plan está en la hoja *Replan 10-nov* del Excel RICE y en el Capítulo III. E
 - Tesis: Capítulo IV nuevo (`Tesis-Doc/capitulos/03b-resultados.tex`), 105 páginas en total. No está en el esquema
   oficial; falta validarlo con el asesor.
 - Gemini: unos 187 000 tokens para el banco de textos (menos de 1 USD, estimado por tokens).
+- 24-nov: el Capítulo IV suma la sección *Formulación de la discusión* (contraste con estudios previos, valoración de
+  los aportes frente a OE1-OE4 y evaluación de las limitaciones). Sin cifras nuevas: usa el corte del 18-nov. La tesis
+  compila sin errores (110 páginas). `compilar.ps1` ahora usa tres pasadas de `pdflatex` si no hay Perl para `latexmk`.
 
 **Bloqueos**
 
@@ -87,32 +90,31 @@ El plan está en la hoja *Replan 10-nov* del Excel RICE y en el Capítulo III. E
 
 <!-- AUTO:INICIO (generado por scripts/avance.py; no editar a mano) -->
 
-_Generado el 2026-11-18._
+_Generado el 2026-11-24._
 
 ### Tablero
 
 | Indicador | Valor |
 |---|---|
-| Sprint en curso | **Sprint 5** (09-nov → 20-nov): Agente headless: citas y referencias IEEE detectadas por API; specs revisadas por el sistema multiagente |
+| Sprint en curso | **Sprint 6** (23-nov → 04-dic): Agente headless: sugerencias con Gemini consultables por API; evaluación preliminar y entrega de Tesis II |
 | Historias implementadas | 6 / 37 — US-00, US-01, US-04, US-06, US-09, US-10 |
 | Historias en borrador | 31 / 37 |
 | Walking skeleton ★ | 5 / 17 implementadas |
 | Reglas con evaluador | 2 de 8 declaradas en YAML · 44 en el catálogo — RE-20, RE-21 |
 | Endpoints canónicos (§8.3) | 4 / 13 — `POST /manuscripts`, `GET /manuscripts/{id}/findings`, `GET /rules`, `GET /health` |
 | Funciones de prueba | 98 en `tests/` |
-| Tesis: archivos revisados | 0 / 10 · marcas \pendiente abiertas: 14 |
+| Tesis: archivos revisados | 0 / 10 · marcas \pendiente abiertas: 15 |
 
-### Sprint 5 — historias comprometidas
+### Sprint 6 — historias comprometidas
 
 | ID | Historia | Estado spec | Fase SDD |
 |---|---|---|---|
-| [US-03](agente/specs/US-03.md) | Obtener metadatos del envío (sección, título, idioma) | Borrador | Especificar |
-| [US-05](agente/specs/US-05.md) | Detectar secciones IMRyD | Borrador | Especificar |
-| [US-07](agente/specs/US-07.md) | Extraer citas en texto [n] | Borrador | Especificar |
-| [US-08](agente/specs/US-08.md) | Extraer lista de referencias | Borrador | Especificar |
-| [US-11](agente/specs/US-11.md) | Validar figuras: pie, numeración y orden | Borrador | Especificar |
-| [US-12](agente/specs/US-12.md) | Validar citas IEEE en el texto | Borrador | Especificar |
-| [US-13](agente/specs/US-13.md) | Validar referencias IEEE (formato, orden y mínimo) | Borrador | Especificar |
+| [US-15](agente/specs/US-15.md) | Redactar sugerencia con Gemini | Borrador | Especificar |
+| [US-16](agente/specs/US-16.md) | Validar el esquema de respuesta del LLM | Borrador | Especificar |
+| [US-17](agente/specs/US-17.md) | Anonimizar el contexto antes de enviarlo al LLM | Borrador | Especificar |
+| [US-18](agente/specs/US-18.md) | Reintentos, límite de tokens y fallback determinístico | Borrador | Especificar |
+| [US-20](agente/specs/US-20.md) | Ver sugerencias con su evidencia | Borrador | Especificar |
+| [US-28](agente/specs/US-28.md) | Registro de ejecución por manuscrito | Borrador | Especificar |
 
 ### Historias
 
@@ -176,8 +178,8 @@ _Generado el 2026-11-18._
 | 2 | 29-sep → 09-oct | US-00, US-01, US-04, US-09, US-06, US-10 | Walking skeleton con RE-20/RE-21 (cumplido) |
 | 3 | 12-oct → 23-oct | Sin historias cerradas (specs en borrador, sin acceso a OJS) | No cumplió su meta; sus historias pasan al Sprint 5 |
 | 4 | 26-oct → 06-nov | Sin historias cerradas: diseño de pruebas (58 casos) y avance de tesis | No cumplió su meta; sus historias pasan al Sprint 6 |
-| 5 ◀ en curso | 09-nov → 20-nov | US-03, US-05*, US-07, US-08*, US-11*, US-12, US-13* | Agente headless: citas y referencias IEEE detectadas por API; specs revisadas por el sistema multiagente |
-| 6 | 23-nov → 04-dic | US-17, US-15, US-16, US-18*, US-28, US-20 | Agente headless: sugerencias con Gemini consultables por API; evaluación preliminar y entrega de Tesis II |
+| 5 | 09-nov → 20-nov | US-03, US-05*, US-07, US-08*, US-11*, US-12, US-13* | Agente headless: citas y referencias IEEE detectadas por API; specs revisadas por el sistema multiagente |
+| 6 ◀ en curso | 23-nov → 04-dic | US-17, US-15, US-16, US-18*, US-28, US-20 | Agente headless: sugerencias con Gemini consultables por API; evaluación preliminar y entrega de Tesis II |
 | 7 | 04-ene → 15-ene | US-02 + spike OJS | Instancia de OJS de prueba y plugin que entrega el envío al agente |
 | 8 | 18-ene → 29-ene | US-19, US-21 | Cola de revisión y decisiones del editor |
 | 9 | 01-feb → 12-feb | US-24 | Flujo completo: OJS → agente → editor → comentario en OJS |
@@ -193,7 +195,7 @@ _Generado el 2026-11-18._
 | Capítulo I – Problemática del proyecto | [Tesis-Doc/capitulos/01-problematica.tex](Tesis-Doc/capitulos/01-problematica.tex) | borrador | 2026-10-19 |  |
 | Capítulo II – Planteamiento del proyecto | [Tesis-Doc/capitulos/02-planteamiento.tex](Tesis-Doc/capitulos/02-planteamiento.tex) | borrador | 2026-11-10 | 2 |
 | Capítulo III – Metodología de desarrollo | [Tesis-Doc/capitulos/03-metodologia.tex](Tesis-Doc/capitulos/03-metodologia.tex) | borrador | 2026-11-18 | 3 |
-| Capítulo IV – Análisis y presentación de resultados | [Tesis-Doc/capitulos/03b-resultados.tex](Tesis-Doc/capitulos/03b-resultados.tex) | borrador | 2026-11-18 | 2 |
+| Capítulo IV – Análisis y presentación de resultados | [Tesis-Doc/capitulos/03b-resultados.tex](Tesis-Doc/capitulos/03b-resultados.tex) | borrador | 2026-11-24 | 3 |
 | Conclusiones | [Tesis-Doc/capitulos/04-conclusiones.tex](Tesis-Doc/capitulos/04-conclusiones.tex) | pendiente | 2026-10-19 | 1 |
 | Referencias | [Tesis-Doc/capitulos/referencias.tex](Tesis-Doc/capitulos/referencias.tex) | borrador | 2026-11-18 |  |
 | Anexo A – Ficha de búsqueda | [Tesis-Doc/anexos/A-ficha-busqueda.tex](Tesis-Doc/anexos/A-ficha-busqueda.tex) | borrador | 2026-10-19 | 2 |

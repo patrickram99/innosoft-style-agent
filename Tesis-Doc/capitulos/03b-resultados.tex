@@ -1,6 +1,6 @@
 % titulo: Capítulo IV – Análisis y presentación de resultados
 % estado: borrador
-% actualizado: 2026-11-18
+% actualizado: 2026-11-24
 % Corte del 18-nov-2026 (registro S-19 de Tesis-Doc/README.md). Las cifras salen de
 % agente/evaluacion/resultados/resumen.json y se regeneran con `python -m tools.eval_dataset todo --tesis`.
 % Solo cubre las reglas con evaluador a la fecha (RE-20 y RE-21). Al cierre del Sprint 6 se actualiza con las reglas
@@ -373,15 +373,114 @@ La precisión global también se beneficia de los documentos de Word. En ellos c
 
 El tiempo medido corresponde a la extracción y al motor de reglas, ejecutados en un solo proceso y sin red. La redacción de sugerencias con Gemini todavía no está en el flujo y será la etapa más lenta. El requisito de tres minutos se debe volver a medir cuando esa etapa exista.
 
-\subsubsection*{Relación con los antecedentes}
-
-Esta evaluación usa documentos sintéticos con verdad de referencia conocida. Es el mismo camino que siguen, entre los antecedentes del Capítulo~\ref{cap:problematica}, los trabajos que generan documentos para no depender de anotaciones manuales \cite{ref18,ref22}. Los trabajos que verifican el formato de artículos \cite{ref5,ref9} reportan sus resultados sobre sus propios conjuntos de documentos y con reglas distintas, de modo que las cifras de esta tesis no son comparables de forma directa con las suyas.
-
 \subsubsection*{Implicancias para la revista}
 
 La regla RE-21 exige 300 dpi y el agente la verifica sobre el PDF. Los resultados muestran que un manuscrito preparado en Word no puede cumplirla, haga lo que haga el autor, porque la conversión reduce las imágenes. Si la revista recibe sobre todo manuscritos de Word, el agente observaría la resolución de casi todas las figuras y esas observaciones no le servirían al autor. Hay tres salidas posibles: pedir las figuras como archivos aparte, verificar la resolución sobre el documento de origen o ajustar el umbral para los PDF que provienen de Word. La decisión es editorial y se llevará a la revista. \pendiente{presentar este hallazgo al equipo editorial de Innosoft y registrar la decisión en \texttt{specs/00-producto.md}.}
 
-\subsubsection*{Amenazas a la validez}
+La relación de estos resultados con los antecedentes y las amenazas a su validez se tratan en la discusión (Sección~\ref{sec:discusion}).
+
+\subsubsection*{Reproducibilidad}
+
+El generador, el evaluador y los resultados están en el repositorio, en \texttt{agente/\allowbreak{}tools/\allowbreak{}eval\_dataset/} y \texttt{agente/\allowbreak{}evaluacion/}. La misma semilla produce el mismo plan de documentos y la misma verdad de referencia. Los PDF no se versionan porque se regeneran con un solo comando.
+
+\section{Formulación de la discusión}\label{sec:discusion}
+
+La discusión parte de los resultados de las secciones anteriores y responde tres preguntas: en qué coinciden y en qué difieren de lo que reportan los estudios previos, cuánto aportan al propósito de la investigación y qué tanto los condicionan sus limitaciones. Todo lo que sigue corresponde al corte del 18 de noviembre de 2026 y a las dos reglas evaluadas.
+
+\subsection{Contrastación de resultados con estudios previos}
+
+El contraste se hace con los antecedentes del Capítulo~\ref{cap:problematica} que tratan el mismo problema o usan el mismo recurso de evaluación. La Tabla~\ref{tab:4-11} los pone junto a los resultados de esta tesis.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.150\textwidth}>{\raggedright\arraybackslash}p{0.250\textwidth}>{\raggedright\arraybackslash}p{0.250\textwidth}>{\raggedright\arraybackslash}p{0.250\textwidth}@{}}
+\caption{Contraste de los resultados con los estudios previos}\label{tab:4-11}\\
+\toprule
+\textbf{Estudio} & \textbf{Qué reporta} & \textbf{Resultado de esta tesis} & \textbf{Lectura} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Estudio} & \textbf{Qué reporta} & \textbf{Resultado de esta tesis} & \textbf{Lectura} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+IEEE-13 \cite{ref9} & Verificación del formato IEEE con análisis de \emph{layout}, reglas en YAML y evaluación semántica. Más de 85 \% de acuerdo con la evaluación humana en 15 artículos & 95,3 \% de decisiones correctas en 200 documentos sintéticos, con dos reglas de figuras en YAML & Coincide el diseño. Las cifras no se comparan de forma directa: cambian las reglas, el tamaño de la muestra y la referencia, que allá es un evaluador humano y aquí un manifiesto \\
+\addlinespace
+GS-01 \cite{ref5} & Viabilidad de un sistema de formateo automático, con evidencia cualitativa & Precisión, \emph{recall} y $F_1$ por regla, con intervalos de confianza y pruebas de hipótesis & Los resultados confirman la viabilidad para dos reglas y le agregan una medición \\
+\addlinespace
+ACM-03 \cite{ref4} & Extractor de contenido de PDF con $F_1$ de 0,917 & Los 47 errores nacen en la extracción de figuras; los evaluadores de reglas no fallaron & Coincide en que la extracción del PDF es la etapa que limita el resultado \\
+\addlinespace
+SD-04 y SD-08 \cite{ref17,ref21} & Detección de regiones del documento con modelos entrenados: 96,5 \% de mAP y más de 97 \% de detección & Las figuras se leen de los objetos del PDF, sin modelo entrenado. No hubo errores fuera de tres situaciones de geometría & Es otro camino. Evita el entrenamiento y los datos anotados, pero solo sirve para PDF que conservan sus imágenes como objetos \\
+\addlinespace
+SD-05 y SD-09 \cite{ref18,ref22} & Documentos sintéticos para entrenar detectores de \emph{layout}. En SD-09 el detector entrenado con sintéticos iguala al entrenado con reales & Documentos sintéticos para evaluar, no para entrenar & El mismo recurso con otro uso. Esos trabajos respaldan la generación sintética, pero no prueban que una evaluación sintética prediga el desempeño con manuscritos reales \\
+\addlinespace
+SD-06 \cite{ref19} & Los documentos generados difieren en estilo de los documentos objetivo y esa brecha baja el rendimiento & Los manuscritos se generan con las plantillas oficiales de la revista, en LaTeX y en Word & La brecha de estilo se reduce, pero la de contenido se mantiene: el generador solo produce los defectos que el equipo previó \\
+\end{longtable}
+}
+
+\subsubsection*{Coincidencias}
+
+El resultado respalda la decisión de diseño que esta tesis tomó del referente más cercano \cite{ref9}: declarar las normas editoriales como reglas en YAML y verificarlas con un motor determinístico. En los valores de borde de los dos umbrales el motor no cometió ningún error, algo que un modelo de lenguaje no garantiza. También coincide con los trabajos de extracción \cite{ref4} en que la calidad de la verificación depende de la calidad de lo que se extrae del PDF. Las tres causas de error encontradas están en esa etapa.
+
+\subsubsection*{Diferencias}
+
+La primera diferencia es de método. Los antecedentes de análisis de \emph{layout} \cite{ref17,ref21} reconocen las figuras en la imagen de la página con modelos entrenados. El agente las lee de la estructura del PDF. Este camino no necesita datos anotados, que es justamente lo que falta en una revista pequeña, y da medidas exactas en píxeles. A cambio, hereda las particularidades del formato PDF: una imagen puede estar guardada con una orientación y un tamaño distintos de los que se ven en la página. Los errores de las figuras rotadas y recortadas vienen de ahí. Un manuscrito escaneado, en el que cada página es una sola imagen, queda fuera de este camino.
+
+La segunda diferencia es de evaluación. El referente \cite{ref9} mide el acuerdo con evaluadores humanos sobre 15 artículos reales. Esta tesis mide contra una verdad de referencia exacta sobre 200 documentos sintéticos. La muestra es mayor y permite intervalos de confianza y análisis por variante, pero todavía no dice nada sobre el acuerdo con un editor. Esa medición está prevista en la Fase 2.
+
+La tercera diferencia es un resultado que los antecedentes revisados no tratan: el efecto del programa con que se produce el PDF. La reducción de resolución que aplica Word al exportar no depende del agente y cambia lo que una regla de resolución puede exigir sobre un PDF.
+
+\subsubsection*{Estado de la brecha identificada}
+
+El Capítulo~\ref{cap:problematica} identificó tres vacíos en los antecedentes: la integración con OJS, el trabajo con manuscritos de revistas latinoamericanas y la revisión obligatoria del editor. Los resultados de este corte todavía no cierran ninguno de los tres. Lo que aportan es previo: muestran que las normas de una revista latinoamericana concreta, tomadas de sus plantillas y directrices, se pueden verificar de forma automática y medible. La integración con OJS y la revisión del editor, en la línea del trabajo con intervención humana \cite{ref20}, corresponden a la Fase 2.
+
+\pendiente{al cierre del Sprint 6, ampliar el contraste con las reglas de citas y referencias IEEE y con las sugerencias redactadas con Gemini.}
+
+\subsection{Valoración justificada de los aportes en relación al propósito de la investigación}
+
+El propósito de la investigación es implementar un agente que apoye la revisión estilística de los manuscritos que llegan a una revista gestionada con OJS, y responder de qué forma ese agente puede optimizar la revisión. Los resultados dejan cuatro aportes.
+
+\begin{enumerate}
+  \item \textbf{Evidencia medida de que la verificación de figuras se puede automatizar.} Con todos los documentos, las dos reglas superan sus metas de precisión y \emph{recall} de forma significativa (Tabla~\ref{tab:4-9}), y el análisis toma menos de un segundo y medio por manuscrito. El aporte es válido para dos reglas y para documentos sintéticos. No alcanza todavía al subconjunto de LaTeX, donde la precisión de RE-20 queda en 0,795.
+  \item \textbf{Un instrumento de evaluación reproducible.} El generador produce manuscritos con las plantillas de la revista y con una verdad de referencia que no depende del agente. Permite repetir la medición cada vez que se agrega una regla, sin anotar manuscritos a mano y sin usar datos personales. Sirve a esta tesis y a cualquier otra revista que declare sus reglas.
+  \item \textbf{Tres defectos localizados en la extracción de figuras.} La evaluación de caja negra encontró situaciones que las pruebas de la Sección~\ref{sec:pruebas}, todas aprobadas, no cubrían. Cada defecto tiene causa y corrección identificadas. El aporte es al producto: sin esta evaluación, los 39 falsos positivos de las figuras rotadas habrían llegado al editor.
+  \item \textbf{Un hallazgo para la política editorial.} La regla de 300 dpi no se puede cumplir en un PDF exportado desde Word. Este resultado no estaba entre los objetivos y es el de aplicación más inmediata, porque afecta a los autores con independencia de que la revista adopte el agente.
+\end{enumerate}
+
+La Tabla~\ref{tab:4-12} valora el aporte frente a cada objetivo específico.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.180\textwidth}>{\raggedright\arraybackslash}p{0.340\textwidth}>{\raggedright\arraybackslash}p{0.380\textwidth}@{}}
+\caption{Valoración de los aportes frente a los objetivos específicos al 18 de noviembre de 2026}\label{tab:4-12}\\
+\toprule
+\textbf{Objetivo} & \textbf{Evidencia al corte} & \textbf{Valoración} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Objetivo} & \textbf{Evidencia al corte} & \textbf{Valoración} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\endlastfoot
+OE1 -- Arquitectura & RE-20 y RE-21 declaradas en YAML y evaluadas por el motor determinístico, sin errores en los valores de borde & Parcial. La mitad determinística de la arquitectura queda demostrada. La redacción de sugerencias con el LLM aún no está en el flujo \\
+\addlinespace
+OE2 -- Análisis documental & Los 200 manuscritos se analizaron sin fallos. La extracción de figuras tiene tres defectos conocidos & Parcial. El texto, las páginas y las figuras se extraen. Faltan las secciones, las citas y las referencias \\
+\addlinespace
+OE3 -- Validación y reporte & Hallazgos por figura y por regla, consultables por la API & Parcial. El agente compara el manuscrito con las reglas y entrega hallazgos. Faltan el reporte de sugerencias y la revisión del editor \\
+\addlinespace
+OE4 -- Evaluación & Precisión y \emph{recall} por regla, con intervalos de confianza y contraste con las metas & Parcial. Se midieron dos de las cuatro magnitudes del objetivo. La tasa de aceptación y la reducción del tiempo de revisión requieren editores y se miden en la Fase 2 \\
+\end{longtable}
+}
+
+Frente a la pregunta de investigación, los resultados permiten una respuesta acotada. El agente puede asumir la verificación del tamaño y la resolución de las figuras, que hoy el editor hace a mano, con pocos incumplimientos sin detectar (8 de 498) y en un tiempo que no agrega espera al flujo editorial. No permiten afirmar todavía cuánto tiempo ahorra al editor ni si las observaciones le resultan útiles, porque ninguna de las dos cosas se midió. El aporte de este corte es, entonces, de factibilidad técnica y de método de evaluación. El aporte al proceso editorial queda por demostrar.
+
+\subsection{Evaluación de las limitaciones}
+
+Las limitaciones se evalúan en dos grupos: las que afectan la validez de la evaluación y las que vienen del alcance de este corte. Al final se indica qué conclusiones se sostienen a pesar de ellas.
+
+\subsubsection*{Amenazas a la validez de la evaluación}
 
 \begin{itemize}
   \item \textbf{Validez externa.} El \emph{dataset} es sintético. Mide si el agente detecta defectos controlados, no cómo se comporta con manuscritos reales, que tienen defectos que el generador no contempla: figuras compuestas por varias imágenes, capturas de pantalla, imágenes insertadas dentro de tablas. La evaluación con manuscritos reales y con editores está prevista en la Fase 2.
@@ -392,6 +491,19 @@ La regla RE-21 exige 300 dpi y el agente la verifica sobre el PDF. Los resultado
   \item \textbf{Entorno.} Los tiempos se midieron en un equipo de desarrollo con Windows 11 y dependen de él.
 \end{itemize}
 
-\subsubsection*{Reproducibilidad}
+\subsubsection*{Limitaciones de alcance}
 
-El generador, el evaluador y los resultados están en el repositorio, en \texttt{agente/\allowbreak{}tools/\allowbreak{}eval\_dataset/} y \texttt{agente/\allowbreak{}evaluacion/}. La misma semilla produce el mismo plan de documentos y la misma verdad de referencia. Los PDF no se versionan porque se regeneran con un solo comando.
+\begin{itemize}
+  \item \textbf{Reglas.} Los resultados cubren 2 de las 44 reglas del catálogo, ambas de figuras y ambas numéricas. No se pueden extender a las reglas de citas y referencias ni a las que requieren interpretación, como la legibilidad del texto de una figura.
+  \item \textbf{Modelo de lenguaje.} La redacción de sugerencias con Gemini no se evaluó. La claridad, la corrección y el tono de las sugerencias, y su efecto sobre el tiempo de análisis, siguen sin medir.
+  \item \textbf{Integración y usuarios.} El agente se evaluó por su API, sin OJS y sin editores. No hay datos de la tasa de aceptación ni del tiempo de revisión.
+  \item \textbf{Caso único.} Las reglas y las plantillas son las de Innosoft. Que el motor sea configurable por revista es una propiedad del diseño que esta evaluación no pone a prueba.
+\end{itemize}
+
+\subsubsection*{Efecto sobre las conclusiones}
+
+La limitación de mayor peso es la validez externa. Afecta sobre todo a la precisión, que depende de cuántas figuras rotadas tenga el conjunto, una proporción que se fijó en el diseño y no se midió en manuscritos reales. Por eso la precisión global se presenta como resultado de este \emph{dataset} y no como estimación del desempeño en la revista.
+
+Tres conclusiones no dependen de esa proporción y se sostienen. Los evaluadores aplican los umbrales sin error cuando reciben las medidas correctas. Los errores observados tienen tres causas, todas en la extracción. Y Word reduce la resolución de las imágenes al exportar a PDF, lo que se comprobó con una librería distinta de la que usa el agente.
+
+Las limitaciones de alcance no invalidan los resultados; delimitan lo que se puede afirmar con ellos. Se atienden en lo que resta del plan: las reglas de citas y referencias y las sugerencias con Gemini al cierre del Sprint 6, y la evaluación con manuscritos reales y con editores en la Fase 2 (Sección~\ref{sec:dos-fases}).

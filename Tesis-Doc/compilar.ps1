@@ -20,7 +20,7 @@ if (-not (Get-Command pdflatex -ErrorAction SilentlyContinue)) {
 if ($Limpiar -and (Test-Path "build")) { Remove-Item "build" -Recurse -Force }
 New-Item -ItemType Directory -Force -Path "build" | Out-Null
 
-if (Get-Command latexmk -ErrorAction SilentlyContinue) {
+if ((Get-Command latexmk -ErrorAction SilentlyContinue) -and (Get-Command perl -ErrorAction SilentlyContinue)) {
     latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main.tex
     $ok = ($LASTEXITCODE -eq 0)
 } else {
